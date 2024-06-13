@@ -4,40 +4,49 @@ import "./Header.scss";
 import Modal from "../Modal/Modal";
 
 function Header() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openSignUpModal = () => {
+        setIsSignUpModalOpen(true);
     }
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeSignUpModal = () => {
+        setIsSignUpModalOpen(false);
+    }
+
+    const openLoginModal = () => {
+        setIsLoginModalOpen(true);
+    }
+
+    const closeLoginModal = () => {
+        setIsLoginModalOpen(false);
     }
 
 
     return (
-        <nav class="navbar">
-        <a href="/" class="logo">
-            wroteitt
-        </a>
-        <ul class="main-nav" id="js-menu">
-            <li>
-            <a href="#" class="nav-links" onClick={openModal}>
-                Sign Up
+        <nav className="navbar">
+            <a href="/" className="logo">
+                wroteitt
             </a>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <h1>test</h1>
-            </Modal>
-            </li>
-            <li>
-            <a href="#" class="nav-links" onClick={openModal}>
-                Log in
-            </a>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <h1>login</h1>
-            </Modal>
-            </li>
-        </ul>
+            <ul className="main-nav" id="js-menu">
+                <li>
+                    <a href="#" className="nav-links" onClick={openSignUpModal}>
+                        Sign Up
+                    </a>
+                    <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal}>
+                        <h1 className="test">Sign Up</h1>
+                    </Modal>
+                </li>
+                <li>
+                    <a href="#" className="nav-links" onClick={openLoginModal}>
+                        Log In
+                    </a>
+                    <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
+                        <h1 className="test">Log In</h1>
+                    </Modal>
+                </li>
+            </ul>
         </nav>
     );
 }
