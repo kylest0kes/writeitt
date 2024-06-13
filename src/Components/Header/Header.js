@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import "./Header.scss";
 import Modal from "../Modal/Modal";
+import SignUp from "../SignUp/SignUp";
+import Login from "../Login/Login";
 
 function Header() {
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
@@ -35,7 +37,7 @@ function Header() {
                         Sign Up
                     </a>
                     <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal}>
-                        <h1 className="test">Sign Up</h1>
+                        <SignUp />
                     </Modal>
                 </li>
                 <li>
@@ -43,7 +45,7 @@ function Header() {
                         Log In
                     </a>
                     <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
-                        <h1 className="test">Log In</h1>
+                        <Login />
                     </Modal>
                 </li>
             </ul>
