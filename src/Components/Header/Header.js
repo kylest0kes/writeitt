@@ -33,7 +33,7 @@ function Header() {
             </a>
             <ul className="main-nav" id="js-menu">
                 <li>
-                    <a href="#" className="nav-links" onClick={openSignUpModal}>
+                    <a href="#" className="pill-btn signup" onClick={openSignUpModal}>
                         Sign Up
                     </a>
                     <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal}>
@@ -41,7 +41,7 @@ function Header() {
                     </Modal>
                 </li>
                 <li>
-                    <a href="#" className="nav-links" onClick={openLoginModal}>
+                    <a href="#" className="pill-btn login" onClick={openLoginModal}>
                         Log In
                     </a>
                     <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
