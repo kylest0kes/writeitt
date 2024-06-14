@@ -1,17 +1,33 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+// import userRoutes from './routes/users.js';
+
+dotenv.config()
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Serve the static files 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(bodyParser.json());
+
+const mongoURI = process.env.MONGODB_URI;
+
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('mongo connection happened yo'))
+  .catch(err => console.log(`Error: ${err}`));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+// app.use('/api/users', userRoutes);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
-const port = process.env.PORT || 5000;
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(PORT, () => console.log(`we runnin on port ${PORT}`));
