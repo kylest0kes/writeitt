@@ -3,12 +3,12 @@ import "./SignUp.scss";
 
 function SignUp() {
   return (
-    <div id="wrapper">
+    <div id="signup-wrapper">
       <form action="#" method="post">
         <h1 className="heading">Create Your Account</h1>
 
         <p>
-          <label for="user">User Name:</label>
+          <label for="uname">Username:</label>
           <input id="uname" type="text" name="user_name" />
         </p>
 
@@ -23,7 +23,7 @@ function SignUp() {
         </p>
 
         <p>
-          <label for="rpword">Re-Type Password:</label>
+          <label for="rpword">Confirm Password:</label>
           <input id="rpword" type="password" name="confirm_password" />
         </p>
 

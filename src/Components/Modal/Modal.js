@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import './Modal.scss'
 
 const Modal = ({ isOpen, onClose, children }) => {
@@ -7,10 +9,10 @@ const Modal = ({ isOpen, onClose, children }) => {
 
     return ReactDOM.createPortal(
         <div className="modal-overlay">
-        <div className="modal">
-            <button onClick={onClose}>Close</button>
-            {children}
-        </div>
+            <div className="modal">
+                <FontAwesomeIcon icon={faCircleXmark} onClick={onClose} className='closeBtn'/>
+                {children}
+            </div>
         </div>,
         document.body
     );

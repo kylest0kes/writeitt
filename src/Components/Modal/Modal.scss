@@ -8,12 +8,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .modal {
+}
+
+.modal {
     background: transparent;
     padding: 20px;
     border-radius: 5px;
     position: relative;
     z-index: 10;
-  }
+
+}
+
+.closeBtn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 25px;
+    color: rgb(141, 141, 141);
+}
+
+.closeBtn:hover {
+    color: rgb(200, 82, 3);
+    cursor: pointer;
+}
