@@ -36,7 +36,7 @@ function Header() {
                     <a href="#" className="pill-btn signup" onClick={openSignUpModal}>
                         Sign Up
                     </a>
-                    <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal}>
+                    <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal} className="signup-modal">
                         <SignUp />
                     </Modal>
                 </li>

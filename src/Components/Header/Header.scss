@@ -38,7 +38,9 @@
 }
 
 .pill-btn{
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
     height: 40px;
     line-height: 38px;
@@ -65,4 +67,8 @@
 
 .login:hover {
     background-color: rgb(200, 82, 3);
+}
+
+.signup-modal {
+    background: rgb(141, 141, 141);
 }
