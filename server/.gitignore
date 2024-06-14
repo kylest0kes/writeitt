@@ -1,0 +1,15 @@
+# dependencies
+/node_modules
+
+# production build
+/client/build
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+
+# logs
+npm-debug.log*
+
+# environment variables
+.env
