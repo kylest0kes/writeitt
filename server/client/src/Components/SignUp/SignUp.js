@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import "./SignUp.scss";
+import { useUser } from "../../Contexts/UserContext";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ function SignUp() {
 
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const { setUser } = useUser();
 
   const handleSetFormData = (e) => {
     const { name, value } = e.target;
@@ -53,6 +55,7 @@ function SignUp() {
       });
 
       setMessage(`Successfully registered ${formData.username}`);
+      setUser ({ username: formData.username, email:formData.email});
       setFormData({
         username: '',
         email: '', 

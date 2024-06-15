@@ -4,8 +4,11 @@ import "./Header.scss";
 import Modal from "../Modal/Modal";
 import SignUp from "../SignUp/SignUp";
 import Login from "../Login/Login";
+import { useUser } from "../../Contexts/UserContext";
 
 function Header() {
+    const { user } = useUser();
+
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -31,6 +34,13 @@ function Header() {
             <a href="/" className="logo">
                 wroteitt
             </a>
+            {user ? (
+                <ul className="main-nav" id="js-menu">
+                    <li>
+                        <a href="" className="pill-btn">{user.username}</a>
+                    </li>
+                </ul>
+            ) : (
             <ul className="main-nav" id="js-menu">
                 <li>
                     <a href="#" className="pill-btn signup" onClick={openSignUpModal}>
@@ -49,6 +59,10 @@ function Header() {
                     </Modal>
                 </li>
             </ul>
+            )}
+
+
+
         </nav>
     );
 }
