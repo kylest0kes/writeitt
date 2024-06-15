@@ -22,4 +22,24 @@ router.post('/register-user', async (req, res) => {
     }
 });
 
+// route to check if username or email exists already
+router.post('/check', async (req, res) => {
+    const { username, email } = req.body;
+
+    try {
+        const user = await User.findOne({ $or: [{ username }, { email }] });
+        if (user) {
+            if (user.username === username) {
+                return res.status(400).json({ message: 'That username is already taken.'})
+            }
+            if (user.email === email) {
+                return res.status(400).json({ message: 'That Email is already in use.'})
+            }
+        }
+        res.status(200).json({ message: 'Values are valid.'});
+    } catch (err) {
+        res.status(500).json({ message: '`Server error`'})
+    }
+});
+
 export default router;

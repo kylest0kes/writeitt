@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import "./SignUp.scss";
 
 function SignUp() {
@@ -8,6 +9,9 @@ function SignUp() {
     password: '',
     confirmPassword: ''
   });
+
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleSetFormData = (e) => {
     const { name, value } = e.target;
@@ -19,7 +23,51 @@ function SignUp() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault() 
-    console.log('data: ', formData)
+    
+    // check matching passwords
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      // complete other logic like adding error classes and all that shit
+      return
+    }
+    setError('');
+
+    // try to sumbit user and throw error and set states if can't
+    try {
+      // check if username taken or email in use
+      const checkValues = await axios.post('/api/users/check', {
+        username: formData.username,
+        email: formData.email
+      });
+
+      if (checkValues.status !== 200) {
+        setError(checkValues.data.message);
+        return;
+      }
+
+      // continue with sign up if all good
+      await axios.post('/api/users/register-user', {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
+      });
+
+      setMessage(`Successfully registered ${formData.username}`);
+      setFormData({
+        username: '',
+        email: '', 
+        password: '',
+        confirmPassword: ''
+      });
+    } catch (err) {
+      console.log(`There was an error: ${err}`);
+      if (err.resonse && err.response.data.message) {
+        setError(err.response.data.message)
+      } else {
+        setMessage('Error occured during registration. Please try again.')
+      }
+    }
+
   };
 
 
@@ -49,6 +97,8 @@ function SignUp() {
         </p>
 
         <button type="submit" id="submit" className="signup-submit-btn">Submit</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {message && <p style={{ color: 'white' }}>{message}</p>}
       </form>
     </div>
   );
