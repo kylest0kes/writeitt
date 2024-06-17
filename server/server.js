@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
 import userRoutes from './routes/users.js';
 
 dotenv.config()
@@ -23,6 +24,11 @@ mongoose.connect(mongoURI)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const limit = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100
+});
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -33,6 +39,8 @@ app.use(session({
 }));
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.use(limit);
 
 app.use('/api/users', userRoutes);
 
