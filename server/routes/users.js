@@ -1,12 +1,22 @@
 import express from 'express';
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
 const salt = 10;
 
 // route to register a new user
-router.post('/register-user', async (req, res) => {
+router.post('/register-user', [ 
+        body('email').isEmail().normalizeEmail(),
+        body('password').isLength({ min: 10 })
+    ], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array, message: 'An error has occured'});
+    }
+
     const { username, email, password } = req.body;
 
     const hashedPW = await bcrypt.hashSync(password, salt)
