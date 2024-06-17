@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import "./SignUp.scss";
 import { useUser } from "../../Contexts/UserContext";
@@ -13,7 +13,18 @@ function SignUp() {
 
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  // const [csrfToken, setCsrfToken] = useState('');
   const { setUser } = useUser();
+
+
+  // utilizing useEffect to make sure the CSRF token (obtained from the route) is stored in the axios headers every time the component mounts
+  useEffect(() => {
+    // const fetchCsrfToken = async () => {
+    //   const { data } = await axios.get('/api/csrf-token');
+    //   setCsrfToken(data.csrfToken);
+    // };
+    // fetchCsrfToken();
+  }, []);
 
   const handleSetFormData = (e) => {
     const { name, value } = e.target;
@@ -40,7 +51,13 @@ function SignUp() {
       const checkValues = await axios.post('/api/users/check', {
         username: formData.username,
         email: formData.email
-      });
+      }, 
+      // {
+      //   headers: {
+      //     'csrf-token': csrfToken
+      //   }
+      // }
+    );
 
       if (checkValues.status !== 200) {
         setError(checkValues.data.message);
@@ -52,7 +69,13 @@ function SignUp() {
         username: formData.username,
         email: formData.email,
         password: formData.password
-      });
+      }, 
+      // {
+      //   headers: {
+      //     'csrf-token': csrfToken
+      //   }
+      // }
+    );
 
       setMessage(`Successfully registered ${formData.username}`);
       setUser ({ username: formData.username, email:formData.email});

@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
-const salt = 10;
+
 
 // route to register a new user
 router.post('/register-user', [ 
@@ -19,7 +19,8 @@ router.post('/register-user', [
 
     const { username, email, password } = req.body;
 
-    const hashedPW = await bcrypt.hashSync(password, salt)
+    const salt = 10;
+    const hashedPW = bcrypt.hashSync(password, salt)
 
     try {
         const existing = await User.findOne({ $or: [{ username }, { email }]});

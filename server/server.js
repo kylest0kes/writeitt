@@ -6,7 +6,10 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import csrf from 'csurf';
 import userRoutes from './routes/users.js';
+import csrfRoute from './routes/csrf.js';
 
 dotenv.config()
 
@@ -14,6 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 4200;
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const mongoURI = process.env.MONGODB_URI;
 
@@ -24,10 +28,14 @@ mongoose.connect(mongoURI)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const limit = rateLimit({
-  windowMs: 10 * 60 * 1000,
-  max: 100
-});
+// const limit = rateLimit({
+//   windowMs: 10 * 60 * 1000,
+//   max: 1000
+// });
+
+// const csrfProtection = csrf({ cookie: true });
+
+// app.set('trust proxy', 1);
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -40,9 +48,12 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-app.use(limit);
+app.use(cors());
+// app.use(limit);
+// app.use(csrfProtection);
 
 app.use('/api/users', userRoutes);
+// app.use('/api', csrfRoute);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
