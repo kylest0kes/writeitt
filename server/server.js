@@ -46,9 +46,16 @@ app.use(session({
   // cookie: { secure: true, httpOnly: true }
 }));
 
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-app.use(cors());
+// Content-Security-Policy middleware
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self'");
+  return next();
+});
+
 // app.use(limit);
 // app.use(csrfProtection);
 
