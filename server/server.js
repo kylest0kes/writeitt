@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
@@ -21,6 +22,15 @@ mongoose.connect(mongoURI)
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false, httpOnly: true }
+  // for use when going to prod
+  // cookie: { secure: true, httpOnly: true }
+}));
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
