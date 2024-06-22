@@ -1,7 +1,10 @@
 import express from 'express';
-import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
+
+import User from '../models/User.js';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -35,9 +38,20 @@ router.post('/register-user', [
         });
 
         const user = await newUser.save();
+
+        const payload = {
+            user: {id: user.id}
+        }
+
+        jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h'}, (err, token) => {
+            if (err) throw err;
+            res.json({ token });
+        });
+
         res.status(201).json(user);
+
     } catch (err) {
-        console.log(`Error registering user: ${err}`);
+        console.error(`Error registering user: ${err}`);
         res.status(500).json({ message: 'Error :('});
     }
 });
@@ -47,7 +61,7 @@ router.post('/check', async (req, res) => {
     const { username, email } = req.body;
 
     try {
-        const user = await User.findOne({ $or: [{ username }, { email }] });
+        const user = await User.findOne({ $or: [{ username }, { email }] }); 
         if (user) {
             if (user.username === username || user.email === email) {
                 return res.status(400).json({ message: 'That username or email is already taken.'})
@@ -56,6 +70,55 @@ router.post('/check', async (req, res) => {
         res.status(200).json({ message: 'Values are valid.'});
     } catch (err) {
         res.status(500).json({ message: '`Server error`'})
+    }
+});
+
+// route to log a user in
+router.post('/login-user', [
+    body('email').isEmail(),
+    body('password').exists()
+], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array, message: 'An error has occured'});
+    }
+
+    const { username, email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ $or: [{ username }, { email }]});
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid username or email'});
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(400).json({ message: 'Invalid password'});
+        }
+
+        const payload = {
+            user: {id: user.id}
+        }
+
+        jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h'}, (err, token) => {
+            if (err) throw err;
+            res.json({ token });
+        });
+
+    } catch (err) {
+        console.error(err.message)
+    }
+
+});
+
+router.get('/current-user', authMiddleware, async (req, res) => {
+    try {
+        const user = User.findById(req.user.id).select('-password');
+        res.json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ message: 'Server error'});
     }
 });
 
