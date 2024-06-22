@@ -28,14 +28,14 @@ mongoose.connect(mongoURI)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const limit = rateLimit({
-  windowMs: 10 * 60 * 1000,
-  max: 1000
-});
+// const limit = rateLimit({
+//   windowMs: 10 * 60 * 1000,
+//   max: 1000
+// });
 
 // const csrfProtection = csrf({ cookie: true });
 
-// app.set('trust proxy', 1);
+// app.set('trust proxy', true);
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -47,6 +47,7 @@ app.use(session({
 }));
 
 app.use(cors());
+// app.use(limit);
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
@@ -56,7 +57,6 @@ app.use((req, res, next) => {
   return next();
 });
 
-app.use(limit);
 // app.use(csrfProtection);
 
 app.use('/api/users', userRoutes);

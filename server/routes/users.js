@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 // route to register a new user
-router.post('/register-user', [ 
+router.post('/register', [ 
         body('email').isEmail().normalizeEmail(),
         body('password').isLength({ min: 10 })
     ], async (req, res) => {
@@ -48,8 +48,6 @@ router.post('/register-user', [
             res.json({ token });
         });
 
-        res.status(201).json(user);
-
     } catch (err) {
         console.error(`Error registering user: ${err}`);
         res.status(500).json({ message: 'Error :('});
@@ -74,8 +72,8 @@ router.post('/check', async (req, res) => {
 });
 
 // route to log a user in
-router.post('/login-user', [
-    body('email').isEmail(),
+router.post('/login', [
+    body('username').exists(),
     body('password').exists()
 ], async (req, res) => {
 

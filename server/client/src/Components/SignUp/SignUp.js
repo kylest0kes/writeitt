@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import "./SignUp.scss";
 import { useUser } from "../../Contexts/UserContext";
+import { useAuth } from "../../Contexts/AuthContext";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ function SignUp() {
   const [error, setError] = useState('');
   // const [csrfToken, setCsrfToken] = useState('');
   const { setUser } = useUser();
+  const { login } = useAuth();
 
 
   // utilizing useEffect to make sure the CSRF token (obtained from the route) is stored in the axios headers every time the component mounts
@@ -65,7 +67,7 @@ function SignUp() {
       }
 
       // continue with sign up if all good
-      await axios.post('/api/users/register-user', {
+      const res = await axios.post('/api/users/register', {
         username: formData.username,
         email: formData.email,
         password: formData.password
@@ -75,10 +77,17 @@ function SignUp() {
       //     'csrf-token': csrfToken
       //   }
       // }
-    );
+      );
 
-      setMessage(`Successfully registered ${formData.username}`);
-      setUser ({ username: formData.username, email:formData.email});
+      if (res.data.token) {
+        login(res.data.token);
+        setUser ({ username: formData.username, email:formData.email});
+        setMessage(`Successfully registered ${formData.username}`);
+      } else {
+        setError('Registration failed. Please try again.')
+      }
+
+      // clear form data
       setFormData({
         username: '',
         email: '', 
@@ -86,7 +95,7 @@ function SignUp() {
         confirmPassword: ''
       });
     } catch (err) {
-      console.log(`There was an error: ${err}`);
+      console.error(`There was an error: ${err}`);
       if (err.resonse && err.response.data.message) {
         setError(err.response.data.message)
       } else {
@@ -103,22 +112,22 @@ function SignUp() {
         <h1 className="heading">Create Your Account</h1>
 
         <p>
-          <label for="uname">Username:</label>
+          <label htmlFor="uname">Username:</label>
           <input id="uname" type="text" name="username" onChange={handleSetFormData} value={formData.username} />
         </p>
 
         <p>
-          <label for="mail">Email:</label>
+          <label htmlFor="mail">Email:</label>
           <input id="mail" type="email" name="email" onChange={handleSetFormData} value={formData.email} />
         </p>
 
         <p>
-          <label for="password">Password:</label>
+          <label htmlFor="password">Password:</label>
           <input id="password" type="password" name="password" onChange={handleSetFormData} value={formData.password} />
         </p>
 
         <p>
-          <label for="confirmPassword">Confirm Password:</label>
+          <label htmlFor="confirmPassword">Confirm Password:</label>
           <input id="confirmPassword" type="password" name="confirmPassword" onChange={handleSetFormData} value={formData.confirmPassword} />
         </p>
 

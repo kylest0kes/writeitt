@@ -5,9 +5,11 @@ import Modal from "../Modal/Modal";
 import SignUp from "../SignUp/SignUp";
 import Login from "../Login/Login";
 import { useUser } from "../../Contexts/UserContext";
+import { useAuth } from "../../Contexts/AuthContext";
 
 function Header() {
     const { user } = useUser();
+    const { authToken, logout } = useAuth();
 
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -28,16 +30,23 @@ function Header() {
         setIsLoginModalOpen(false);
     }
 
+    const handleLogout = () => {
+        logout();
+    }
+
 
     return (
         <nav className="navbar">
             <a href="/" className="logo">
                 wroteitt
             </a>
-            {user ? (
+            {user && authToken ? (
                 <ul className="main-nav" id="js-menu">
                     <li>
                         <a href="" className="pill-btn">{user.username}</a>
+                    </li>
+                    <li>
+                        <a href="" className="pill-btn" onClick={handleLogout}>logout</a>
                     </li>
                 </ul>
             ) : (
@@ -55,7 +64,7 @@ function Header() {
                         Log In
                     </a>
                     <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
-                        <Login />
+                        <Login onClose={closeLoginModal} />
                     </Modal>
                 </li>
             </ul>

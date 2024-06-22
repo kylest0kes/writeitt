@@ -1,23 +1,56 @@
-import React from 'react'
-import './Login.scss'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useAuth } from '../../Contexts/AuthContext';
 
-function Login() {
+import './Login.scss';
+import { useUser } from '../../Contexts/UserContext';
+
+function Login({ onClose }) {
+  const [formData, setFormData] = useState({ username: '', password: ''});
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const { setUser } = useUser();
+
+  const handleSetFormData = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post('/api/users/login', formData);
+      login(res.data.token);
+      setUser({ username: formData.username})
+      onClose();
+    } catch (err) {
+      setError('Invlaid credentials');
+      console.error(`There was an error: ${err}`)
+    }
+  };
+
+
   return (
     <div id="login-wrapper">
-      <form action="#" method="post">
+      <form action="#" method="post" onSubmit={handleFormSubmit}>
         <h1 className="heading">Log In</h1>
 
         <p>
-          <label for="uname">Username or Email:</label>
-          <input id="uname" type="text" name="user_name" />
+          <label htmlFor="uname">Username or Email:</label>
+          <input id="uname" type="text" name="username" value={formData.username} onChange={handleSetFormData} required />
         </p>
 
         <p>
-          <label for="pword">Password:</label>
-          <input id="pword" type="password" name="enter_password" />
+          <label htmlFor="pword">Password:</label>
+          <input id="pword" type="password" name="password" value={formData.password} onChange={handleSetFormData} required />
         </p>
 
-        <input type="submit" value="Submit" id="submit" />
+        <button className='login-btn' type="submit" id="submit">Submit</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   )
