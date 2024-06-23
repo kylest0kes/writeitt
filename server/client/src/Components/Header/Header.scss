@@ -71,3 +71,21 @@
 .signup-modal {
     background: rgb(141, 141, 141);
 }
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: rgb(232, 95, 4);
+    animation: spin 1s ease infinite;
+    margin: auto;
+    display: block;
+    margin-top: 50px; /* Adjust based on your layout */
+}
+
+@keyframes spin {
+to {
+    transform: rotate(360deg);
+}
+}

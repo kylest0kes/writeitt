@@ -21,7 +21,7 @@ function Header() {
     const handleLogout = () => logout();
 
     if (loading) {
-        return <div className="spinner">Loading...</div>;
+        return <div className="spinner"></div>;
     }
 
     return (
