@@ -8,7 +8,7 @@ import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
 
 function Header() {
-    const { user } = useUser();
+    const { user, loading } = useUser();
     const { authToken, logout } = useAuth();
 
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
@@ -19,6 +19,10 @@ function Header() {
     const openLoginModal = () => setIsLoginModalOpen(true);
     const closeLoginModal = () => setIsLoginModalOpen(false);
     const handleLogout = () => logout();
+
+    if (loading) {
+        return <div className="spinner">Loading...</div>;
+    }
 
     return (
         <nav className="navbar">

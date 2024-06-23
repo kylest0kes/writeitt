@@ -7,6 +7,7 @@ const UserContext = createContext();
 export const UserProvider = ({children}) => {
     const { authToken } = useAuth();
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
         const fetchUserData = async () => {
@@ -22,12 +23,13 @@ export const UserProvider = ({children}) => {
                     console.error(`Failed to fetch user data: ${err}`);
                 }
             };
+            setLoading(false);
         };
         fetchUserData();
     }, [authToken])
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, loading }}>
             {children}
         </UserContext.Provider>
     );
