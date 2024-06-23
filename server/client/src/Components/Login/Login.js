@@ -25,12 +25,7 @@ function Login({ onClose }) {
     try {
       const res = await axios.post('/api/users/login', formData);
       login(res.data.token);
-
-      const userRes = await axios.get('/api/users/current-user', {
-        headers: { Authorization: `Bearer ${res.data.token}`}
-      });
-
-      setUser(userRes.data)
+      setUser(res.data.user)
       onClose();
     } catch (err) {
       setError('Invlaid credentials');

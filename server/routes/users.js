@@ -45,7 +45,7 @@ router.post('/register', [
 
         jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h'}, (err, token) => {
             if (err) throw err;
-            res.json({ token });
+            res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
         });
 
     } catch (err) {
@@ -101,7 +101,7 @@ router.post('/login', [
 
         jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h'}, (err, token) => {
             if (err) throw err;
-            res.json({ token });
+            res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
         });
 
     } catch (err) {
