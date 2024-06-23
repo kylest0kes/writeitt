@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext();
 
@@ -15,6 +15,13 @@ const AuthProvider = ({ children }) => {
         setAuthToken(null);
         localStorage.removeItem('authToken');
     }
+
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            setAuthToken(token);
+        }
+    }, [])
 
     return (
         <AuthContext.Provider value={{ authToken, login, logout }}>

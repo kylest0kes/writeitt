@@ -112,11 +112,15 @@ router.post('/login', [
 
 router.get('/current-user', authMiddleware, async (req, res) => {
     try {
-        const user = User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(401).json({ message: 'User not found'});
+        }
+
         res.json(user);
     } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ message: 'Server error'});
+        console.error(`Failed to fetch user data: ${err.message}`)
+        res.status(500).json({ message: 'Failed to fetch user data'});
     }
 });
 

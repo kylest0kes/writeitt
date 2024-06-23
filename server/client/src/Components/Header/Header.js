@@ -14,26 +14,11 @@ function Header() {
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-    const openSignUpModal = () => {
-        setIsSignUpModalOpen(true);
-    }
-
-    const closeSignUpModal = () => {
-        setIsSignUpModalOpen(false);
-    }
-
-    const openLoginModal = () => {
-        setIsLoginModalOpen(true);
-    }
-
-    const closeLoginModal = () => {
-        setIsLoginModalOpen(false);
-    }
-
-    const handleLogout = () => {
-        logout();
-    }
-
+    const openSignUpModal = () => setIsSignUpModalOpen(true);
+    const closeSignUpModal = () => setIsSignUpModalOpen(false);
+    const openLoginModal = () => setIsLoginModalOpen(true);
+    const closeLoginModal = () => setIsLoginModalOpen(false);
+    const handleLogout = () => logout();
 
     return (
         <nav className="navbar">
@@ -43,7 +28,7 @@ function Header() {
             {user && authToken ? (
                 <ul className="main-nav" id="js-menu">
                     <li>
-                        <a href="" className="pill-btn">{user.username}</a>
+                        <a href="" className="pill-btn login">{user.username}</a>
                     </li>
                     <li>
                         <a href="" className="pill-btn" onClick={handleLogout}>logout</a>
