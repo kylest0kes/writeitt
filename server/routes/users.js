@@ -73,7 +73,7 @@ router.post('/check', async (req, res) => {
 
 // route to log a user in
 router.post('/login', [
-    body('username').exists(),
+    body('usernameOrEmail').exists(),
     body('password').exists()
 ], async (req, res) => {
 
@@ -82,10 +82,10 @@ router.post('/login', [
         return res.status(400).json({ errors: errors.array, message: 'An error has occured'});
     }
 
-    const { username, email, password } = req.body;
+    const { usernameOrEmail, password } = req.body;
 
     try {
-        const user = await User.findOne({ $or: [{ username }, { email }]});
+        const user = await User.findOne({ $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]});
         if (!user) {
             return res.status(400).json({ message: 'Invalid username or email'});
         }

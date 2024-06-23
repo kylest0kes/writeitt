@@ -6,7 +6,7 @@ import './Login.scss';
 import { useUser } from '../../Contexts/UserContext';
 
 function Login({ onClose }) {
-  const [formData, setFormData] = useState({ username: '', password: ''});
+  const [formData, setFormData] = useState({ usernameOrEmail: '', password: ''});
   const [error, setError] = useState('');
   const { login } = useAuth();
   const { setUser } = useUser();
@@ -25,7 +25,7 @@ function Login({ onClose }) {
     try {
       const res = await axios.post('/api/users/login', formData);
       login(res.data.token);
-      setUser({ username: formData.username})
+      setUser({ username: formData.usernameOrEmail})
       onClose();
     } catch (err) {
       setError('Invlaid credentials');
@@ -41,7 +41,7 @@ function Login({ onClose }) {
 
         <p>
           <label htmlFor="uname">Username or Email:</label>
-          <input id="uname" type="text" name="username" value={formData.username} onChange={handleSetFormData} required />
+          <input id="uname" type="text" name="usernameOrEmail" value={formData.usernameOrEmail} onChange={handleSetFormData} required />
         </p>
 
         <p>
