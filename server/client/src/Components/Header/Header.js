@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Header.scss";
 import Modal from "../Modal/Modal";
 import SignUp from "../SignUp/SignUp";
 import Login from "../Login/Login";
 import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
+import UserMenu from "../UserMenu/UserMenu";
 
 function Header() {
     const { user, loading } = useUser();
@@ -13,12 +14,39 @@ function Header() {
 
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
+
+    const userMenuRef = useRef(null);
+    const userBtnRef = useRef(null);
 
     const openSignUpModal = () => setIsSignUpModalOpen(true);
     const closeSignUpModal = () => setIsSignUpModalOpen(false);
     const openLoginModal = () => setIsLoginModalOpen(true);
     const closeLoginModal = () => setIsLoginModalOpen(false);
     const handleLogout = () => logout();
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        }
+    }, []);
+
+    const handleOutsideClick = (e) => {
+        if (
+            userMenuRef.current &&
+            !userMenuRef.current.contains(e.target) &&
+            userBtnRef.current &&
+            !userBtnRef.current.contains(e.target)
+        ) {
+            setIsUserMenuVisible(false);
+        }
+    }
+
+    const toggleUserMenu = (e) => {
+        e.stopPropagation();
+        setIsUserMenuVisible((prev) => !prev);
+    }
 
     if (loading) {
         return <div className="spinner"></div>;
@@ -30,37 +58,37 @@ function Header() {
                 wroteitt
             </a>
             {user && authToken ? (
-                <ul className="main-nav" id="js-menu">
-                    <li>
-                        <a href="" className="pill-btn login">{user.username}</a>
-                    </li>
-                    <li>
-                        <a href="" className="pill-btn" onClick={handleLogout}>logout</a>
-                    </li>
-                </ul>
+                <div>
+                    <ul className="main-nav" id="js-menu">
+                        <li>
+                            <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>{user.username}</div>
+                        </li>
+                        <li>
+                            <div className="pill-btn" onClick={handleLogout}>logout</div>
+                        </li>
+                    </ul>
+                    {isUserMenuVisible && <UserMenu ref={userMenuRef} />}
+                </div>
             ) : (
             <ul className="main-nav" id="js-menu">
                 <li>
-                    <a href="#" className="pill-btn signup" onClick={openSignUpModal}>
+                    <div className="pill-btn signup" onClick={openSignUpModal}>
                         Sign Up
-                    </a>
+                    </div>
                     <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal} className="signup-modal">
                         <SignUp />
                     </Modal>
                 </li>
                 <li>
-                    <a href="#" className="pill-btn login" onClick={openLoginModal}>
+                    <div className="pill-btn login" onClick={openLoginModal}>
                         Log In
-                    </a>
+                    </div>
                     <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
                         <Login onClose={closeLoginModal} />
                     </Modal>
                 </li>
             </ul>
             )}
-
-
-
         </nav>
     );
 }
