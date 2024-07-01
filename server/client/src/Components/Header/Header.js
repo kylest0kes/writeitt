@@ -23,7 +23,10 @@ function Header() {
     const closeSignUpModal = () => setIsSignUpModalOpen(false);
     const openLoginModal = () => setIsLoginModalOpen(true);
     const closeLoginModal = () => setIsLoginModalOpen(false);
-    const handleLogout = () => logout();
+    const handleLogout = () => {
+        setIsUserMenuVisible(false);
+        logout();
+    }
 
     useEffect(() => {
         document.addEventListener("mousedown", handleOutsideClick);
@@ -63,11 +66,8 @@ function Header() {
                         <li>
                             <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>{user.username}</div>
                         </li>
-                        <li>
-                            <div className="pill-btn" onClick={handleLogout}>logout</div>
-                        </li>
                     </ul>
-                    {isUserMenuVisible && <UserMenu ref={userMenuRef} />}
+                    {isUserMenuVisible && <UserMenu ref={userMenuRef} onSignOut={handleLogout}/>}
                 </div>
             ) : (
             <ul className="main-nav" id="js-menu">
