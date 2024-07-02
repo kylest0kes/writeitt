@@ -14,9 +14,7 @@ $orange: rgb(200, 82, 3);
 
 // Just abit of the UI CSS
 .ui {
-
     &.btn {
-
         line-height: normal;
         text-transform: uppercase;
         cursor: pointer;
@@ -34,11 +32,7 @@ $orange: rgb(200, 82, 3);
                 background: $orange;
             }
         }
-
-
     }
-
-
 }
 
 .inner {
@@ -69,8 +63,6 @@ $orange: rgb(200, 82, 3);
 }
 
 .user-menu {
-
-    // Remove the notch
     &::after,
     &::before {
         display: none;
@@ -87,15 +79,13 @@ $orange: rgb(200, 82, 3);
 
 
 .user-info {
-
     border-bottom: 1px solid $orange;
-    padding: 10px;
+    padding: 20px;
     position: relative;
     margin: 2px 15px;
 }
 
 .profile-img {
-
     width: 45px;
     height: 45px;
     display: inline-block;
@@ -111,7 +101,7 @@ $orange: rgb(200, 82, 3);
     color: $white;
     font-weight: normal;
     line-height: normal;
-    font-size: 15px;
+    font-size: 20px;
     padding-left: 20px;
 
 }
@@ -129,7 +119,6 @@ $orange: rgb(200, 82, 3);
 
 
 .menu-nav {
-
     list-style-type: none;
 
     li {

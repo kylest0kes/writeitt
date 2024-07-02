@@ -49,7 +49,10 @@ app.use(session({
   // cookie: { secure: true, httpOnly: true }
 }));
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true  // enable CORS credentials
+}));
 app.use(limit);
 // app.use(csrfProtection);
 
