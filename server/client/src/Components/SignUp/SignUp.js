@@ -112,23 +112,23 @@ function SignUp() {
         <h1 className="heading">Create Your Account</h1>
 
         <p>
-          <label htmlFor="uname">Username:</label>
-          <input id="uname" type="text" name="username" onChange={handleSetFormData} value={formData.username} />
+          <label className="signup-label" htmlFor="uname">Username:</label>
+          <input className="signup-input" id="uname" type="text" name="username" onChange={handleSetFormData} value={formData.username} />
         </p>
 
         <p>
-          <label htmlFor="mail">Email:</label>
-          <input id="mail" type="email" name="email" onChange={handleSetFormData} value={formData.email} />
+          <label className="signup-label" htmlFor="mail">Email:</label>
+          <input className="signup-input" id="mail" type="email" name="email" onChange={handleSetFormData} value={formData.email} />
         </p>
 
         <p>
-          <label htmlFor="password">Password:</label>
-          <input id="password" type="password" name="password" onChange={handleSetFormData} value={formData.password} />
+          <label className="signup-label" htmlFor="password">Password:</label>
+          <input className="signup-input" id="password" type="password" name="password" onChange={handleSetFormData} value={formData.password} />
         </p>
 
         <p>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input id="confirmPassword" type="password" name="confirmPassword" onChange={handleSetFormData} value={formData.confirmPassword} />
+          <label className="signup-label" htmlFor="confirmPassword">Confirm Password:</label>
+          <input className="signup-input" id="confirmPassword" type="password" name="confirmPassword" onChange={handleSetFormData} value={formData.confirmPassword} />
         </p>
 
         <button type="submit" id="submit" className="signup-submit-btn">Submit</button>

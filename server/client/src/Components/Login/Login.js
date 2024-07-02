@@ -53,13 +53,13 @@ function Login({ onClose }) {
         <h1 className="heading">Log In</h1>
 
         <p>
-          <label htmlFor="uname">Username or Email:</label>
-          <input id="uname" type="text" name="usernameOrEmail" value={formData.usernameOrEmail} onChange={handleSetFormData} required />
+          <label className='login-label' htmlFor="uname">Username or Email:</label>
+          <input className='login-input' id="uname" type="text" name="usernameOrEmail" value={formData.usernameOrEmail} onChange={handleSetFormData} required />
         </p>
 
         <p>
-          <label htmlFor="pword">Password:</label>
-          <input id="pword" type="password" name="password" value={formData.password} onChange={handleSetFormData} required />
+          <label className='login-label' htmlFor="pword">Password:</label>
+          <input className='login-input' id="pword" type="password" name="password" value={formData.password} onChange={handleSetFormData} required />
         </p>
 
         <button className='login-btn' type="submit" id="submit">Submit</button>

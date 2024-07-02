@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Contexts/AuthContext';
 
 import './UserSettings.scss';
+import UserSettingsFormItem from '../../Components/UserSettingsFormItem/UserSettingsFormItem';
 
 
 function UserSettings() {
@@ -48,9 +49,8 @@ if (!userData) {
   
   return (
     <div className='user-settings-page'>
-      <h1>Settings</h1>
-      <p style={{'color': 'white'}}>Username: {userData.username}</p>
-      <p style={{'color': 'white'}}>Email: {userData.email}</p>
+      <h1 className='settings-title'>Settings</h1>
+      <UserSettingsFormItem settingsField={'Test'} />
     </div>
   )
 }

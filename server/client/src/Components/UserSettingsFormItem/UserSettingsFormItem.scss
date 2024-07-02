@@ -1,0 +1,41 @@
+.user-settings-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-item {
+    width: 100%;
+    background-color: #212121;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-label {
+    width: 100%;
+}
+
+.form-label-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0;  
+    margin: 0;  
+}
+
+.label-text {
+    font-size: 1rem;
+    color: #fff;
+    margin: 0; 
+    padding: 5px; 
+    flex-grow: 1;  
+    align-self: flex-start; 
+}
+
+.arrow {
+    font-size: 1.5rem;
+    color: #fff;
+}
