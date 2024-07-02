@@ -1,8 +1,10 @@
 import React from 'react';
 
+import './Help.scss';
+
 function Help() {
   return (
-    <div>Help</div>
+    <div className='help-page'>Help</div>
   )
 }
 

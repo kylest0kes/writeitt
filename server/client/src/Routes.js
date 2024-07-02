@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import UserSettings from './Pages/UserSettings/UserSettings';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+import Help from './Pages/Help/Help';
 
 const TheRoutes = () => {
     return (
@@ -11,6 +12,7 @@ const TheRoutes = () => {
             <Route element={<ProtectedRoute />}>
                 <Route path="/settings" element={<UserSettings />} />
             </Route>
+            <Route path='/help' element={<Help />} />
         </Routes>
     )
 }

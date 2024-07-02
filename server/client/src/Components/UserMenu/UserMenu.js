@@ -9,6 +9,10 @@ const UserMenu = forwardRef((props, ref) => {
         navigate('/settings');
     }
 
+    const handleHelpClick = () => {
+        navigate('/help');
+    }
+
     return (
         <div ref={ref} className="user-menu">
 
@@ -24,7 +28,7 @@ const UserMenu = forwardRef((props, ref) => {
 
             <div className="menu-nav">
                 <li onClick={handleSettingsClick}><span className="menu-nav-span"></span>Settings</li>
-                <li><span className="menu-nav-span"></span>Help</li>
+                <li onClick={handleHelpClick}><span className="menu-nav-span"></span>Help</li>
                 <li onClick={props.onSignOut}><span className="menu-nav-span"></span>Sign Out</li>
             </div>
         </div>
