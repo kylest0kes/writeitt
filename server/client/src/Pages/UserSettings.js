@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Contexts/AuthContext';
 
 
 function UserSettings() {
+  const navigate = useNavigate();
   const { authToken } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,9 +30,10 @@ function UserSettings() {
     if (authToken) {
       fetchUserData();
     } else {
+      navigate('/');
       setLoading(false)
     }
-  }, [authToken]);
+  }, [authToken, navigate]);
 
 
   if (loading) {

@@ -2,12 +2,15 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home';
 import UserSettings from './Pages/UserSettings';
+import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 
 const TheRoutes = () => {
     return (
         <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/settings" element={<UserSettings />} />
+            <Route path="/" element={<Home />} />
+            <Route element={<ProtectedRoute />}>
+                <Route path="/settings" element={<UserSettings />} />
+            </Route>
         </Routes>
     )
 }

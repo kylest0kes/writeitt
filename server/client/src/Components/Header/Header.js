@@ -7,8 +7,10 @@ import Login from "../Login/Login";
 import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
 import UserMenu from "../UserMenu/UserMenu";
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+    const navigate = useNavigate();
     const { user, loading } = useUser();
     const { authToken, logout } = useAuth();
 
@@ -25,6 +27,7 @@ function Header() {
     const closeLoginModal = () => setIsLoginModalOpen(false);
     const handleLogout = () => {
         setIsUserMenuVisible(false);
+        navigate('/');
         logout();
     }
 
