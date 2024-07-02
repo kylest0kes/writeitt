@@ -19,10 +19,22 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    created: {
-        type: Date,
-        default: Date.now
+    phoneNumber: {
+        type: String,
+        required: false
+    },
+    gender: {
+        type: String,
+        required: false,
+        default: ' '
+    },
+    userImg: {
+        type: String,
+        required: false,
+        default: 'http://via.placeholder.com/350x350'
     }
+}, {
+    timestamps: true
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -12,6 +12,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 5px 5px 40px 5px;
+}
+
+.form-label:hover {
+    cursor: pointer;
 }
 
 .form-label {

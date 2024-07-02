@@ -50,7 +50,15 @@ if (!userData) {
   return (
     <div className='user-settings-page'>
       <h1 className='settings-title'>Settings</h1>
-      <UserSettingsFormItem settingsField={'Test'} />
+      <h3 className='settings-subtitle'>General</h3>
+      <UserSettingsFormItem settingsField={'avatar'} />
+      <UserSettingsFormItem settingsField={'username'} />
+      <UserSettingsFormItem settingsField={'email'} />
+      <UserSettingsFormItem settingsField={'phone number'} />
+      <UserSettingsFormItem settingsField={'password'} />
+      <UserSettingsFormItem settingsField={'gender'} />
+      <h3 className='settings-subtitle'>Advanced</h3>
+      <div className='pill-btn user-settings-delete-btn'>Delete Account</div>
     </div>
   )
 }
