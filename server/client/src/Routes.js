@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './Pages/Home';
-import UserSettings from './Pages/UserSettings';
+import Home from './Pages/Home/Home';
+import UserSettings from './Pages/UserSettings/UserSettings';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 
 const TheRoutes = () => {

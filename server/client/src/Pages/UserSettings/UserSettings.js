@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Contexts/AuthContext';
+import { useAuth } from '../../Contexts/AuthContext';
+
+import './UserSettings.scss';
 
 
 function UserSettings() {
@@ -45,7 +47,7 @@ if (!userData) {
 }
   
   return (
-    <div>
+    <div className='user-settings-page'>
       <h1>Settings</h1>
       <p style={{'color': 'white'}}>Username: {userData.username}</p>
       <p style={{'color': 'white'}}>Email: {userData.email}</p>
