@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../Contexts/AuthContext';
 
@@ -8,8 +8,17 @@ import { useUser } from '../../Contexts/UserContext';
 function Login({ onClose }) {
   const [formData, setFormData] = useState({ usernameOrEmail: '', password: ''});
   const [error, setError] = useState('');
+  const [csrfToken, setCsrfToken] = useState('');
   const { login } = useAuth();
   const { setUser } = useUser();
+
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      const { data } = await axios.get('/api/csrf-token');
+      setCsrfToken(data.csrfToken);
+    };
+    fetchCsrfToken();
+  }, [])
 
   const handleSetFormData = (e) => {
     const { name, value } = e.target;
@@ -23,7 +32,11 @@ function Login({ onClose }) {
     e.preventDefault();
 
     try {
-      const res = await axios.post('/api/users/login', formData);
+      const res = await axios.post('/api/users/login', formData, {
+        headers: {
+          'csrf-token': csrfToken
+        }
+      });
       login(res.data.token);
       setUser(res.data.user)
       onClose();

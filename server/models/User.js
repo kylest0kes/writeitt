@@ -1,3 +1,4 @@
+import { kMaxLength } from "buffer";
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
@@ -6,7 +7,8 @@ const UserSchema = new Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        maxlength: 20
     },
     email: {
         type: String,

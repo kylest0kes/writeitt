@@ -2,15 +2,17 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import csrf from 'csurf'; 
 
 import User from '../models/User.js';
 import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
-
+const csrfProtection = csrf({ cookie: true });
 
 // route to register a new user
 router.post('/register', [ 
+        csrfProtection,
         body('email').isEmail().normalizeEmail(),
         body('password').isLength({ min: 10 })
     ], async (req, res) => {
@@ -55,7 +57,7 @@ router.post('/register', [
 });
 
 // route to check if username or email exists already
-router.post('/check', async (req, res) => {
+router.post('/check', csrfProtection, async (req, res) => {
     const { username, email } = req.body;
 
     try {
@@ -73,6 +75,7 @@ router.post('/check', async (req, res) => {
 
 // route to log a user in
 router.post('/login', [
+    csrfProtection,
     body('usernameOrEmail').exists(),
     body('password').exists()
 ], async (req, res) => {

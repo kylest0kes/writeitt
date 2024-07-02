@@ -1,7 +1,14 @@
 import React, { forwardRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './UserMenu.scss';
 
 const UserMenu = forwardRef((props, ref) => {
+    const navigate = useNavigate();
+
+    const handleSettingsClick = () => {
+        navigate('/settings');
+    }
+
     return (
         <div ref={ref} class="user-menu">
 
@@ -9,14 +16,14 @@ const UserMenu = forwardRef((props, ref) => {
 
                 <div className="profile-img" ></div>
                 <h3 class="name">{props.username}</h3>
-                <div class="ui btn normal">My Profile</div>
+                <div class="ui btn normal">View Profile</div>
 
             </div>
 
 
 
             <div class="menu-nav">
-                <li><span class="menu-nav-span fa fa-cogs"></span>Settings</li>
+                <li onClick={handleSettingsClick}><span class="menu-nav-span fa fa-cogs"></span>Settings</li>
                 <li><span class="menu-nav-span fa fa-question"></span>Help</li>
                 <li onClick={props.onSignOut}><span class="menu-nav-span fa fa-power-off"></span>Sign Out</li>
             </div>

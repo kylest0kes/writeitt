@@ -8,8 +8,10 @@ import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import csrf from 'csurf';
+import cookieParser from 'cookie-parser';
 import userRoutes from './routes/users.js';
 import csrfRoute from './routes/csrf.js';
+import { cookie } from 'express-validator';
 
 dotenv.config()
 
@@ -18,6 +20,7 @@ const PORT = process.env.PORT || 4200;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const mongoURI = process.env.MONGODB_URI;
 
@@ -28,14 +31,14 @@ mongoose.connect(mongoURI)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// const limit = rateLimit({
-//   windowMs: 10 * 60 * 1000,
-//   max: 1000
-// });
+const limit = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 1000
+});
 
-// const csrfProtection = csrf({ cookie: true });
+const csrfProtection = csrf({ cookie: true });
 
-// app.set('trust proxy', true);
+app.set('trust proxy', 1);
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -47,7 +50,8 @@ app.use(session({
 }));
 
 app.use(cors());
-// app.use(limit);
+app.use(limit);
+// app.use(csrfProtection);
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
@@ -57,10 +61,17 @@ app.use((req, res, next) => {
   return next();
 });
 
-// app.use(csrfProtection);
+// Error handling for CSRF token errors
+app.use((err, req, res, next) => {
+  if (err.code === 'EBADCSRFTOKEN') {
+    res.status(403).json({ message: 'Form tampered with' });
+  } else {
+    next(err);
+  }
+});
 
 app.use('/api/users', userRoutes);
-// app.use('/api', csrfRoute);
+app.use('/api', csrfRoute);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
