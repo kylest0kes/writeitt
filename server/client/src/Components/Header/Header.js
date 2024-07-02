@@ -67,7 +67,7 @@ function Header() {
                             <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>{user.username}</div>
                         </li>
                     </ul>
-                    {isUserMenuVisible && <UserMenu ref={userMenuRef} onSignOut={handleLogout}/>}
+                    {isUserMenuVisible && <UserMenu ref={userMenuRef} onSignOut={handleLogout} username={user.username}/>}
                 </div>
             ) : (
             <ul className="main-nav" id="js-menu">

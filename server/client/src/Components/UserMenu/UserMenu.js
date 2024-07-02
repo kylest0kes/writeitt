@@ -8,7 +8,7 @@ const UserMenu = forwardRef((props, ref) => {
             <div class="user-info">
 
                 <div className="profile-img" ></div>
-                <h3 class="name">username</h3>
+                <h3 class="name">{props.username}</h3>
                 <div class="ui btn normal">My Profile</div>
 
             </div>
