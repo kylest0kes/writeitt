@@ -28,13 +28,14 @@
 .logo {
     text-decoration: none;
     color: white;
-}
-
-.logo {
     margin-top: 0;
     display: inline-block;
     font-size: 25px;
     margin-left: 20px;
+}
+
+.logo:hover {
+    cursor: pointer;
 }
 
 .pill-btn{

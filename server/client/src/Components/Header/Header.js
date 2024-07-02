@@ -49,6 +49,10 @@ function Header() {
         }
     }
 
+    const handleHomeClick = () => {
+        navigate('/');
+    }
+
     const toggleUserMenu = (e) => {
         e.stopPropagation();
         setIsUserMenuVisible((prev) => !prev);
@@ -59,10 +63,10 @@ function Header() {
     }
 
     return (
-        <nav className="navbar">
-            <a href="/" className="logo">
+        <nav className="navbar"> 
+            <div className="logo" onClick={handleHomeClick}>
                 wroteitt
-            </a>
+            </div>
             {user && authToken ? (
                 <div>
                     <ul className="main-nav" id="js-menu">
