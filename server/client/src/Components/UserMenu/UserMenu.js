@@ -16,7 +16,9 @@ const UserMenu = forwardRef((props, ref) => {
     return (
         <div ref={ref} className="user-menu">
             <div className="user-info">
-                <div className="profile-img" ></div>
+                <div className="profile-img" >
+                    <img className='user-img' alt='user-img' src={props.userImg} />
+                </div>
                 <h3 className="name">{props.username}</h3>
                 <div className="ui btn normal">View Profile</div>
             </div>

@@ -74,6 +74,7 @@ $orange: rgb(200, 82, 3);
     right: 40px; 
     top: 80px; 
     border-radius: 10px;
+    z-index: 5;
 }
 
 
@@ -81,7 +82,7 @@ $orange: rgb(200, 82, 3);
     border-bottom: 1px solid $orange;
     padding: 20px;
     position: relative;
-    margin: 2px 15px;
+    margin: 2px 15px 5px 15px;
 }
 
 .profile-img {
@@ -91,6 +92,13 @@ $orange: rgb(200, 82, 3);
     vertical-align: middle;
     border-radius: 50%;
     background-size: cover;
+}
+
+.user-img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    margin-left: -5px;
 }
 
 .name {
@@ -136,6 +144,7 @@ $orange: rgb(200, 82, 3);
         &:hover {
             background: rgb(48, 48, 48);
             color: $orange;
+            border-radius: 10px;
         }
     }
 
