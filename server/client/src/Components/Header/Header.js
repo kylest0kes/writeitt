@@ -27,6 +27,8 @@ function Header() {
     const closeLoginModal = () => setIsLoginModalOpen(false);
     const handleLogout = () => {
         setIsUserMenuVisible(false);
+        setIsLoginModalOpen(false);
+        setIsSignUpModalOpen(false);
         navigate('/');
         logout();
     }

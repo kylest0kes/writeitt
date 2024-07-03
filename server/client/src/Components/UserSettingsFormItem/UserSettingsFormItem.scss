@@ -4,23 +4,37 @@
     align-items: center;
 }
 
+.form-label {
+    width: 100%;
+    position: relative;
+}
+
 .form-item {
     width: 100%;
-    background-color: #212121;
     padding: 10px;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 5px 5px 40px 5px;
+    margin: 5px 5px 20px 5px;
+    position: relative;
+}
+
+.form-label:hover .arrow::after {
+    content: '';
+    position: absolute;
+    top: 55%;
+    left: 47%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgb(90, 89, 89); 
+    z-index: -1;
 }
 
 .form-label:hover {
     cursor: pointer;
-}
-
-.form-label {
-    width: 100%;
 }
 
 .form-label-content {
@@ -43,4 +57,6 @@
 .arrow {
     font-size: 1.5rem;
     color: #fff;
+    position: relative;
+    z-index: 2;
 }
