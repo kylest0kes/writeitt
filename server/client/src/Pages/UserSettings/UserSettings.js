@@ -5,6 +5,8 @@ import { useAuth } from '../../Contexts/AuthContext';
 
 import './UserSettings.scss';
 import UserSettingsFormItem from '../../Components/UserSettingsFormItem/UserSettingsFormItem';
+import Modal from '../../Components/Modal/Modal';
+import AvatarModal from '../../Components/AvatarModal/AvatarModal';
 
 
 function UserSettings() {
@@ -12,6 +14,13 @@ function UserSettings() {
   const { authToken } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+
+  const openAvatarModal = () => setIsAvatarModalOpen(true);
+  const closeAvatarModal = () => {
+    setIsAvatarModalOpen(false);
+    console.log('close hit', isAvatarModalOpen)
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -38,25 +47,35 @@ function UserSettings() {
     }
   }, [authToken, navigate]);
 
-
   if (loading) {
     return <div className="spinner"></div>;
-}
+  }
 
-if (!userData) {
-    return <div>Error: Unable to fetch user data.</div>;
-}
+  if (!userData) {
+      return <div>Error: Unable to fetch user data.</div>;
+  }
   
   return (
     <div className='user-settings-page'>
       <h1 className='settings-title'>Settings</h1>
       <h3 className='settings-subtitle'>General</h3>
-      <UserSettingsFormItem settingsField={'avatar'} />
-      <UserSettingsFormItem settingsField={'username'} />
+      <div onClick={openAvatarModal}>
+        <UserSettingsFormItem settingsField={'avatar'} />
+      </div>
+      <Modal isOpen={isAvatarModalOpen} onClose={closeAvatarModal}>
+        <AvatarModal />
+      </Modal>
+
+      <UserSettingsFormItem settingsField={'display name'} />
+      
       <UserSettingsFormItem settingsField={'email'} />
+      
       <UserSettingsFormItem settingsField={'phone number'} />
+      
       <UserSettingsFormItem settingsField={'password'} />
+      
       <UserSettingsFormItem settingsField={'gender'} />
+      
       <h3 className='settings-subtitle'>Advanced</h3>
       <div className='pill-btn user-settings-delete-btn'>Delete Account</div>
     </div>

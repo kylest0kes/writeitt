@@ -93,7 +93,7 @@ function Header() {
                         Log In
                     </div>
                     <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
-                        <Login onClose={closeLoginModal} />
+                        <Login />
                     </Modal>
                 </li>
             </ul>

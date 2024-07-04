@@ -1,14 +1,52 @@
-import { kMaxLength } from "buffer";
 import mongoose from "mongoose";
+import axios from 'axios';
+import dotenv from 'dotenv';
 
 const { Schema } = mongoose;
+
+dotenv.config()
+
+const randomDisplayNameGenerator = async (retryCount = 0) => {
+    if (retryCount > 5) {
+      throw new Error('Failed to generate a valid display name after multiple attempts');
+    }
+  
+    const apiUrl = 'https://api.api-ninjas.com/v1/randomword';
+    try {
+      const res = await axios.get(apiUrl, {
+        headers: {
+          'X-Api-Key': process.env.RND_WORD_API_KEY
+        }
+      });
+      const word = res.data.word;
+      const num = Math.floor(100000 + Math.random() * 900000).toString();
+      const displayName = `${word}${num}`;
+  
+      if (displayName.length > 30) {
+        console.log(`Generated name "${displayName}" is too long. Trying again...`);
+        return randomDisplayNameGenerator(retryCount + 1);
+      }
+  
+      return displayName;
+    } catch (err) {
+      console.error('An error occurred: ', err);
+      throw new Error('Failed to generate display name');
+    }
+  };
 
 const UserSchema = new Schema({
     username: {
         type: String,
         required: true,
         unique: true,
-        maxlength: 20
+        maxlength: 20,
+        minlength: 3
+    },
+    displayName: {
+        type: String,
+        unique: true,
+        maxlength: 30,
+        minlength: 3
     },
     email: {
         type: String,
@@ -17,7 +55,8 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 10
     },
     phoneNumber: {
         type: String,
@@ -36,6 +75,18 @@ const UserSchema = new Schema({
 }, {
     timestamps: true
 });
+
+// Pre-save hook to always set displayName
+UserSchema.pre('save', async function(next) {
+    if (this.isNew) {
+      try {
+        this.displayName = await randomDisplayNameGenerator();
+      } catch (error) {
+        return next(error);
+      }
+    }
+    next();
+  });
 
 const User = mongoose.model('User', UserSchema);
 

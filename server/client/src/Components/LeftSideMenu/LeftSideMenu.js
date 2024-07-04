@@ -4,7 +4,7 @@ import './LeftSideMenu.scss';
 
 function LeftSideMenu() {
   return (
-    <div class="left-menu">
+    <div className="left-menu">
         
    
     </div>
