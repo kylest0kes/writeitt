@@ -8,6 +8,8 @@ import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
 import UserMenu from "../UserMenu/UserMenu";
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolderOpen } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
     const navigate = useNavigate();
@@ -72,9 +74,18 @@ function Header() {
             {user && authToken ? (
                 <div>
                     <ul className="main-nav" id="js-menu">
-                        <li>
-                            <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>{user.username}</div>
-                        </li>
+                        { isUserMenuVisible ? (
+                             <li>
+                                <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>
+                                    <FontAwesomeIcon icon={faFolderOpen} />
+                                </div>
+                            </li>
+                        ) : (
+                            <li>
+                                <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>{user.displayName}</div>
+                            </li>
+                        )}
+                    
                     </ul>
                     {isUserMenuVisible && <UserMenu ref={userMenuRef} onSignOut={handleLogout} username={user.username} userImg={user.userImg} displayName={user.displayName}/>}
                 </div>
