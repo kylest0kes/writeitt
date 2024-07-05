@@ -31,7 +31,6 @@ function GenderModal({ onClose }) {
 
     const handleGenderFormSubmit = async (e) => {
         e.preventDefault();
-        console.log('sumbit hit')
 
         if (!chosenGender) return;
 

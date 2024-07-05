@@ -154,4 +154,34 @@ router.put('/update-gender', [
 }
 )
 
+// route to update user phone number
+router.put('/update-phone', [
+    authMiddleware,
+    csrfProtection,
+    body('phoneNumber').isMobilePhone()
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid phone number value' });
+    }
+
+    const { phoneNumber } = req.body;
+
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, { phoneNumber }, { new: true});
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ message: 'Phone number updated successfully', user});
+
+    } catch (err) {
+        console.error('Failed to update phone number: ', err);
+        res.status(500).json({ message: 'Failed to update phone number.'})
+    }
+
+
+}
+)
+
 export default router;

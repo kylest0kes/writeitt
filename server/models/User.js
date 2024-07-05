@@ -60,7 +60,8 @@ const UserSchema = new Schema({
     },
     phoneNumber: {
         type: String,
-        required: false
+        required: false,
+        default: ' '
     },
     gender: {
         type: String,
