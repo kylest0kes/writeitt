@@ -115,7 +115,7 @@ function UserSettings() {
         <UserSettingsFormItem settingsField={'phone number'} />
       </div>
       <Modal isOpen={isPhoneNumberModalOpen} onClose={closePhoneNumberModal}>
-        <PhoneNumberModal />
+        <PhoneNumberModal onClose={closePhoneNumberModal}/>
       </Modal>
       
       <div onClick={openGenderModal}>
