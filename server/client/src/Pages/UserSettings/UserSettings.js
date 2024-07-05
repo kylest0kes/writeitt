@@ -3,11 +3,16 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Contexts/AuthContext';
 
-import './UserSettings.scss';
 import UserSettingsFormItem from '../../Components/UserSettingsFormItem/UserSettingsFormItem';
 import Modal from '../../Components/Modal/Modal';
 import AvatarModal from '../../Components/AvatarModal/AvatarModal';
+import DisplayNameModal from '../../Components/DisplayNameModal/DisplayNameModal';
+import EmailModal from '../../Components/EmailModal/EmailModal';
+import PasswordModal from '../../Components/PasswordModal/PasswordModal';
+import PhoneNumberModal from '../../Components/PhoneNumberModal/PhoneNumberModal';
+import GenderModal from '../../Components/GenderModal/GenderModal';
 
+import './UserSettings.scss';
 
 function UserSettings() {
   const navigate = useNavigate();
@@ -15,12 +20,31 @@ function UserSettings() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [isDisplayNameModalOpen, setIsDisplayNameModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isPhoneNumberModalOpen, setIsPhoneNumberModalOpen] = useState(false);
+  const [isGenderModalOpen, setIsGenderModalOpen] = useState(false);
 
   const openAvatarModal = () => setIsAvatarModalOpen(true);
-  const closeAvatarModal = () => {
-    setIsAvatarModalOpen(false);
-    console.log('close hit', isAvatarModalOpen)
-  };
+  const closeAvatarModal = () => setIsAvatarModalOpen(false);
+  
+  const openDisplayNameModal = () => setIsDisplayNameModalOpen(true);
+  const closeDisplayNameModal = () => setIsDisplayNameModalOpen(false);
+  
+  const openEmailModal = () => setIsEmailModalOpen(true);
+  const closeEmailModal = () => setIsEmailModalOpen(false);
+  
+  const openPasswordModal = () => setIsPasswordModalOpen(true);
+  const closePasswordModal = () => setIsPasswordModalOpen(false);
+  
+  const openPhoneNumberModal = () => setIsPhoneNumberModalOpen(true);
+  const closePhoneNumberModal = () => setIsPhoneNumberModalOpen(false);
+  
+  const openGenderModal = () => setIsGenderModalOpen(true);
+  const closeGenderModal = () => setIsGenderModalOpen(false);
+  
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,15 +90,40 @@ function UserSettings() {
         <AvatarModal />
       </Modal>
 
-      <UserSettingsFormItem settingsField={'display name'} />
+      <div onClick={openDisplayNameModal}>
+        <UserSettingsFormItem settingsField={'display name'} />
+      </div>
+      <Modal isOpen={isDisplayNameModalOpen} onClose={closeDisplayNameModal}>
+        <DisplayNameModal />
+      </Modal>
       
-      <UserSettingsFormItem settingsField={'email'} />
+      <div onClick={openEmailModal}>
+        <UserSettingsFormItem settingsField={'email'} />
+      </div>
+      <Modal isOpen={isEmailModalOpen} onClose={closeEmailModal}>
+        <EmailModal />
+      </Modal>
       
-      <UserSettingsFormItem settingsField={'phone number'} />
+      <div onClick={openPasswordModal}>
+        <UserSettingsFormItem settingsField={'password'} />
+      </div>
+      <Modal isOpen={isPasswordModalOpen} onClose={closePasswordModal}>
+        <PasswordModal />
+      </Modal>
+
+      <div onClick={openPhoneNumberModal}>
+        <UserSettingsFormItem settingsField={'phone number'} />
+      </div>
+      <Modal isOpen={isPhoneNumberModalOpen} onClose={closePhoneNumberModal}>
+        <PhoneNumberModal />
+      </Modal>
       
-      <UserSettingsFormItem settingsField={'password'} />
-      
-      <UserSettingsFormItem settingsField={'gender'} />
+      <div onClick={openGenderModal}>
+        <UserSettingsFormItem settingsField={'gender'} />
+      </div>
+      <Modal isOpen={isGenderModalOpen} onClose={closeGenderModal}>
+        <GenderModal />
+      </Modal>
       
       <h3 className='settings-subtitle'>Advanced</h3>
       <div className='pill-btn user-settings-delete-btn'>Delete Account</div>
