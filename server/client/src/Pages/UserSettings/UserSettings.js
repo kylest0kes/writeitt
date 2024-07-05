@@ -87,28 +87,28 @@ function UserSettings() {
         <UserSettingsFormItem settingsField={'avatar'} />
       </div>
       <Modal isOpen={isAvatarModalOpen} onClose={closeAvatarModal}>
-        <AvatarModal />
+        <AvatarModal onClose={closeAvatarModal} />
       </Modal>
 
       <div onClick={openDisplayNameModal}>
         <UserSettingsFormItem settingsField={'display name'} />
       </div>
       <Modal isOpen={isDisplayNameModalOpen} onClose={closeDisplayNameModal}>
-        <DisplayNameModal />
+        <DisplayNameModal onClose={closeDisplayNameModal} />
       </Modal>
       
       <div onClick={openEmailModal}>
         <UserSettingsFormItem settingsField={'email'} />
       </div>
       <Modal isOpen={isEmailModalOpen} onClose={closeEmailModal}>
-        <EmailModal />
+        <EmailModal onClose={closeEmailModal} />
       </Modal>
       
       <div onClick={openPasswordModal}>
         <UserSettingsFormItem settingsField={'password'} />
       </div>
       <Modal isOpen={isPasswordModalOpen} onClose={closePasswordModal}>
-        <PasswordModal />
+        <PasswordModal onClose={closePasswordModal} />
       </Modal>
 
       <div onClick={openPhoneNumberModal}>
