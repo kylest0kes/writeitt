@@ -54,7 +54,6 @@ function UserSettings() {
             Authorization: `Bearer ${authToken}`
           }
         });
-        console.log('res!', res.data)
         setUserData(res.data);
       } catch (err) {
         console.error('Failed to fetch user data: ', err);

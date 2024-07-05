@@ -46,7 +46,6 @@ function PhoneNumberModal({ onClose }) {
             });
 
             setUser(res.data.user);
-            console.log('phone: ', res.data.user);
             onClose();
         } catch (err) {
             console.error('Error updating phone number: ', err);

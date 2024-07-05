@@ -7,7 +7,7 @@ import './DisplayNameModal.scss';
 
 function DisplayNameModal({ onClose }) {
     const [displaynameLen, setDisplaynameLen] = useState(0);
-    const [displayname, setDisplayname] = useState('');
+    const [displayName, setDisplayname] = useState('');
     const [csrfToken, setCsrfToken] = useState('');
 
     const { user, setUser } = useUser();
@@ -28,19 +28,41 @@ function DisplayNameModal({ onClose }) {
     }, [user]);
 
     const onInputChange = (e) => {
-        const inputLen = e.target.value;
-        setDisplaynameLen(inputLen.length);
+        const input = e.target.value;
+        setDisplaynameLen(input.length);
+        setDisplayname(input);
+    }
+
+    const onDisplaynameFormSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!displayName) return;
+
+        try {
+            const res = await axios.put('/api/users/update-displayname', { displayName: displayName }, {
+                headers: {
+                    'csrf-token': csrfToken,
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            setUser(res.data.user);
+            setDisplayname(res.data.user.displayName);
+            onClose();
+        } catch (err) {
+            console.error('Error updating display name: ', err);
+        }
     }
 
     return (
         <div id='displayname-wrapper'>
-            <form>
+            <form action='#' method='post' onSubmit={onDisplaynameFormSubmit}>
                 <h1 className='displayname-heading'>Change Display Name</h1>
                 <h3 className='displayname-subheading'>Changing your display name does not change your username</h3>
 
                 <div className='displayname-input-container'>
                     <div className='input-wrapper'>
-                        <input className='displayname-input' placeholder={displayname !== '' ? displayname : 'dispaly name'} onChange={onInputChange}></input>
+                        <input className='displayname-input' value={displayName} placeholder='display name' onChange={onInputChange}></input>
                         <span className='displayname-input-len'>{displaynameLen}</span>
                     </div>
                 </div>

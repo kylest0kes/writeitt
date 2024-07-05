@@ -149,10 +149,9 @@ router.put('/update-gender', [
         res.json({ message: 'Gender updated successfully', user });
     } catch (err) {
         console.error('Failed to update gender: ', err);
-        res.status(500).json({ message: 'Failed to update gender.'})
+        res.status(500).json({ message: 'Failed to update gender.'});
     }
-}
-)
+});
 
 // route to update user phone number
 router.put('/update-phone', [
@@ -177,11 +176,36 @@ router.put('/update-phone', [
 
     } catch (err) {
         console.error('Failed to update phone number: ', err);
-        res.status(500).json({ message: 'Failed to update phone number.'})
+        res.status(500).json({ message: 'Failed to update phone number.'});
+    }
+});
+
+// route to update user displayname
+router.put('/update-displayname', [
+    authMiddleware,
+    csrfProtection,
+    body('displayName').isString().isLength({ min: 3, max: 30})
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid display name value' });
     }
 
+    const { displayName } = req.body;
+    
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, { displayName }, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-}
-)
+        res.json({ message: 'Display name updated successfully', user});
+
+    } catch (err) {
+        console.error('Failed to update display name: ', err);
+        res.status(500).json({ message: 'Failed to update phone number.'});
+    }
+
+});
 
 export default router;

@@ -43,7 +43,6 @@ function GenderModal({ onClose }) {
             });
 
             setUser(res.data.user);
-            console.log(res.data.user);
             onClose();
         } catch (err) {
             console.error('Error updating gender: ', err);
