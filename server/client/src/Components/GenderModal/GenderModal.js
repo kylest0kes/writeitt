@@ -17,7 +17,13 @@ function GenderModal({ onClose }) {
             setCsrfToken(data.csrfToken);
         };
         fetchCsrfToken();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (user && user.gender) {
+            setChosenGender(user.gender);
+        }
+    }, [user]);
 
     const handleChoosingGender = (gender) => {
         setChosenGender(gender);
