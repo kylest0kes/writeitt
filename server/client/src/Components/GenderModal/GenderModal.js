@@ -93,6 +93,7 @@ function GenderModal({ onClose }) {
                     </div>
                 </div>
                 <div className='gender-submit-btn-container'>
+                    <button className='gender-cancel-btn' type='submit' onClick={() => onClose()}>Cancel</button>
                     <button className='gender-submit-btn' type='submit'>Submit</button>
                 </div>
             </form>
