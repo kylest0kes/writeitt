@@ -96,7 +96,7 @@ function Header() {
                         Sign Up
                     </div>
                     <Modal isOpen={isSignUpModalOpen} onClose={closeSignUpModal} className="signup-modal">
-                        <SignUp />
+                        <SignUp onClose={closeSignUpModal}/>
                     </Modal>
                 </li>
                 <li>
@@ -104,7 +104,7 @@ function Header() {
                         Log In
                     </div>
                     <Modal isOpen={isLoginModalOpen} onClose={closeLoginModal}>
-                        <Login />
+                        <Login onClose={closeLoginModal}/>
                     </Modal>
                 </li>
             </ul>

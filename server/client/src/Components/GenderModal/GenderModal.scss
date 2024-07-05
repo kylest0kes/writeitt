@@ -1,8 +1,6 @@
 #gender-wrapper {
     width: 500px;
-    height: 370px;
-    -webkit-border-radius: 3%;
-    -moz-border-radius: 3%;
+    height: 400px;
     border-radius: 3%;
     margin: 10px auto;
     padding: 20px;
@@ -11,4 +9,79 @@
 
 .gender-heading {
     margin-top: -5px;
+}
+
+.gender-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.gender-form-label {
+    width: 100%;
+    position: relative;
+}
+
+.gender-form-item {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 5px 20px 5px;
+    position: relative;
+    transition: background-color 0.3s ease; 
+}
+
+.gender-form-item.selected {
+    background-color: rgb(100, 100, 100);
+}
+
+.gender-form-item:hover {
+    cursor: pointer;
+    background-color: rgb(67, 67, 67); 
+}
+
+.gender-form-label-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0;  
+    margin: 0;  
+}
+
+.gender-label-text {
+    font-size: 1rem;
+    color: #fff;
+    margin: 0; 
+    padding: 5px; 
+    flex-grow: 1;  
+    align-self: flex-start; 
+}
+
+.gender-submit-btn-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.gender-submit-btn {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.5em;
+    margin: 10px 0;
+    padding: .615%;
+    width: 35%;
+    height: 40px;
+    background-color: #555;
+    border: solid transparent;
+    border-radius: 5px;
+}
+
+.gender-submit-btn:hover {
+    background: rgb(232, 95, 4);
+    color: #fff;
+    cursor: pointer;
 }

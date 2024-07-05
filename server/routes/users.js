@@ -127,4 +127,31 @@ router.get('/current-user', authMiddleware, async (req, res) => {
     }
 });
 
+// route to update user gender
+router.put('/update-gender', [
+    authMiddleware, 
+    csrfProtection, 
+    body('gender').isString().isLength({ min: 1})
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid gender value' });
+    }
+
+    const { gender } = req.body;
+
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, { gender }, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ message: 'Gender updated successfully', user });
+    } catch (err) {
+        console.error('Failed to update gender: ', err);
+        res.status(500).json({ message: 'Failed to update gender.'})
+    }
+}
+)
+
 export default router;

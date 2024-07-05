@@ -4,7 +4,7 @@ import "./SignUp.scss";
 import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
 
-function SignUp() {
+function SignUp({ onClose }) {
   const [formData, setFormData] = useState({
     username: '',
     email: '', 
@@ -94,6 +94,7 @@ function SignUp() {
         password: '',
         confirmPassword: ''
       });
+      onClose();
     } catch (err) {
       console.error(`There was an error: ${err}`);
       if (err.resonse && err.response.data.message) {

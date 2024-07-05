@@ -122,7 +122,7 @@ function UserSettings() {
         <UserSettingsFormItem settingsField={'gender'} />
       </div>
       <Modal isOpen={isGenderModalOpen} onClose={closeGenderModal}>
-        <GenderModal />
+        <GenderModal onClose={closeGenderModal}/>
       </Modal>
       
       <h3 className='settings-subtitle'>Advanced</h3>
