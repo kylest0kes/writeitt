@@ -63,7 +63,8 @@ $orange: rgb(200, 82, 3);
         display: none;
     }
 
-    width: 450px;
+    min-width: 450px;
+    width: auto;
     background: rgb(61, 61, 61);
     position: absolute;
     right: 40px;

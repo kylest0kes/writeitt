@@ -82,7 +82,9 @@ function Header() {
                             </li>
                         ) : (
                             <li>
-                                <div className="pill-btn login" onClick={toggleUserMenu} ref={userBtnRef}>{user.displayName}</div>
+                                <div className="heading-user-img-container" onClick={toggleUserMenu} ref={userBtnRef}>
+                                    <img src={user.userImg} alt={user.username} className="heading-user-img" />
+                                </div>
                             </li>
                         )}
                     
