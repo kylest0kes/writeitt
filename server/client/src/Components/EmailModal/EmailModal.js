@@ -33,10 +33,21 @@ function EmailModal({ onClose }) {
         })
     }
 
-    const handleEmailModalSubmit = (e) => {
+    const handleEmailModalSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(emailModalData);
+        try {
+            const res = await axios.put('/api/users/update-email', emailModalData, {
+                headers: {
+                    'csrf-token': csrfToken,
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            setUser(res.data.user);
+            onClose();
+        } catch (err) {
+            console.error('Error updating email: ', err);
+        }
     }
 
     return (

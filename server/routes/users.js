@@ -146,7 +146,10 @@ router.put('/update-gender', [
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ message: 'Gender updated successfully', user });
+        res.json({ 
+            message: 'Gender updated successfully', 
+            user: user
+        });
     } catch (err) {
         console.error('Failed to update gender: ', err);
         res.status(500).json({ message: 'Failed to update gender.'});
@@ -172,7 +175,10 @@ router.put('/update-phone', [
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ message: 'Phone number updated successfully', user});
+        res.json({ 
+            message: 'Phone numbner updated successfully', 
+            user: user 
+        });
 
     } catch (err) {
         console.error('Failed to update phone number: ', err);
@@ -199,13 +205,61 @@ router.put('/update-displayname', [
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ message: 'Display name updated successfully', user});
+        res.json({ 
+            message: 'Email updated successfully', 
+            user: user
+        });
 
     } catch (err) {
         console.error('Failed to update display name: ', err);
-        res.status(500).json({ message: 'Failed to update phone number.'});
+        res.status(500).json({ message: 'Failed to update display name.'});
+    }
+});
+
+// route to update user email
+router.put('/update-email', [
+    authMiddleware,
+    csrfProtection,
+    body('newEmail').isEmail().normalizeEmail(),
+    body('password').exists()
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid email or password value' });
     }
 
+    const { newEmail, password } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid password' });
+        }
+
+        const emailExists = await User.findOne({ email: newEmail });
+        if (emailExists) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
+        user.email = newEmail;
+        await user.save();
+
+        res.json({ 
+            message: 'Email updated successfully', 
+            user: user
+        });
+
+    } catch (err) {
+        console.error('Failed to update email: ', err);
+        res.status(500).json({ message: 'Failed to update email.'});
+    }
 });
 
 export default router;
