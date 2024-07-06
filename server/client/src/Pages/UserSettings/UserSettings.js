@@ -13,6 +13,7 @@ import PhoneNumberModal from '../../Components/PhoneNumberModal/PhoneNumberModal
 import GenderModal from '../../Components/GenderModal/GenderModal';
 
 import './UserSettings.scss';
+import DeleteProfileModal from '../../Components/DeleteProfileModal/DeleteProfileModal';
 
 function UserSettings() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function UserSettings() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isPhoneNumberModalOpen, setIsPhoneNumberModalOpen] = useState(false);
   const [isGenderModalOpen, setIsGenderModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const openAvatarModal = () => setIsAvatarModalOpen(true);
   const closeAvatarModal = () => setIsAvatarModalOpen(false);
@@ -43,6 +45,9 @@ function UserSettings() {
   
   const openGenderModal = () => setIsGenderModalOpen(true);
   const closeGenderModal = () => setIsGenderModalOpen(false);
+  
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
   
   
 
@@ -125,7 +130,10 @@ function UserSettings() {
       </Modal>
       
       <h3 className='settings-subtitle'>Advanced</h3>
-      <div className='pill-btn user-settings-delete-btn'>Delete Account</div>
+      <div className='pill-btn user-settings-delete-btn' onClick={openDeleteModal}>Delete Account</div>
+      <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal}>
+          <DeleteProfileModal onClose={closeDeleteModal} />
+      </Modal>
     </div>
   )
 }
