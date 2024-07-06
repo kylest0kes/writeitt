@@ -7,7 +7,6 @@ $grey: #8e9299;
 $softgrey: #ddd;
 $orange: rgb(200, 82, 3);
 
-// Just a bit of the UI CSS
 .ui {
     &.btn {
         line-height: normal;
@@ -58,6 +57,7 @@ $orange: rgb(200, 82, 3);
 }
 
 .user-menu {
+
     &::after,
     &::before {
         display: none;
@@ -80,7 +80,9 @@ $orange: rgb(200, 82, 3);
     margin: 2px 15px 5px 15px;
     display: flex;
     align-items: center;
-    justify-content: space-between; // Ensure even spacing
+    justify-content: space-between;
+    // flex-wrap: wrap;
+    gap: 10px;
 }
 
 .profile-img {
@@ -97,10 +99,17 @@ $orange: rgb(200, 82, 3);
 }
 
 .names-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: -50px;
+    flex-grow: 1; 
+    margin-left: 10px; 
+    margin-right: 10px; 
+}
+
+.displayname,
+.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%; 
 }
 
 .displayname {
@@ -112,15 +121,14 @@ $orange: rgb(200, 82, 3);
 }
 
 .name {
-    margin: 5px 0 0 0; 
+    margin: 5px 0 0 0;
     color: $white;
-    font-size: 12px; 
+    font-size: 12px;
     font-weight: normal;
 }
 
 .btn-container {
-    display: flex;
-    align-items: center;
+    flex-shrink: 0;
 }
 
 .btn {
@@ -129,24 +137,30 @@ $orange: rgb(200, 82, 3);
 }
 
 .menu-nav {
-    list-style-type: none;
-
     li {
-        padding: 15px 10px;
-        line-height: normal;
-        color: $white;
-        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 15px 20px; 
 
         .menu-nav-span {
-            width: 20px;
-            margin-right: 10px;
-            text-align: center;
+            flex-shrink: 0; 
         }
+    }
+}
 
-        &:hover {
-            background: rgb(48, 48, 48);
-            color: $orange;
-            border-radius: 10px;
-        }
+@media (max-width: 550px) {
+    .user-menu {
+        width: 425px; 
+        right: 5vw; 
+    }
+
+    .user-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-container {
+        align-self: flex-end;
+        margin-top: 10px;
     }
 }
