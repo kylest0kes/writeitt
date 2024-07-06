@@ -24,11 +24,12 @@ function DisplayNameModal({ onClose }) {
     useEffect(() => {
         if (user && user.displayName) {
             setDisplayname(user.displayName);
+            setDisplaynameLen(user.displayName.length)
         }
     }, [user]);
 
     const onInputChange = (e) => {
-        const input = e.target.value;
+        const input = e.target.value.slice(0, 30);
         setDisplaynameLen(input.length);
         setDisplayname(input);
     }
@@ -62,8 +63,8 @@ function DisplayNameModal({ onClose }) {
 
                 <div className='displayname-input-container'>
                     <div className='input-wrapper'>
-                        <input className='displayname-input' value={displayName} placeholder='display name' onChange={onInputChange}></input>
-                        <span className='displayname-input-len'>{displaynameLen}</span>
+                        <input className='displayname-input' value={displayName} maxLength={30} placeholder='display name' onChange={onInputChange}></input>
+                        <span className='displayname-input-len'>{displaynameLen} {displaynameLen === 30 && <span className="limit-reached"> (Limit reached)</span>}</span>
                     </div>
                 </div>
 
