@@ -62,7 +62,7 @@ function DisplayNameModal({ onClose }) {
                 <h3 className='displayname-subheading'>Changing your display name does not change your username</h3>
 
                 <div className='displayname-input-container'>
-                    <div className='input-wrapper'>
+                    <div className='displayname-input-wrapper'>
                         <input className='displayname-input' value={displayName} maxLength={30} placeholder='display name' onChange={onInputChange}></input>
                         <span className='displayname-input-len'>{displaynameLen} {displaynameLen === 30 && <span className="limit-reached"> (Limit reached)</span>}</span>
                     </div>
