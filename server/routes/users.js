@@ -309,9 +309,21 @@ router.put('/update-password', [
 });
 
 // route for uploading avatar image
+router.put('/update-avatar', [
+    authMiddleware,
+    csrfProtection,
 
+], async (req, res) => {
+
+});
 
 // route for deleting account
+router.put('/delete-account', [
+    authMiddleware,
+    csrfProtection,
 
+], async (req, res) => {
+
+});
 
 export default router;
