@@ -9,15 +9,15 @@ function PasswordModal({ onClose }) {
     const [passwordModalData, setPasswordModalData] = useState(
         { 
             password: '', 
-            confirmPassword: '', 
-            newPassword: ''
+            newPassword: '',
+            confirmPassword: ''
         }
     );
     const [disableSubmit, setDisableSubmit] = useState(true);
 
     const [csrfToken, setCsrfToken] = useState('');
 
-    const { user, setUser } = useUser();
+    const { setUser } = useUser();
     const { authToken } = useAuth();
 
     useEffect(() => {
@@ -42,8 +42,21 @@ function PasswordModal({ onClose }) {
     const handlePasswordModalSubmit = async (e) => {
         e.preventDefault();
 
+        // check newPassword and confirmPassword match
+        if (passwordModalData.newPassword !== passwordModalData.confirmPassword) {
+            return
+        }
+
         try {
-            console.log(passwordModalData);
+            const res = await axios.put('api/users/update-password', passwordModalData, {
+                headers: {
+                    'csrf-token': csrfToken,
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            setUser(res.data.user);
+            onClose();
+
         } catch (err) {
             console.error('Error updating password: ', err);
         }
@@ -58,8 +71,10 @@ function PasswordModal({ onClose }) {
                 <div className='password-input-container'>
                     <div className='password-input-wrapper'>
                         <input className='password-input' type='password' name='password' placeholder='Password *' value={passwordModalData.password} onChange={handleSetPasswordModalData} required></input>
-                        <input className='password-input' type='password' name='confirmPassword' placeholder='Confirm Password *' value={passwordModalData.confirmPassword} onChange={handleSetPasswordModalData} required></input>
+                        
                         <input className='password-input' type='password' name='newPassword' placeholder='Enter New Password *' value={passwordModalData.newPassword} onChange={handleSetPasswordModalData} required></input>
+
+                        <input className='password-input' type='password' name='confirmPassword' placeholder='Confirm New Password *' value={passwordModalData.confirmPassword} onChange={handleSetPasswordModalData} required></input>                        
                     </div>
                 </div>
 

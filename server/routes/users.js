@@ -262,4 +262,50 @@ router.put('/update-email', [
     }
 });
 
+// route to update user password
+router.put('/update-password', [
+    authMiddleware,
+    csrfProtection,
+    body('password').exists(),
+    body('newPassword').exists().isLength({ min: 10 }),
+    body('confirmPassword').exists().isLength({ min: 10 })
+], async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid password data' });
+    }
+
+    const { password, newPassword } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.'})
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid password' });
+        }
+
+        const salt = 10;
+        const hashedPW = bcrypt.hashSync(newPassword, salt);
+
+        user.password = hashedPW;
+        await user.save();
+
+        res.json({
+            message: 'Password updated successfully',
+            user: user
+        });
+
+    } catch (err) {
+        console.error('Failed to update password: ', err);
+        res.status(500).json({ message: 'Failed to update password.'});
+    }
+
+});
+
 export default router;

@@ -11,7 +11,7 @@ function EmailModal({ onClose }) {
 
     const [csrfToken, setCsrfToken] = useState('');
 
-    const { user, setUser } = useUser();
+    const { setUser } = useUser();
     const { authToken } = useAuth();
 
     useEffect(() => {
