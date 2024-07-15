@@ -7,7 +7,7 @@ import './EmailModal.scss';
 
 function EmailModal({ onClose }) {
     const [emailModalData, setEmailModalData] = useState({ password: '', newEmail: ''});
-    const [disableSumbit, setDisableSubmit] = useState(true);
+    const [disableSubmit, setDisableSubmit] = useState(true);
 
     const [csrfToken, setCsrfToken] = useState('');
 
@@ -30,7 +30,7 @@ function EmailModal({ onClose }) {
         setEmailModalData({
             ...emailModalData,
             [name]: value
-        })
+        });
     }
 
     const handleEmailModalSubmit = async (e) => {
@@ -64,7 +64,7 @@ function EmailModal({ onClose }) {
 
                 <div className='email-btns-container'>
                     <button className='email-cancel-btn' type='submit' onClick={() => onClose()}>Cancel</button>
-                    <button className='email-submit-btn' type='submit' disabled={disableSumbit}>Submit</button>
+                    <button className='email-submit-btn' type='submit' disabled={disableSubmit}>Submit</button>
                 </div>
             </form>
         </div>
