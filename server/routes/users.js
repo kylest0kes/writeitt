@@ -308,4 +308,10 @@ router.put('/update-password', [
 
 });
 
+// route for uploading avatar image
+
+
+// route for deleting account
+
+
 export default router;
