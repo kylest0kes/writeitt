@@ -148,6 +148,11 @@ $orange: rgb(200, 82, 3);
     }
 }
 
+.menu-nav-li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 @media (max-width: 550px) {
     .user-menu {
         width: 425px; 

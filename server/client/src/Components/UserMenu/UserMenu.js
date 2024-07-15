@@ -29,9 +29,9 @@ const UserMenu = forwardRef((props, ref) => {
             </div>
 
             <div className="menu-nav">
-                <li onClick={handleSettingsClick}><span className="menu-nav-span"></span>Settings</li>
-                <li onClick={handleHelpClick}><span className="menu-nav-span"></span>Help</li>
-                <li onClick={props.onSignOut}><span className="menu-nav-span"></span>Sign Out</li>
+                <li onClick={handleSettingsClick} className='menu-nav-li'><span className="menu-nav-span"></span>Settings</li>
+                <li onClick={handleHelpClick} className='menu-nav-li'><span className="menu-nav-span"></span>Help</li>
+                <li onClick={props.onSignOut} className='menu-nav-li'><span className="menu-nav-span"></span>Sign Out</li>
             </div>
         </div>
 
