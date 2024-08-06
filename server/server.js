@@ -58,6 +58,10 @@ app.use(csrfProtection);
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+if (process.env.USE_S3 !== 'true') {
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+}
+
 // Content-Security-Policy middleware
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'self'");

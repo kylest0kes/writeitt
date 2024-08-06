@@ -3,19 +3,13 @@ import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import csrf from 'csurf'; 
-import multer from 'multer';
 
 import User from '../models/User.js';
 import authMiddleware from '../middleware/auth.js';
+import upload, { getFileURL } from '../configs/uploadConfig.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
-
-
-
-const upload = multer({
-    limits: { fileSize: 10 * 1024 * 1024 } 
-});
 
 // route to register a new user
 router.post('/register', [ 
@@ -321,21 +315,22 @@ router.put('/update-avatar', [
     csrfProtection,
     upload.single('avatar')
 ], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array(), message: 'Invalid image data' });
-    }
 
-    const file = req.file;
+    console.log('Headers:', req.headers); // Log headers for debugging
+    console.log('File:', req.file); // Log file information
+    console.log('User:', req.user); // Log user information
 
-    if (!file) {
+    if (!req.file) {
         return res.status(400).json({ message: 'No image uploaded' });
     }
 
-    console.log('File path:', file.path); // Debug statement
+    const fileUrl = getFileURL(req);
+
+    console.log('File path:', req.file.path); // Debug statement
+    console.log('File url:', fileUrl); // Debug statement
 
     try {
-        const user = await User.findByIdAndUpdate(req.user.id, { userImg: file.path }, { new: true });
+        const user = await User.findByIdAndUpdate(req.user.id, { userImg: fileUrl }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -350,7 +345,7 @@ router.put('/update-avatar', [
 
     } catch (err) {
         console.error('Failed to update image: ', err);
-        res.status(500).json({ message: 'Failed to update image.'});
+        res.status(500).json({ message: 'Failed to update image.', error: err.message});
     }
 });
 

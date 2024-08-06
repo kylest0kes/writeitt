@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 
 const { Schema } = mongoose;
 
-dotenv.config();
-
 const randomDisplayNameGenerator = async (retryCount = 0) => {
   if (retryCount > 5) {
     throw new Error(
