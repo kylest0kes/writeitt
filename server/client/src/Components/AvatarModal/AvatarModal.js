@@ -30,6 +30,7 @@ function AvatarModal({ onClose }) {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
+        console.log('file: ', file);
         if (file) {
             setUserImg(file);
             const reader = new FileReader();
@@ -44,7 +45,32 @@ function AvatarModal({ onClose }) {
         e.preventDefault();
 
         if (!userImg) {
-        return;
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("avatar", userImg);
+        console.log('FormData: ', formData.get('avatar'));
+
+        try {
+            const res = await axios.put('api/users/update-avatar', formData, {
+                headers: {
+                    'csrf-token': csrfToken,
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            console.log('Updated user FE:', res.data.user); // Debug statement
+            if (res.data.user && res.data.user.userImg) {
+                setUser(res.data.user);
+                setImagePreview(res.data.user.userImg);
+            }
+
+            onClose();
+
+        } catch (err) {
+            console.error('Error updating image', err);
         }
     };
 
@@ -64,7 +90,7 @@ function AvatarModal({ onClose }) {
                     className="avatar-input"
                     onChange={handleImageChange}
                     />
-                    <label for="imageUpload" className="upload-icon-label">
+                    <label htmlFor="imageUpload" className="upload-icon-label">
                     <FontAwesomeIcon icon={faCloudArrowUp} />
                     </label>
                 </div>

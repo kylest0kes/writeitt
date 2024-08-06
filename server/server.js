@@ -18,8 +18,8 @@ dotenv.config()
 const app = express();
 const PORT = process.env.PORT || 4200;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 const mongoURI = process.env.MONGODB_URI;
@@ -54,7 +54,7 @@ app.use(cors({
   credentials: true  // enable CORS credentials
 }));
 app.use(limit);
-// app.use(csrfProtection);
+app.use(csrfProtection);
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 

@@ -3,12 +3,19 @@ import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import csrf from 'csurf'; 
+import multer from 'multer';
 
 import User from '../models/User.js';
 import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
+
+
+
+const upload = multer({
+    limits: { fileSize: 10 * 1024 * 1024 } 
+});
 
 // route to register a new user
 router.post('/register', [ 
@@ -312,16 +319,45 @@ router.put('/update-password', [
 router.put('/update-avatar', [
     authMiddleware,
     csrfProtection,
-
+    upload.single('avatar')
 ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid image data' });
+    }
 
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).json({ message: 'No image uploaded' });
+    }
+
+    console.log('File path:', file.path); // Debug statement
+
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, { userImg: file.path }, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log('Updated user SER:', user); // Debug statement
+
+        res.json({ 
+            message: 'Image updated successfully', 
+            user: user
+        });
+
+
+    } catch (err) {
+        console.error('Failed to update image: ', err);
+        res.status(500).json({ message: 'Failed to update image.'});
+    }
 });
 
 // route for deleting account
 router.put('/delete-account', [
     authMiddleware,
-    csrfProtection,
-
+    csrfProtection
 ], async (req, res) => {
 
 });

@@ -79,7 +79,7 @@ const UserSchema = new Schema(
     userImg: {
       type: String,
       required: false,
-      default: "https://via.placeholder.com/350x350",
+      default: "",
     },
   },
   {
