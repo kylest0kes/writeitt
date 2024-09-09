@@ -69,7 +69,7 @@ function Header() {
     return (
         <nav className="navbar"> 
             <div className="logo" onClick={handleHomeClick}>
-                wroteitt
+                writeitt
             </div>
             {user && authToken ? (
                 <div>
