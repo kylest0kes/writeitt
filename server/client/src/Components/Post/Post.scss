@@ -78,6 +78,7 @@
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 600;
+    font-family: monospace;
     border: none;
     cursor: pointer;
 
@@ -86,6 +87,10 @@
         text-align: center;
         margin-top: 8px;
     }
+}
+
+.post-joinButton:hover {
+    background-color: rgb(200, 82, 3);
 }
 
 .post-title {

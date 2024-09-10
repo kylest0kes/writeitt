@@ -11,7 +11,7 @@ const SocialMediaPost = () => {
             <User color="#a0aec0" size={24} />
           </div>
           <div>
-            <h2 className="post-subreddit">r/AITAH</h2>
+            <h2 className="post-subreddit">r/subpage</h2>
             <p className="post-time">9 hr. ago</p>
           </div>
           <button className="post-joinButton">Join</button>
