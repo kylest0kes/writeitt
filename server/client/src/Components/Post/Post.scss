@@ -1,7 +1,7 @@
 .post-container {
     max-width: 100%;
     margin: 0 auto;
-    background-color: #1a202c;
+    background-color: #434343;
     color: white;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -50,7 +50,7 @@
 
 .post-subreddit {
     font-weight: bold;
-    color: #4299e1;
+    color: rgb(232, 95, 4);
 
     @media (max-width: 768px) {
         font-size: 1rem;
@@ -72,7 +72,7 @@
 
 .post-joinButton {
     margin-left: auto;
-    background-color: #4299e1;
+    background-color: rgb(232, 95, 4);
     color: white;
     padding: 4px 16px;
     border-radius: 9999px;

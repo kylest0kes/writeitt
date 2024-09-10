@@ -23,8 +23,10 @@ const SocialMediaPost = () => {
           Post Text
         </p>
         <div className="post-footer">
-          <span className="post-footerItem">13K</span>
+          <span className="post-footerItem">13K Likes</span>
+          <span className='post-footerItem'>|</span>
           <span className="post-footerItem">4.9K comments</span>
+          <span className='post-footerItem'>|</span>
           <span>Share</span>
         </div>
       </div>
