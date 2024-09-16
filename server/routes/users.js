@@ -345,8 +345,38 @@ router.put('/update-avatar', [
 // route for deleting account
 router.put('/delete-account', [
     authMiddleware,
-    csrfProtection
+    csrfProtection,
+    body('password').exists()
 ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(), message: 'Invalid password value'});
+    }
+
+    const { password } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found'});
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid password.'});
+        }
+
+        await User.findByIdAndDelete(req.user.id);
+
+        res.json({ message: 'Account deleted successfully.'});
+
+    } catch (err) {
+        console.error('Failed to delete account: ', err);
+        res.status(500).json({ message: 'Failed to delete account.', error: err.message });
+    }
+
 
 });
 

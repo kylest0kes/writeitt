@@ -44,12 +44,22 @@ function DeleteProfileModal({ onClose }) {
 
         // check that the passwords match
         if (deleteModalData.password !== deleteModalData.confirmPassword) {
+            console.error('Passwords do not match.');
             return;
         }
 
         try {
+            const res = await axios.put('/api/users/delete-account', deleteModalData, {
+                headers: {
+                    'csrf-token': csrfToken,
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
 
-
+            console.log(res.data.message);
+            setUser(null);
+            window.location.href = '/';
         } catch (err) {
             console.error("Error deleting account: ", err);
         }
@@ -58,7 +68,7 @@ function DeleteProfileModal({ onClose }) {
     return (
          <div id='delete-wrapper'>
             <form action='#' method='post' onSubmit={handleDeleteModalSubmit}>
-                <h1 className='delete-heading'>Change Password</h1>
+                <h1 className='delete-heading'>Delete Account</h1>
 
                 <p className='delete-subheading'>
                     Once you delete your account, your profile and username will be removed, along with all of your comments.
@@ -68,7 +78,7 @@ function DeleteProfileModal({ onClose }) {
                     <div className='delete-input-wrapper'>
                         <input className='delete-input' type='password' name='password' placeholder='Password *' value={deleteModalData.password} onChange={handleSetDeleteModalData} required></input>
 
-                        <input className='delete-input' type='password' name='confirmPassword' placeholder='Confirm New Password *' value={deleteModalData.confirmPassword} onChange={handleSetDeleteModalData} required></input>
+                        <input className='delete-input' type='password' name='confirmPassword' placeholder='Confirm Password *' value={deleteModalData.confirmPassword} onChange={handleSetDeleteModalData} required></input>
                     </div>
                 </div>
 
