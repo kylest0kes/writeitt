@@ -2,17 +2,17 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import csrf from 'csurf'; 
+import csrf from 'csurf';
 
 import User from '../models/User.js';
 import authMiddleware from '../middleware/auth.js';
-import upload, { getFileURL } from '../configs/uploadConfig.js';
+import { configureUpload, getFileURL } from '../configs/uploadConfig.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
 
 // route to register a new user
-router.post('/register', [ 
+router.post('/register', [
         csrfProtection,
         body('email').isEmail().normalizeEmail(),
         body('password').isLength({ min: 10 })
@@ -62,7 +62,7 @@ router.post('/check', csrfProtection, async (req, res) => {
     const { username, email } = req.body;
 
     try {
-        const user = await User.findOne({ $or: [{ username }, { email }] }); 
+        const user = await User.findOne({ $or: [{ username }, { email }] });
         if (user) {
             if (user.username === username || user.email === email) {
                 return res.status(400).json({ message: 'That username or email is already taken.'})
@@ -130,8 +130,8 @@ router.get('/current-user', authMiddleware, async (req, res) => {
 
 // route to update user gender
 router.put('/update-gender', [
-    authMiddleware, 
-    csrfProtection, 
+    authMiddleware,
+    csrfProtection,
     body('gender').isString().isLength({ min: 1})
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -147,8 +147,8 @@ router.put('/update-gender', [
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ 
-            message: 'Gender updated successfully', 
+        res.json({
+            message: 'Gender updated successfully',
             user: user
         });
     } catch (err) {
@@ -176,9 +176,9 @@ router.put('/update-phone', [
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ 
-            message: 'Phone numbner updated successfully', 
-            user: user 
+        res.json({
+            message: 'Phone numbner updated successfully',
+            user: user
         });
 
     } catch (err) {
@@ -199,15 +199,15 @@ router.put('/update-displayname', [
     }
 
     const { displayName } = req.body;
-    
+
     try {
         const user = await User.findByIdAndUpdate(req.user.id, { displayName }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ 
-            message: 'Email updated successfully', 
+        res.json({
+            message: 'Email updated successfully',
             user: user
         });
 
@@ -252,8 +252,8 @@ router.put('/update-email', [
         user.email = newEmail;
         await user.save();
 
-        res.json({ 
-            message: 'Email updated successfully', 
+        res.json({
+            message: 'Email updated successfully',
             user: user
         });
 
@@ -313,12 +313,12 @@ router.put('/update-password', [
 router.put('/update-avatar', [
     authMiddleware,
     csrfProtection,
-    upload.single('avatar')
+    (req, res, next) => {
+        const upload = configureUpload();
+        upload.single('avatar')(req, res, next);
+    }
 ], async (req, res) => {
-
-    console.log('Headers:', req.headers); // Log headers for debugging
-    console.log('File:', req.file); // Log file information
-    console.log('User:', req.user); // Log user information
+    console.log('in update-avatar route');
 
     if (!req.file) {
         return res.status(400).json({ message: 'No image uploaded' });
@@ -337,8 +337,8 @@ router.put('/update-avatar', [
 
         console.log('Updated user SER:', user); // Debug statement
 
-        res.json({ 
-            message: 'Image updated successfully', 
+        res.json({
+            message: 'Image updated successfully',
             user: user
         });
 

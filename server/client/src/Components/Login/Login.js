@@ -1,7 +1,6 @@
- import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../Contexts/AuthContext';
-
 import './Login.scss';
 import { useUser } from '../../Contexts/UserContext';
 
