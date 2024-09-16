@@ -1,6 +1,6 @@
 #delete-wrapper {
     width: 500px;
-    height: 370px;
+    height: 350px;
     -webkit-border-radius: 3%;
     -moz-border-radius: 3%;
     border-radius: 3%;
@@ -11,4 +11,84 @@
 
 .delete-heading {
     margin-top: -5px;
+}
+
+.delete-subheading {
+    margin-top: 40px;
+}
+
+.delete-input-container {
+    width: 100%;
+    margin: 20px 0 10px 0;
+}
+
+.delete-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.delete-input {
+    width: 98%;
+    font-size: 16px;
+    height: 50px;
+    padding: 0 5px;
+    border-radius: 10px;
+    background-color: #2c2c2e;
+    color: #ffffff;
+    border: 1px solid #3a3a3c;
+    margin: 15px 0;
+}
+
+.delete-input:focus {
+    outline: none;
+}
+
+.delete-btns-container {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.delete-submit-btn {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.5em;
+    margin: 10px 5px;
+    padding: .615%;
+    width: 25%;
+    height: 40px;
+    background-color: #555;
+    border: solid transparent;
+    border-radius: 5px;
+}
+
+.delete-submit-btn:hover {
+    background: rgb(232, 95, 4);
+    color: #fff;
+    cursor: pointer;
+}
+
+.delete-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #555;
+}
+
+.delete-cancel-btn {
+    color: #fff;
+    font-family: monospace;
+    font-size: 1.5em;
+    margin: 10px 5px;
+    padding: .615%;
+    width: 25%;
+    height: 40px;
+    background-color: #555;
+    border: solid transparent;
+    border-radius: 5px;
+}
+
+.delete-cancel-btn:hover {
+    background: rgb(246, 2, 2);
+    color: #fff;
+    cursor: pointer;
 }

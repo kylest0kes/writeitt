@@ -318,24 +318,17 @@ router.put('/update-avatar', [
         upload.single('avatar')(req, res, next);
     }
 ], async (req, res) => {
-    console.log('in update-avatar route');
-
     if (!req.file) {
         return res.status(400).json({ message: 'No image uploaded' });
     }
 
     const fileUrl = getFileURL(req);
 
-    console.log('File path:', req.file.path); // Debug statement
-    console.log('File url:', fileUrl); // Debug statement
-
     try {
         const user = await User.findByIdAndUpdate(req.user.id, { userImg: fileUrl }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
-        console.log('Updated user SER:', user); // Debug statement
 
         res.json({
             message: 'Image updated successfully',
