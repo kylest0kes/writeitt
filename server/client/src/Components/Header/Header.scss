@@ -1,11 +1,16 @@
 .navbar {
     display: flex;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
     justify-content: space-between;
     height: 70px;
     align-items: center;
     font-size: 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     margin: 0 20px;
+    width: 100%;
+    background-color: rgb(21, 21, 21);
 }
 
 .header-left {
