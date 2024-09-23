@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 
 import './LeftSideMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuildingColumns, faChevronDown, faChevronUp, faHouse, faPenToSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faHouse, faPenToSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
+import CreateStoryModal from '../CreateStoryModal/CreateStoryModal';
+import Modal from '../Modal/Modal';
 
 function LeftSideMenu() {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ function LeftSideMenu() {
   const { authToken } = useAuth();
 
   const [isLibraryOpen, setIsLibraryOpen] = useState(true);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const openCreateModal = () => setIsCreateModalOpen(true);
+  const closeCreateModal = () => setIsCreateModalOpen(false);
 
   const handleHomeClick = () => {
     navigate("/");
@@ -52,10 +58,13 @@ function LeftSideMenu() {
                 <FontAwesomeIcon className="icon dropdown-icon" icon={faChevronUp} />
               </li>
               <li className="menu-item">
-                <div>
+                <div onClick={openCreateModal}>
                   <FontAwesomeIcon className="icon create-community-icon" icon={faPenToSquare} />
                   <span>Start A Story...</span>
                 </div>
+                <Modal isOpen={isCreateModalOpen} onClose={closeCreateModal}>
+                  <CreateStoryModal onClose={closeCreateModal} />
+                </Modal>
               </li>
             </div>
           ) : (
