@@ -4,9 +4,14 @@ import './LeftSideMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuildingColumns, faChevronDown, faChevronUp, faHouse, faPenToSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../Contexts/UserContext';
+import { useAuth } from '../../Contexts/AuthContext';
 
 function LeftSideMenu() {
   const navigate = useNavigate();
+  const { user } = useUser();
+  const { authToken } = useAuth();
+
   const [isLibraryOpen, setIsLibraryOpen] = useState(true);
 
   const handleHomeClick = () => {
@@ -35,29 +40,38 @@ function LeftSideMenu() {
         </li>
       </ul>
 
-      <hr />
+      {user && authToken ? (
+      <div>
+        <hr />
 
-      <ul className="sidebar-section">
-        { isLibraryOpen ? (
-          <div>
+        <ul className="sidebar-section">
+          { isLibraryOpen ? (
+            <div>
+              <li className="section-item library" onClick={handleLibraryDropdownClick}>
+                <span>Library</span>
+                <FontAwesomeIcon className="icon dropdown-icon" icon={faChevronUp} />
+              </li>
+              <li className="menu-item">
+                <div>
+                  <FontAwesomeIcon className="icon create-community-icon" icon={faPenToSquare} />
+                  <span>Start A Story...</span>
+                </div>
+              </li>
+            </div>
+          ) : (
             <li className="section-item library" onClick={handleLibraryDropdownClick}>
               <span>Library</span>
-              <FontAwesomeIcon className="icon dropdown-icon" icon={faChevronUp} />
+              <FontAwesomeIcon className="icon dropdown-icon" icon={faChevronDown} />
             </li>
-            <li className="menu-item">
-              <div>
-                <FontAwesomeIcon className="icon create-community-icon" icon={faPenToSquare} />
-                <span>Start A Story...</span>
-              </div>
-            </li>
-          </div>
-        ) : (
-          <li className="section-item library" onClick={handleLibraryDropdownClick}>
-            <span>Library</span>
-            <FontAwesomeIcon className="icon dropdown-icon" icon={faChevronDown} />
-          </li>
-        )}
-      </ul>
+          )}
+        </ul>
+      </div>
+
+      ) : (
+        <ul className="sidebar-section">
+
+        </ul>
+    )}
 
     </div>
   )
