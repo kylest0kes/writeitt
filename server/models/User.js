@@ -80,9 +80,17 @@ const UserSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    },
   }
 );
+
+UserSchema.index({ username: 1 }, { unique: true });
+UserSchema.index({ email: 1 }, { unique: true });
+UserSchema.index({ displayName: 1 }, { unique: true });
+UserSchema.index({ created_at: -1 });
 
 // Pre-save hook to always set displayName
 UserSchema.pre("save", async function (next) {
