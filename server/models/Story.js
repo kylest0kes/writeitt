@@ -24,7 +24,7 @@ const StorySchema = new Schema(
         },
         description: {
             type: String,
-            required: false,
+            required: true,
             maxlength: 500
         },
         creator: {

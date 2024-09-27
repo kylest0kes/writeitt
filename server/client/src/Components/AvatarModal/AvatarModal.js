@@ -50,7 +50,6 @@ function AvatarModal({ onClose }) {
 
         const formData = new FormData();
         formData.append("avatar", userImg);
-        console.log('FormData: ', formData.get('avatar'));
 
         try {
             const res = await axios.put('api/users/update-avatar', formData, {
@@ -61,7 +60,6 @@ function AvatarModal({ onClose }) {
                 }
             });
 
-            console.log('Updated user FE:', res.data.user); // Debug statement
             if (res.data.user && res.data.user.userImg) {
                 setUser(res.data.user);
                 setImagePreview(res.data.user.userImg);
