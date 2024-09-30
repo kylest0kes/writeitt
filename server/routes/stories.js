@@ -10,6 +10,7 @@ const csrfProtection = csrf({ cookie: true });
 
 // route to create a story
 router.post('/create-story', [
+    authMiddleware,
     csrfProtection,
     body('storyName').isString().isLength({ min: 3}),
     body('storySubtitle').isString().isLength({ max: 50 }),

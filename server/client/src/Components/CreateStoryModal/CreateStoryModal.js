@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useUser } from '../../Contexts/UserContext';
 
 import './CreateStoryModal.scss';
+import { useAuth } from '../../Contexts/AuthContext';
 
 function CreateStoryModal({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ function CreateStoryModal({ onClose, onSubmit }) {
   const [error, setError] = useState('');
   const [csrfToken, setCsrfToken] = useState('');
   const { user } = useUser();
+  const { authToken } = useAuth();
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -45,7 +47,8 @@ function CreateStoryModal({ onClose, onSubmit }) {
       creator: user._id
     }, {
       headers: {
-        'csrf-token': csrfToken
+        'csrf-token': csrfToken,
+        'Authorization': `Bearer ${authToken}`
       }
     });
 
