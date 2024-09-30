@@ -10,6 +10,7 @@ import cors from 'cors';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/users.js';
+import storyRoutes from './routes/stories.js';
 import csrfRoute from './routes/csrf.js';
 import { cookie } from 'express-validator';
 
@@ -77,6 +78,7 @@ app.use((err, req, res, next) => {
   }
 });
 
+app.use('/api/stories', storyRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', csrfRoute);
 

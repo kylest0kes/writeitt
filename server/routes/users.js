@@ -114,6 +114,7 @@ router.post('/login', [
 
 });
 
+// route to get the current user
 router.get('/current-user', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
@@ -171,7 +172,7 @@ router.put('/update-phone', [
     const { phoneNumber } = req.body;
 
     try {
-        const user = await User.findByIdAndUpdate(req.user.id, { phoneNumber }, { new: true});
+        const user = await User.findByIdAndUpdate(req.user.id, { phoneNumber }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
