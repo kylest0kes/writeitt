@@ -2,6 +2,8 @@ import express from 'express';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import csrf from 'csurf';
+import authMiddleware from '../middleware/auth.js';
+import Story from '../models/Story.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -22,5 +24,6 @@ const csrfProtection = csrf({ cookie: true });
 
 
 // route to delete a page
+
 
 export default router;

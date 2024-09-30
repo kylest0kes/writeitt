@@ -59,3 +59,5 @@ StorySchema.index({ creator: 1 });
 StorySchema.index({ subscribers: 1 });
 
 const Story = mongoose.model("Story", StorySchema);
+
+export default Story;
