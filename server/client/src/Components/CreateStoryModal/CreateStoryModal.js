@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useUser } from '../../Contexts/UserContext';
 
 import './CreateStoryModal.scss';
 
 function CreateStoryModal({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
     storyName: '',
-    storySubTitle: '',
+    storySubtitle: '',
     storyDesc: '',
     storyImg: ''
-  })
+  });
+  const [error, setError] = useState('');
+  const [csrfToken, setCsrfToken] = useState('');
+  const { user } = useUser();
+
+  useEffect(() => {
+    const fetchCsrfToken = async () => {
+      const { data } = await axios.get('/api/csrf-token');
+      setCsrfToken(data.csrfToken);
+    };
+    fetchCsrfToken();
+  }, []);
 
  const handleSetFormData = (e) => {
   const { name, value } = e.target;
@@ -21,10 +34,26 @@ function CreateStoryModal({ onClose, onSubmit }) {
  const handleFormSubmit = async (e) => {
   e.preventDefault();
 
+  const { storyName, storySubtitle, storyDesc } = formData;
+
   try {
+    console.log("user: ", user);
+    const res = await axios.post('/api/stories/create-story', {
+      storyName,
+      storySubtitle,
+      storyDesc,
+      creator: user._id
+    }, {
+      headers: {
+        'csrf-token': csrfToken
+      }
+    });
+
+    console.log("Story made: ", res.data);
 
   } catch (err) {
-
+    setError('Error while creating a story.');
+    console.error(`There was an error: ${err}`);
   }
 
   onClose();
@@ -63,9 +92,9 @@ function CreateStoryModal({ onClose, onSubmit }) {
                 </label>
                 <input
                   type="text"
-                  id="storySubTitle"
-                  name="storySubTitle"
-                  value={formData.storySubTitle}
+                  id="storySubtitle"
+                  name="storySubtitle"
+                  value={formData.storySubtitle}
                   onChange={handleSetFormData}
                   className="story-modal__input"
                   required
@@ -90,6 +119,7 @@ function CreateStoryModal({ onClose, onSubmit }) {
               <button type="submit" className="story-modal__submit">
                 Submit
               </button>
+              {error && <p style={{ color: 'red' }}>{error}</p>}
             </form>
           </div>
         </div>

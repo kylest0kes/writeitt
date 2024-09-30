@@ -10,6 +10,7 @@ const csrfProtection = csrf({ cookie: true });
 
 // route to create a story
 router.post('/create-story', [
+    csrfProtection,
     body('storyName').isString().isLength({ min: 3}),
     body('storySubtitle').isString().isLength({ max: 50 }),
     body('storyDesc').isString().isLength({ max: 500 })
@@ -19,14 +20,14 @@ router.post('/create-story', [
         return res.status(400).json({ errors: errors.array(), message: 'Invalid data to create story.'})
     }
 
-    const { storyName, storySubtitle, storyDesc } = req.body;
+    const { storyName, storySubtitle, storyDesc, creator } = req.body;
 
     try {
         const newStory = new Story({
-            storyName,
-            storySubtitle,
-            storyDesc,
-            creator: req.user.id
+            name: storyName,
+            subtitle: storySubtitle,
+            description: storyDesc,
+            creator
         });
 
         const story = await newStory.save();
