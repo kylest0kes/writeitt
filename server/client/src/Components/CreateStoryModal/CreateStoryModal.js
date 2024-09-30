@@ -20,9 +20,16 @@ function CreateStoryModal({ onClose, onSubmit }) {
 
  const handleFormSubmit = async (e) => {
   e.preventDefault();
-  console.log(`Form Data: ${formData.storyName}, ${formData.storySubTitle}, ${formData.storyDesc} `);
+
+  try {
+
+  } catch (err) {
+
+  }
+
   onClose();
- };
+ }
+
 
   return (
     <div id="story-wrapper">
