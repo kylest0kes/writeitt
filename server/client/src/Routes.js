@@ -4,6 +4,7 @@ import Home from './Pages/Home/Home';
 import UserSettings from './Pages/UserSettings/UserSettings';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import Help from './Pages/Help/Help';
+import StoryDetails from './Components/StoryDetails/StoryDetails';
 
 const TheRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const TheRoutes = () => {
                 <Route path="/settings" element={<UserSettings />} />
             </Route>
             <Route path='/help' element={<Help />} />
+            <Route path='/stories/story/:slug' element={<StoryDetails />} />
         </Routes>
     )
 }
