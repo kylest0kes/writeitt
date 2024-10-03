@@ -24,6 +24,10 @@ function LeftSideMenu() {
     navigate("/");
   }
 
+  const handleAllStoriesClick = () => {
+    navigate("/allstories");
+  }
+
   const handleLibraryDropdownClick = () => {
     setIsLibraryOpen(!isLibraryOpen);
   }
@@ -39,10 +43,10 @@ function LeftSideMenu() {
         </li>
 
         <li className="menu-item">
-          <a href="#all">
+          <div onClick={handleAllStoriesClick}>
             <FontAwesomeIcon className="icon all-icon" icon={faTableList} />
             <span>All</span>
-          </a>
+          </div>
         </li>
       </ul>
 
