@@ -43,6 +43,11 @@ const StorySchema = new Schema(
         subscriberCount: {
             type: Number,
             default: 0
+        },
+        slug: {
+            type: String,
+            required: true,
+            unique: true
         }
     },
     {

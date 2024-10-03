@@ -57,7 +57,6 @@ function DeleteProfileModal({ onClose }) {
                 }
             });
 
-            console.log(res.data.message);
             setUser(null);
             window.location.href = '/';
         } catch (err) {

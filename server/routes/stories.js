@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import csrf from 'csurf';
 import authMiddleware from '../middleware/auth.js';
 import Story from '../models/Story.js';
+import generateSlug from '../utils/GenerateUrl.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -23,12 +24,15 @@ router.post('/create-story', [
 
     const { storyName, storySubtitle, storyDesc, creator } = req.body;
 
+    const storySlug = generateSlug(storyName);
+
     try {
         const newStory = new Story({
             name: storyName,
             subtitle: storySubtitle,
             description: storyDesc,
-            creator
+            creator,
+            slug: storySlug
         });
 
         const story = await newStory.save();
@@ -48,7 +52,21 @@ router.post('/create-story', [
 
 
 // route to get a single page
+router.get('/story/:slug', async (req, res) => {
+    try {
+        const story = await Story.findOne({ slug: req.params.slug }).populate('creator');
 
+        if (!story) {
+            return res.status(404).json({ message: 'Story not found.'});
+        }
+
+        res.json(story);
+
+    } catch (err) {
+        console.error('Error creating story: ', err);
+        res.status(500).json({ message: 'Error fetching story.', errors: err});
+    }
+});
 
 // route to update a page
 

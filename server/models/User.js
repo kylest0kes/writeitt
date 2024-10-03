@@ -22,7 +22,7 @@ const randomDisplayNameGenerator = async (retryCount = 0) => {
     const displayName = `${word}${num}`;
 
     if (displayName.length > 30) {
-      console.log(
+      console.error(
         `Generated name "${displayName}" is too long. Trying again...`
       );
       return randomDisplayNameGenerator(retryCount + 1);

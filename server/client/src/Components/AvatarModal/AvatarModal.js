@@ -30,7 +30,6 @@ function AvatarModal({ onClose }) {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        console.log('file: ', file);
         if (file) {
             setUserImg(file);
             const reader = new FileReader();

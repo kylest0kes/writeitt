@@ -39,7 +39,6 @@ function CreateStoryModal({ onClose, onSubmit }) {
   const { storyName, storySubtitle, storyDesc } = formData;
 
   try {
-    console.log("user: ", user);
     const res = await axios.post('/api/stories/create-story', {
       storyName,
       storySubtitle,
@@ -52,7 +51,6 @@ function CreateStoryModal({ onClose, onSubmit }) {
       }
     });
 
-    console.log("Story made: ", res.data);
 
   } catch (err) {
     setError('Error while creating a story.');
