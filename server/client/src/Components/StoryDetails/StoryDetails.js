@@ -21,10 +21,6 @@ const StoryDetails = () => {
         fetchStory();
     }, [slug]);
 
-    useEffect(() => {
-        console.log("story: ", story);
-    }, [story]);
-
     if (error) {
         return <p style={{color: 'red'}}>{error}</p>
     }

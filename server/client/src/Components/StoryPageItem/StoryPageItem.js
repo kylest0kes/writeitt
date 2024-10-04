@@ -1,11 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import './StoryPageItem.scss';
 
-function StoryPageItem({ label }) {
+function StoryPageItem({ name, slug }) {
+  const navigate = useNavigate();
+
+  const handlePillClick = () => {
+    navigate(`/stories/story/${slug}`);
+  }
+
   return (
-    <div className="pill-container">
-        <div className="pill">{label}</div>
+    <div>
+        <div onClick={handlePillClick} className="pill">{name}</div>
     </div>
   )
 }
