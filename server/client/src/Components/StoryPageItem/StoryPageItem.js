@@ -4,8 +4,8 @@ import './StoryPageItem.scss';
 
 function StoryPageItem({ label }) {
   return (
-    <div class="pill-container">
-        <div class="pill">{label}</div>
+    <div className="pill-container">
+        <div className="pill">{label}</div>
     </div>
   )
 }

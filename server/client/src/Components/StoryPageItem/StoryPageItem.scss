@@ -1,13 +1,4 @@
-// Flexible pill items that justify inside a flexible container
-
-.pill-container {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 0 5px 5px;
-    margin: 10px 30px;
-}
 .pill-container:after {
-    // Last flexed item (on last row) grows as much as possible
     content: '';
     flex-grow: 999;
 }
@@ -18,7 +9,6 @@
     padding: 5px 8px;
     flex-grow: 1;
     text-align: center;
-    // Margin right + top on each item
     margin: 5px 5px 0 0;
 }
 

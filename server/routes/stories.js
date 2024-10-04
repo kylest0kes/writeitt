@@ -46,7 +46,15 @@ router.post('/create-story', [
 });
 
 // route to get all pages in the app
-
+router.get('/all-stories', async (req, res) => {
+    try {
+        const stories = await Story.find();
+        res.json(stories);
+    } catch (err) {
+        console.error("Error getting all stories: ", err);
+        res.status(500).json({ message: err.message, errors: err});
+    }
+});
 
 // route to get all pages created by a user
 

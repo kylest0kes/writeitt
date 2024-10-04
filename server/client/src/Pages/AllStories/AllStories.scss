@@ -4,3 +4,10 @@
     // display: block;
     margin: 20px 10px;
 }
+
+.story-item-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0 5px 5px;
+    margin: 60px 30px;
+}

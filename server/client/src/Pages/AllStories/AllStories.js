@@ -6,8 +6,9 @@ import StoryPageItem from '../../Components/StoryPageItem/StoryPageItem';
 function AllStories() {
   return (
     <div className='allstories-page'>
-      All Stories Page
-      <StoryPageItem label="test" />
+      <div className='story-item-container'>
+        <StoryPageItem label="alsdkjfalskdfjalksfj" />
+      </div>
     </div>
   )
 }
