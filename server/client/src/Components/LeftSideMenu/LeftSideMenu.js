@@ -35,15 +35,15 @@ function LeftSideMenu() {
   return (
     <div className="left-menu">
        <ul className="sidebar-menu">
-        <li className="menu-item">
-          <div className="home-link" onClick={handleHomeClick}>
+        <li className="menu-item" onClick={handleHomeClick}>
+          <div className="home-link">
             <FontAwesomeIcon className="icon home-icon" icon={faHouse}/>
             <span>Home</span>
           </div>
         </li>
 
-        <li className="menu-item">
-          <div onClick={handleAllStoriesClick}>
+        <li className="menu-item" onClick={handleAllStoriesClick}>
+          <div>
             <FontAwesomeIcon className="icon all-icon" icon={faTableList} />
             <span>All</span>
           </div>
@@ -61,8 +61,8 @@ function LeftSideMenu() {
                 <span>Library</span>
                 <FontAwesomeIcon className="icon dropdown-icon" icon={faChevronUp} />
               </li>
-              <li className="menu-item">
-                <div onClick={openCreateModal}>
+              <li className="menu-item" onClick={openCreateModal}>
+                <div>
                   <FontAwesomeIcon className="icon create-community-icon" icon={faPenToSquare} />
                   <span>Start A Story...</span>
                 </div>
