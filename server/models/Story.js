@@ -17,6 +17,11 @@ const StorySchema = new Schema(
             required: false,
             default: ""
         },
+        heroImg: {
+            type: String,
+            required: false,
+            default: ""
+        },
         subtitle: {
             type: String,
             required: true,

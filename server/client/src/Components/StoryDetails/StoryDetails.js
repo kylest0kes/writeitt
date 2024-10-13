@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+import './StoryDetails.scss';
+
 const StoryDetails = () => {
     const { slug } = useParams();
     const [story, setStory] = useState(null);
@@ -30,11 +32,23 @@ const StoryDetails = () => {
     }
 
     return (
-    <div>
-        <h1>{story.name}</h1>
-        <h2>{story.subtitle}</h2>
-        <h3>{story.description}</h3>
-    </div>
+        <div className="story-details">
+            <div className="header">
+                <div className="icon-placeholder"></div>
+            </div>
+            <div className="sub-header">
+                <h1>{story.name}</h1>
+                <div className="buttons">
+                    <button className="create-post">+ Create Post</button>
+                    <button className="join">Join</button>
+                    {/* <button className="more">•••</button> */}
+                </div>
+            </div>
+            <div className="story-content">
+                <h3>{story.subtitle}</h3>
+                <p>{story.description}</p>
+            </div>
+        </div>
     )
 }
 
