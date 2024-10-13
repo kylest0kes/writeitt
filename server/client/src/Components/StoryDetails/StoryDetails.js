@@ -3,11 +3,15 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Post from '../Post/Post.js';
 import './StoryDetails.scss';
+import { useUser } from '../../Contexts/UserContext';
+import { useAuth } from '../../Contexts/AuthContext';
 
 const StoryDetails = () => {
     const { slug } = useParams();
     const [story, setStory] = useState(null);
     const [error, setError] = useState(null);
+    const { user } = useUser();
+    const { authToken } = useAuth();
 
     useEffect(() => {
         const fetchStory = async () => {
@@ -31,6 +35,9 @@ const StoryDetails = () => {
         return <div className="spinner"></div>;
     }
 
+    console.log(user.userImg);
+    const isCreator = user && story.creator._id === user._id;
+
     return (
         <div className="story-details">
             <div className="header">
@@ -44,13 +51,26 @@ const StoryDetails = () => {
                 <div className="buttons">
                     <button className="create-post">+ Create Post</button>
                     <button className="join">Join</button>
-                    {/* <button className="more">•••</button> */}
+                    {isCreator && authToken ? (
+                        <button className="more">•••</button>
+                    ) : <div></div> }
                 </div>
             </div>
             <div className="story-content">
                 <p>{story.description}</p>
                 <Post />
-            </div>
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+           </div>
         </div>
     )
 }

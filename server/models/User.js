@@ -76,7 +76,7 @@ const UserSchema = new Schema(
     userImg: {
       type: String,
       required: false,
-      default: "",
+      default: "https://wroteitt.s3.us-east-2.amazonaws.com/avatars/1728783239429.png",
     },
   },
   {
