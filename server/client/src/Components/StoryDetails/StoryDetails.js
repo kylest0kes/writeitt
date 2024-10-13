@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import Post from '../Post/Post.js';
 import './StoryDetails.scss';
 
 const StoryDetails = () => {
@@ -37,7 +37,10 @@ const StoryDetails = () => {
                 <div className="icon-placeholder"></div>
             </div>
             <div className="sub-header">
-                <h1>{story.name}</h1>
+                <div className="name-and-subtitle">
+                    <h1>{story.name}</h1>
+                    <p>{story.subtitle}</p>
+                </div>
                 <div className="buttons">
                     <button className="create-post">+ Create Post</button>
                     <button className="join">Join</button>
@@ -45,8 +48,8 @@ const StoryDetails = () => {
                 </div>
             </div>
             <div className="story-content">
-                <h3>{story.subtitle}</h3>
                 <p>{story.description}</p>
+                <Post />
             </div>
         </div>
     )

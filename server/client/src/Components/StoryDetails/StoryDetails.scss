@@ -35,6 +35,11 @@
             margin-left: 80px;
         }
 
+        p {
+            font-size: 14px;
+            margin-left: 80px;
+        }
+
         .buttons {
             display: flex;
             gap: 10px;
@@ -75,13 +80,7 @@
     }
 
     .story-content {
-        margin-top: 20px;
-        padding: 20px;
+        // padding: 20px;
         border-radius: 4px;
-
-        h3 {
-            font-size: 1.25rem;
-            margin-bottom: 10px;
-        }
     }
 }
