@@ -57,6 +57,7 @@ const StoryDetails = () => {
                 </div>
             </div>
             <div className="story-content">
+                <h4>About: </h4>
                 <p>{story.description}</p>
                 <Post />
                 <Post />
