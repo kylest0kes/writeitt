@@ -1,6 +1,6 @@
 // Variables
 $background-color: rgb(17, 17, 17);
-$modal-background: rgb(17, 17, 17);
+$modal-background: rgb(40, 40, 40);
 $text-color: #ffffff;
 $text-color-secondary: #b9bbbe;
 $border-color: #40444b;
@@ -9,29 +9,18 @@ $button-color: rgb(232, 95, 4);
 $button-hover-color: rgb(200, 82, 3);
 $circle-size: 150px;
 
-#story-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
 
 .story-modal {
     width: 100%;
-    max-width: 450px;
-    max-height: 80vh;
+    max-width: 500px;
+    max-height: 70vh;
     display: flex;
     flex-direction: column;
     background-color: $modal-background;
     border-radius: 8px;
     overflow-y: auto;
     overflow-x: hidden;
+    z-index: 9999;
 
     &__content {
         display: flex;
@@ -128,6 +117,15 @@ $circle-size: 150px;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        &:hover {
+            background-color: darken($input-background, 5%);
+        }
+    }
+
+    &__buttons-container {
+        display: flex;
+        justify-content: right;
+        width: 100%;
     }
 
     &__submit {
@@ -140,9 +138,26 @@ $circle-size: 150px;
         font-size: 14px;
         font-weight: 500;
         padding: 8px 16px;
+        margin-left: 15px;
         transition: background-color 0.2s ease;
         &:hover {
             background-color: $button-hover-color;
+        }
+    }
+
+    &__cancel {
+        align-self: flex-end;
+        background-color: #555;
+        border: none;
+        border-radius: 4px;
+        color: $text-color;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 8px 16px;
+        transition: background-color 0.2s ease;
+        &:hover {
+            background-color: rgb(246, 2, 2);
         }
     }
 }

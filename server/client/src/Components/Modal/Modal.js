@@ -1,8 +1,8 @@
-import React, { useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import './Modal.scss'
+import './Modal.scss';
 
 const Modal = ({ isOpen, onClose, children }) => {
     const modalRef = useRef();
@@ -25,12 +25,24 @@ const Modal = ({ isOpen, onClose, children }) => {
         };
     }, [isOpen, onClose]);
 
+    const handleCloseClick = (e) => {
+        e.stopPropagation();
+        if (onClose) {
+            onClose();
+        }
+    };
+
     if (!isOpen) return null;
 
     return ReactDOM.createPortal(
         <div className="modal-overlay">
             <div className="modal" ref={modalRef}>
-                <FontAwesomeIcon icon={faCircleXmark} onClick={onClose} className='closeBtn'/>
+                <div className="closeBtn-container" onClick={handleCloseClick}>
+                    <FontAwesomeIcon
+                        icon={faCircleXmark}
+                        className='closeBtn'
+                    />
+                </div>
                 {children}
             </div>
         </div>,
