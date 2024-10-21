@@ -7,43 +7,53 @@ $border-color: #40444b;
 $input-background: #40444b;
 $button-color: rgb(232, 95, 4);
 $button-hover-color: rgb(200, 82, 3);
+$circle-size: 150px;
 
 #story-wrapper {
-    border-radius: 3%;
-    margin: 10px auto;
-    padding: 20px;
-    background: $background-color;
-}
-
-.story-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
+}
+
+.story-modal {
+    width: 100%;
+    max-width: 450px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $modal-background;
+    border-radius: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     &__content {
-        background-color: $modal-background;
-        border-radius: 8px;
-        width: 100%;
-        max-width: 440px;
-        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     &__header {
         padding: 16px 20px;
         border-bottom: 1px solid $border-color;
-
         h2 {
             color: $text-color;
             font-size: 20px;
             font-weight: 600;
+            margin: 0;
         }
     }
 
     &__body {
         padding: 20px;
+        overflow-y: auto;
+        flex-grow: 1;
     }
 
     &__description {
@@ -80,7 +90,6 @@ $button-hover-color: rgb(200, 82, 3);
         padding: 10px 12px;
         width: 100%;
         box-sizing: border-box;
-
         &:focus {
             outline: none;
             box-shadow: 0 0 0 2px rgba($button-color, 0.5);
@@ -93,12 +102,32 @@ $button-hover-color: rgb(200, 82, 3);
     }
 
     &__image-upload {
+        width: $circle-size;
+        height: $circle-size;
+        background-color: $input-background;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        &:hover {
+            background-color: darken($input-background, 5%);
+        }
+    }
+
+    &__banner-image-upload {
+        width: 100%;
+        height: 90px;
         background-color: $input-background;
         border-radius: 4px;
-        color: $text-color-secondary;
-        font-size: 14px;
-        padding: 16px;
-        text-align: center;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
     }
 
     &__submit {
@@ -112,9 +141,53 @@ $button-hover-color: rgb(200, 82, 3);
         font-weight: 500;
         padding: 8px 16px;
         transition: background-color 0.2s ease;
-
         &:hover {
             background-color: $button-hover-color;
         }
     }
+}
+
+.story-image-input {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.story-upload-icon-label {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    background-color: $button-color;
+    color: black;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    &:hover {
+        background-color: $button-hover-color;
+    }
+}
+
+.story-banner-upload-icon-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+
+    .fa-cloud-arrow-up {
+        font-size: 36px;
+        color: black;
+    }
+}
+
+#storyDesc {
+    min-height: 100px;
 }

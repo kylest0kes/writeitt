@@ -1,65 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useUser } from '../../Contexts/UserContext';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useUser } from "../../Contexts/UserContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 
-import './CreateStoryModal.scss';
-import { useAuth } from '../../Contexts/AuthContext';
+import "./CreateStoryModal.scss";
+import { useAuth } from "../../Contexts/AuthContext";
 
 function CreateStoryModal({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
-    storyName: '',
-    storySubtitle: '',
-    storyDesc: '',
-    storyImg: ''
+    storyName: "",
+    storySubtitle: "",
+    storyDesc: "",
+    storyImg: "",
   });
-  const [error, setError] = useState('');
-  const [csrfToken, setCsrfToken] = useState('');
+  const [error, setError] = useState("");
+  const [csrfToken, setCsrfToken] = useState("");
   const { user } = useUser();
   const { authToken } = useAuth();
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
-      const { data } = await axios.get('/api/csrf-token');
+      const { data } = await axios.get("/api/csrf-token");
       setCsrfToken(data.csrfToken);
     };
     fetchCsrfToken();
   }, []);
 
- const handleSetFormData = (e) => {
-  const { name, value } = e.target;
-  setFormData({
-    ...formData,
-    [name]: value
-  })
- };
-
- const handleFormSubmit = async (e) => {
-  e.preventDefault();
-
-  const { storyName, storySubtitle, storyDesc } = formData;
-
-  try {
-    const res = await axios.post('/api/stories/create-story', {
-      storyName,
-      storySubtitle,
-      storyDesc,
-      creator: user._id
-    }, {
-      headers: {
-        'csrf-token': csrfToken,
-        'Authorization': `Bearer ${authToken}`
-      }
+  const handleSetFormData = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
+  };
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-  } catch (err) {
-    setError('Error while creating a story.');
-    console.error(`There was an error: ${err}`);
-  }
+    const { storyName, storySubtitle, storyDesc } = formData;
 
-  onClose();
- }
+    try {
+      const res = await axios.post(
+        "/api/stories/create-story",
+        {
+          storyName,
+          storySubtitle,
+          storyDesc,
+          creator: user._id,
+        },
+        {
+          headers: {
+            "csrf-token": csrfToken,
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+    } catch (err) {
+      setError("Error while creating a story.");
+      console.error(`There was an error: ${err}`);
+    }
 
+    onClose();
+  };
 
   return (
     <div id="story-wrapper">
@@ -70,9 +73,25 @@ function CreateStoryModal({ onClose, onSubmit }) {
           </div>
           <div className="story-modal__body">
             <p className="story-modal__description">
-              A name and description help people understand what your story is all about.
+              Information to help people understand what your story is all about.
             </p>
             <form onSubmit={handleFormSubmit} className="story-modal__form">
+              <div className="story-modal__form-group">
+                <div className="story-modal__image-upload">
+                  <input
+                    type="file"
+                    id="storyImageUpload"
+                    accept=".png, .jpg, .jpeg"
+                    className="story-image-input"
+                  />
+                  <label
+                    htmlFor="storyImageUpload"
+                    className="story-upload-icon-label"
+                  >
+                    <FontAwesomeIcon icon={faCloudArrowUp} />
+                  </label>
+                </div>
+              </div>
               <div className="story-modal__form-group">
                 <label htmlFor="storyName" className="story-modal__label">
                   Story name*
@@ -114,19 +133,33 @@ function CreateStoryModal({ onClose, onSubmit }) {
                   required
                 />
               </div>
-              <div className="story-modal__image-upload">
-                Image upload area (to be implemented)
+              <div className="story-modal__form-group">
+                <div className="story-modal__label">Banner Image</div>
+                <div className="story-modal__banner-image-upload">
+                  <input
+                    type="file"
+                    id="storyBannerImageUpload"
+                    accept=".png, .jpg, .jpeg"
+                    className="story-image-input"
+                  />
+                  <label
+                    htmlFor="storyBannerImageUpload"
+                    className="story-banner-upload-icon-label"
+                  >
+                    <FontAwesomeIcon icon={faCloudArrowUp} />
+                  </label>
+                </div>
               </div>
               <button type="submit" className="story-modal__submit">
                 Submit
               </button>
-              {error && <p style={{ color: 'red' }}>{error}</p>}
+              {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default CreateStoryModal
+export default CreateStoryModal;

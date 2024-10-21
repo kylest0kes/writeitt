@@ -35,8 +35,7 @@ const StoryDetails = () => {
         return <div className="spinner"></div>;
     }
 
-    console.log(user.userImg);
-    const isCreator = user && story.creator._id === user._id;
+    const isCreator = user && story.creator && story.creator._id === user._id;
 
     return (
         <div className="story-details">
@@ -53,7 +52,7 @@ const StoryDetails = () => {
                     <button className="join">Join</button>
                     {isCreator && authToken ? (
                         <button className="more">•••</button>
-                    ) : <div></div> }
+                    ) : null }
                 </div>
             </div>
             <div className="story-content">

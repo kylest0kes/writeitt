@@ -17,7 +17,7 @@ const StorySchema = new Schema(
             required: false,
             default: ""
         },
-        heroImg: {
+        bannerImg: {
             type: String,
             required: false,
             default: ""
