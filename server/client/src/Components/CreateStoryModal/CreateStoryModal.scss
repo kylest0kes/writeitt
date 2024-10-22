@@ -162,7 +162,7 @@ $circle-size: 150px;
     }
 }
 
-.story-image-input {
+.story-image-input, .story-banner-image-input {
     opacity: 0;
     position: absolute;
     width: 100%;
@@ -205,4 +205,23 @@ $circle-size: 150px;
 
 #storyDesc {
     min-height: 100px;
+}
+
+.story-image-preview,
+.story-banner-image-preview {
+    width: 100%;
+    height: 150px; // Adjust height as needed
+    border: 2px solid rgb(232, 95, 4);
+    border-radius: 4px;
+    margin-top: 10px;
+
+    // Style for the image background
+    > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 }

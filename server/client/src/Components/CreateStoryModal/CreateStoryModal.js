@@ -12,9 +12,11 @@ function CreateStoryModal({ onClose }) {
     storyName: "",
     storySubtitle: "",
     storyDesc: "",
-    storyImg: "",
-    storyBannerImg: ""
+    storyImg: null,
+    storyBannerImg: null
   });
+  const [storyImagePreview, setStoryImagePreview] = useState(null);
+  const [storyBannerImagePreview, setStoryBannerImagePreview] = useState(null);
   const [error, setError] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
   const { user } = useUser();
@@ -28,12 +30,40 @@ function CreateStoryModal({ onClose }) {
     fetchCsrfToken();
   }, []);
 
-  const handleStoryImageChange = () => {
+  const handleStoryImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log('storyImg file: ', file);
+      setFormData(prev => ({
+        ...prev,
+        storyImg: file
+      }));
 
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        console.log(reader.result);
+        setStoryImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleStoryBannerImageChange = () => {
+  const handleStoryBannerImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("bannerImg: ", file)
+      setFormData(prev => ({
+        ...prev,
+        storyBannerImg: file
+      }));
 
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        console.log(reader.result)
+        setStoryBannerImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSetFormData = (e) => {
@@ -47,25 +77,36 @@ function CreateStoryModal({ onClose }) {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const { storyName, storySubtitle, storyDesc } = formData;
+    const { storyName, storySubtitle, storyDesc, storyImg, storyBannerImg } = formData;
 
     try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('storyName', storyName);
+      formDataToSend.append('storySubtitle', storySubtitle);
+      formDataToSend.append('storyDesc', storyDesc);
+      formDataToSend.append('creator', user._id);
+
+      if (storyImg) {
+        formDataToSend.append('storyImg', storyImg);
+      }
+      if (storyBannerImg) {
+        formDataToSend.append('storyBannerImg', storyBannerImg);
+      }
+
       await axios.post(
         "/api/stories/create-story",
-        {
-          storyName,
-          storySubtitle,
-          storyDesc,
-          creator: user._id,
-        },
+        formDataToSend,
         {
           headers: {
             "csrf-token": csrfToken,
             Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
           },
         }
       );
-      // Only close the modal if the submission was successful
+
+      setFormData({ storyName: '', storySubtitle: '', storyDesc: '', storyImg: null, storyBannerImg: null });
+
       if (onClose) onClose();
     } catch (err) {
       setError("Error while creating a story.");
@@ -73,7 +114,6 @@ function CreateStoryModal({ onClose }) {
     }
   };
 
-  // Create a handler for the cancel button
   const handleCancel = () => {
     if (onClose) {
       onClose();
@@ -92,12 +132,13 @@ function CreateStoryModal({ onClose }) {
           </p>
           <form onSubmit={handleFormSubmit} className="story-modal__form">
             <div className="story-modal__form-group">
-              <div className="story-modal__image-upload">
+              <div className="story-modal__image-upload" style={{ backgroundImage: `url(${storyImagePreview})` }}>
                 <input
                   type="file"
                   id="storyImageUpload"
                   accept=".png, .jpg, .jpeg"
                   className="story-image-input"
+                  onChange={handleStoryImageChange}
                 />
                 <label
                   htmlFor="storyImageUpload"
@@ -150,12 +191,13 @@ function CreateStoryModal({ onClose }) {
             </div>
             <div className="story-modal__form-group">
               <div className="story-modal__label">Banner Image</div>
-              <div className="story-modal__banner-image-upload">
+              <div className="story-modal__banner-image-upload" style={{ backgroundImage: `url(${storyBannerImagePreview})`}}>
                 <input
                   type="file"
                   id="storyBannerImageUpload"
                   accept=".png, .jpg, .jpeg"
-                  className="story-image-input"
+                  className="story-banner-image-input"
+                  onChange={handleStoryBannerImageChange}
                 />
                 <label
                   htmlFor="storyBannerImageUpload"

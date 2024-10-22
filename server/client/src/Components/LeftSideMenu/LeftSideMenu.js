@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import './LeftSideMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,10 +19,6 @@ function LeftSideMenu() {
 
   const openCreateModal = () => setIsCreateModalOpen(true);
   const closeCreateModal = () => setIsCreateModalOpen(false);
-
-  useEffect(() => {
-    console.log('isCreateModalOpen: ', isCreateModalOpen);
-  }, [isCreateModalOpen])
 
   const handleHomeClick = () => {
     navigate("/");

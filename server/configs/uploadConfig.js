@@ -43,9 +43,9 @@ export function configureUpload() {
 }
 
 
-export function getFileURL(req) {
+export function getFileURL(req, fileField) {
     if (process.env.USE_S3 === 'true') {
-        return req.file.location
+        return req.files[fileField][0].location;
     } else {
         return `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
     }
