@@ -39,8 +39,8 @@ const StoryDetails = () => {
 
     return (
         <div className="story-details">
-            <div className="header">
-                <div className="icon-placeholder"></div>
+            <div className="header" style={{ backgroundImage: `url(${story.bannerImg})` }}>
+                <div className="icon-placeholder" style={{ backgroundImage: `url(${story.img})` }}></div>
             </div>
             <div className="sub-header">
                 <div className="name-and-subtitle">
