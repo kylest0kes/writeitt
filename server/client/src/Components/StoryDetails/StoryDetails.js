@@ -10,8 +10,19 @@ const StoryDetails = () => {
     const { slug } = useParams();
     const [story, setStory] = useState(null);
     const [error, setError] = useState(null);
-    const { user } = useUser();
+    const [isJoined, setIsJoined] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [csrfToken, setCsrfToken] = useState('');
+    const { user, setUser } = useUser();
     const { authToken } = useAuth();
+
+    useEffect(() => {
+        const fetchCsrfToken = async () => {
+            const { data } = await axios.get('/api/csrf-token')
+            setCsrfToken(data.csrfToken);
+        };
+        fetchCsrfToken();
+    }, []);
 
     useEffect(() => {
         const fetchStory = async () => {
@@ -19,13 +30,54 @@ const StoryDetails = () => {
                 const res = await axios.get(`/api/stories/story/${slug}`);
                 setStory(res.data);
 
+                if (user && res.data.subscribers.includes(user._id)) {
+                    setIsJoined(true);
+                }
+
             } catch (err) {
                 setError('Error fetching story');
                 console.error(err);
             }
         }
         fetchStory();
-    }, [slug]);
+    }, [slug, user]);
+
+    const handleJoinClick = async () => {
+        if (!user || !authToken) {
+            setError('Please log in or create an account to join Stories.');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const res = await axios.post(`/api/users/follow-story/${slug}`,
+                {},
+                {
+                    headers: {
+                        'csrf-token': csrfToken,
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                }
+            );
+
+            setIsJoined(!isJoined);
+
+            setStory(prev => ({
+                ...prev,
+                subscribers: res.data.subscribers,
+                subscriberCount: res.data.subscriberCount
+            }));
+
+            setUser(res.data.user);
+
+        } catch (err) {
+            setError(err.response?.data?.message || "Error encountered while attempting to join Story.");
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     if (error) {
         return <p style={{color: 'red'}}>{error}</p>
@@ -49,7 +101,13 @@ const StoryDetails = () => {
                 </div>
                 <div className="buttons">
                     <button className="create-post">+ Create Post</button>
-                    <button className="join">Join</button>
+                    <button
+                        className={`join ${isJoined ? 'joined' : ''}`}
+                        onClick={handleJoinClick}
+                        disabled={loading}
+                    >
+                        {loading ? 'Loading...' : isJoined ? 'Joined' : 'Join'}
+                    </button>
                     {isCreator && authToken ? (
                         <button className="more">•••</button>
                     ) : null }

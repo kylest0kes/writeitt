@@ -7,6 +7,7 @@ import csrf from 'csurf';
 import User from '../models/User.js';
 import authMiddleware from '../middleware/auth.js';
 import { configureUpload, getFileURL } from '../configs/uploadConfig.js';
+import Story from '../models/Story.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -379,6 +380,53 @@ router.put('/delete-account', [
     }
 
 
+});
+
+router.post('/follow-story/:slug', [
+    authMiddleware,
+    csrfProtection
+], async (req, res) => {
+
+    try {
+        const story = await Story.findOne({ slug: req.params.slug});
+
+        if (!story) {
+            return res.status(404).json({ message: 'Story not found.'});
+        }
+
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.'});
+        }
+
+        const isSubscribed = story.subscribers.includes(user._id);
+
+        if (isSubscribed) {
+            // Unfollow the story
+            story.subscribers = story.subscribers.filter(id => !id.equals(user._id));
+            story.subscriberCount = Math.max(0, story.subscriberCount - 1);
+            user.following = user.following.filter(id => !id.equals(story._id));
+        } else {
+            // Follow the story
+            story.subscribers.push(user._id);
+            story.subscriberCount += 1;
+            user.following.push(story._id);
+        }
+
+        await Promise.all([story.save(), user.save()]);
+
+        res.json({
+            message: isSubscribed ? 'Successfully unfollowed' : 'Successfully followed',
+            subscribers: story.subscribers,
+            subscriberCount: story.subscriberCount,
+            user: user
+        });
+
+    } catch (err) {
+        console.error('Error in follow-story:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 export default router;

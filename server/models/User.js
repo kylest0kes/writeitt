@@ -78,6 +78,10 @@ const UserSchema = new Schema(
       required: false,
       default: "https://wroteitt.s3.us-east-2.amazonaws.com/avatars/1728783239429.png",
     },
+    following: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Story'
+    }]
   },
   {
     timestamps: {
