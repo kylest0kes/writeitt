@@ -1,0 +1,50 @@
+$sidebar-background: #1a1a1b;
+$hover-background: #272729;
+$text-color: #d7dadc;
+$spacing-unit: 8px;
+$icon-size: 24px;
+$border-radius: 4px;
+$transition-duration: 200ms;
+
+.library-item {
+  display: flex;
+  align-items: center;
+
+  color: $text-color;
+  border-radius: $border-radius;
+  transition: background-color $transition-duration ease;
+  overflow: hidden;
+
+  &:hover {
+    background-color: $hover-background;
+    cursor: pointer;
+  }
+
+  &__icon-wrapper {
+    width: 30px !important;
+    height: 30px !important;
+    margin-right: $spacing-unit;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

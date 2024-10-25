@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './LeftSideMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp, faHouse, faPenToSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,7 @@ import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
 import CreateStoryModal from '../CreateStoryModal/CreateStoryModal';
 import Modal from '../Modal/Modal';
+import LibraryItem from '../LibraryItem/LibraryItem';
 
 function LeftSideMenu() {
   const navigate = useNavigate();
@@ -16,9 +17,33 @@ function LeftSideMenu() {
 
   const [isLibraryOpen, setIsLibraryOpen] = useState(true);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [followedStories, setFollowedStories] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const openCreateModal = () => setIsCreateModalOpen(true);
   const closeCreateModal = () => setIsCreateModalOpen(false);
+
+  useEffect(() => {
+    const fetchFollowedStories = async () => {
+      if (user && authToken) {
+        setLoading(true);
+        try {
+          const response = await axios.get('/api/stories/stories-followed', {
+            headers: {
+              Authorization: `Bearer ${authToken}`
+            }
+          });
+          setFollowedStories(response.data);
+        } catch (err) {
+          console.error('Error:', err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchFollowedStories();
+  }, [user, authToken]);
 
   const handleHomeClick = () => {
     navigate("/");
@@ -70,6 +95,21 @@ function LeftSideMenu() {
                   <CreateStoryModal onClose={closeCreateModal} />
                 </Modal>
               </li>
+              {loading ? (
+                <li className="menu-item loading">
+                  <div>Loading...</div>
+                </li>
+              ) : (
+                followedStories.map(story => (
+                  <li key={story._id} className="menu-item">
+                    <LibraryItem
+                      name={story.name}
+                      img={story.img}
+                      slug={story.slug}
+                    />
+                  </li>
+                ))
+              )}
             </div>
           ) : (
             <li className="section-item library" onClick={handleLibraryDropdownClick}>

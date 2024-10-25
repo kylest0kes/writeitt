@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import csrf from "csurf";
 import authMiddleware from "../middleware/auth.js";
 import Story from "../models/Story.js";
+import User from '../models/User.js';
 import generateSlug from "../utils/GenerateUrl.js";
 import { configureUpload, getFileURL } from "../configs/uploadConfig.js";
 
@@ -65,6 +66,26 @@ router.get("/all-stories", async (req, res) => {
 });
 
 // route to get all pages created by a user
+
+
+// route to get all the stories a user is following
+router.get('/stories-followed', [
+  authMiddleware,
+], async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('following');
+
+    const stories = await Story.find({
+      '_id': { $in: user.following }
+    }).select('name img slug');
+
+    res.json(stories);
+
+  } catch (err) {
+    console.error("Error getting followed stories: ", err);
+    res.status(500).json({ message: "Error fetching followed stories.", errors: err });
+  }
+});
 
 // route to get a single page
 router.get("/story/:slug", async (req, res) => {
