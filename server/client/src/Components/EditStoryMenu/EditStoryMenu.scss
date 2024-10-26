@@ -5,3 +5,24 @@
     border-radius: 10px;
     z-index: 10;
 }
+
+.edit-story-menu-nav {
+    &-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+
+        &-span {
+            flex-shrink: 0;
+        }
+    }
+
+    &-item:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.delete-story {
+    color: red;
+}
