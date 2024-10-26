@@ -113,4 +113,22 @@
     .story-content {
         border-radius: 4px;
     }
+
+    .edit-menu-container {
+        position: relative;
+
+        .more {
+            background-color: transparent;
+            color: #878a8c;
+            font-size: 18px;
+            padding: 0 10px;
+        }
+
+        .edit-story-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            z-index: 1;
+        }
+    }
 }

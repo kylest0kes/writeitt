@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Post from '../Post/Post.js';
 import './StoryDetails.scss';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
+import EditStoryMenu from '../EditStoryMenu/EditStoryMenu.js';
 
 const StoryDetails = () => {
     const { slug } = useParams();
     const [story, setStory] = useState(null);
     const [error, setError] = useState(null);
     const [isJoined, setIsJoined] = useState(false);
+    const [isEditStoryMenuVisible, setIsEditStoryMenuVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [csrfToken, setCsrfToken] = useState('');
     const { user, setUser } = useUser();
     const { authToken } = useAuth();
+
+    const editStoryMenuRef = useRef(null);
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchCsrfToken = async () => {
@@ -41,6 +52,20 @@ const StoryDetails = () => {
         }
         fetchStory();
     }, [slug, user]);
+
+    const handleOutsideClick = (e) => {
+        if (
+            editStoryMenuRef.current &&
+            !editStoryMenuRef.current.contains(e.target)
+        ) {
+            setIsEditStoryMenuVisible(false);
+        }
+    }
+
+    const toggleEditStoryMenu = (e) => {
+        e.stopPropagation();
+        setIsEditStoryMenuVisible((prev) => !prev);
+    }
 
     const handleJoinClick = async () => {
         if (!user || !authToken) {
@@ -108,9 +133,12 @@ const StoryDetails = () => {
                     >
                         {loading ? 'Loading...' : isJoined ? 'Joined' : 'Join'}
                     </button>
-                    {isCreator && authToken ? (
-                        <button className="more">•••</button>
-                    ) : null }
+                    {isCreator && authToken && (
+                        <div className="edit-menu-container" ref={editStoryMenuRef}>
+                            <button className="more" onClick={toggleEditStoryMenu}>•••</button>
+                            {isEditStoryMenuVisible && <EditStoryMenu  />}
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="story-content">
