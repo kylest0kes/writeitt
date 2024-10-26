@@ -42,11 +42,21 @@ export function configureUpload() {
     }
 }
 
-
-export function getFileURL(req, fileField) {
+export function getFileURL(req, fileField = null) {
     if (process.env.USE_S3 === 'true') {
-        return req.files[fileField][0].location;
+        // Handle single vs. multiple files for S3
+        if (fileField && req.files && req.files[fileField]) {
+            return req.files[fileField][0].location;
+        } else if (req.file) {
+            return req.file.location;
+        }
     } else {
-        return `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+        // Local storage: check if single upload or multiple
+        if (fileField && req.files && req.files[fileField]) {
+            return `${req.protocol}://${req.get('host')}/uploads/${req.files[fileField][0].filename}`;
+        } else if (req.file) {
+            return `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        }
     }
+    throw new Error('No file found');
 }
