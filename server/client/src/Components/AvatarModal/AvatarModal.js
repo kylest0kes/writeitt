@@ -73,46 +73,46 @@ function AvatarModal({ onClose }) {
 
     return (
         <div id="avatar-wrapper">
-        <form method="post" onSubmit={handleAvatarModalSubmit}>
-            <h1 className="avatar-heading">Change Avatar</h1>
+            <form method="post" onSubmit={handleAvatarModalSubmit}>
+                <h1 className="avatar-heading">Change Avatar</h1>
 
-            <div className="avatar-input-container">
-            <div className="avatar-input-wrapper">
-                <div className="avatar-upload">
-                <div className="avatar-edit">
-                    <input
-                    type="file"
-                    id="imageUpload"
-                    accept=".png, .jpg, .jpeg"
-                    className="avatar-input"
-                    onChange={handleImageChange}
-                    />
-                    <label htmlFor="imageUpload" className="upload-icon-label">
-                    <FontAwesomeIcon icon={faCloudArrowUp} />
-                    </label>
+                <div className="avatar-input-container">
+                <div className="avatar-input-wrapper">
+                    <div className="avatar-upload">
+                    <div className="avatar-edit">
+                        <input
+                        type="file"
+                        id="imageUpload"
+                        accept=".png, .jpg, .jpeg"
+                        className="avatar-input"
+                        onChange={handleImageChange}
+                        />
+                        <label htmlFor="imageUpload" className="upload-icon-label">
+                        <FontAwesomeIcon icon={faCloudArrowUp} />
+                        </label>
+                    </div>
+                    <div className="avatar-preview">
+                        <div id="imagePreview" style={{
+                        backgroundImage: `url(${imagePreview})`,
+                    }}></div>
+                    </div>
+                    </div>
                 </div>
-                <div className="avatar-preview">
-                    <div id="imagePreview" style={{
-                    backgroundImage: `url(${imagePreview})`,
-                  }}></div>
                 </div>
-                </div>
-            </div>
-            </div>
 
-            <div className="avatar-btns-container">
-            <button
-                className="avatar-cancel-btn"
-                type="submit"
-                onClick={() => onClose()}
-            >
-                Cancel
-            </button>
-            <button className="avatar-submit-btn" type="submit">
-                Submit
-            </button>
-            </div>
-        </form>
+                <div className="avatar-btns-container">
+                <button
+                    className="avatar-cancel-btn"
+                    type="submit"
+                    onClick={() => onClose()}
+                >
+                    Cancel
+                </button>
+                <button className="avatar-submit-btn" type="submit">
+                    Submit
+                </button>
+                </div>
+            </form>
         </div>
     );
 }
