@@ -108,5 +108,33 @@ router.get("/story/:slug", async (req, res) => {
 // route to update a page
 
 // route to delete a page
+router.delete("/delete-story/:slug", [
+  authMiddleware,
+  csrfProtection
+], async (req, res) => {
+  try {
+    const story = await Story.findOne({ slug: req.params.slug }).populate('creator');
+
+    if (!story) {
+      return res.status(404).json({ message: 'Story not found' });
+    }
+
+    if (story.creator._id.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Unauthorized to delete this story' });
+    }
+
+    await User.updateMany(
+      { following: story._id },
+      { $pull: { following: story._id } }
+    );
+
+    await Story.findByIdAndDelete(story._id);
+
+    res.json({ message: 'Story deleted successfully' });
+  } catch(err) {
+    console.error('Error while attempting to delete Story: ', err);
+    res.status(500).json({ message: 'Failed to delete Story', error: err.message });
+  }
+});
 
 export default router;

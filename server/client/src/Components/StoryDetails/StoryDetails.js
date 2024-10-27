@@ -19,8 +19,6 @@ const StoryDetails = () => {
     const { authToken } = useAuth();
 
     const editStoryMenuRef = useRef(null);
-    const deleteStoryModalRef = useRef(null);
-    const editStoryModalRef = useRef(null);
 
     useEffect(() => {
         document.addEventListener("mousedown", handleOutsideClick);
