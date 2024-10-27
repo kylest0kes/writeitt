@@ -36,7 +36,7 @@ const Modal = ({ isOpen, onClose, children }) => {
 
     return ReactDOM.createPortal(
         <div className="modal-overlay">
-            <div className="modal" ref={modalRef}>
+            <div className="modal" ref={modalRef} onClick={(e) => e.stopPropagation}>
                 <div className="closeBtn-container" onClick={handleCloseClick}>
                     <FontAwesomeIcon
                         icon={faCircleXmark}

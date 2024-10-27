@@ -19,6 +19,8 @@ const StoryDetails = () => {
     const { authToken } = useAuth();
 
     const editStoryMenuRef = useRef(null);
+    const deleteStoryModalRef = useRef(null);
+    const editStoryModalRef = useRef(null);
 
     useEffect(() => {
         document.addEventListener("mousedown", handleOutsideClick);
@@ -54,10 +56,16 @@ const StoryDetails = () => {
     }, [slug, user]);
 
     const handleOutsideClick = (e) => {
+        const modalElements = document.querySelectorAll('.modal, .delete-story-modal-wrapper, .edit-story-modal-wrapper');
+        const isClickInsideModal = Array.from(modalElements).some(element =>
+            element && element.contains(e.target)
+        );
+
         if (
             editStoryMenuRef.current &&
-            !editStoryMenuRef.current.contains(e.target)
+            !editStoryMenuRef.current.contains(e.target) && !isClickInsideModal
         ) {
+            console.log("EditStoryMenuRef Outside click fired");
             setIsEditStoryMenuVisible(false);
         }
     }
@@ -136,7 +144,7 @@ const StoryDetails = () => {
                     {isCreator && authToken && (
                         <div className="edit-menu-container" ref={editStoryMenuRef}>
                             <button className="more" onClick={toggleEditStoryMenu}>•••</button>
-                            {isEditStoryMenuVisible && <EditStoryMenu  />}
+                            {isEditStoryMenuVisible && <EditStoryMenu ref={editStoryMenuRef}  />}
                         </div>
                     )}
                 </div>
