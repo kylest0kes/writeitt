@@ -103,7 +103,53 @@ router.get("/story/:slug", async (req, res) => {
 });
 
 // route to update a page
+router.put('/update-story/:id', [
+  authMiddleware,
+  csrfProtection,
+  (req, res, next) => {
+      const upload = configureUpload();
+      upload.fields([{ name: 'storyImg', maxCount: 1 }, { name: 'storyBannerImg', maxCount: 1 }])(req, res, next);
+  },
+  body('storySubtitle').isString().isLength({ max: 50 }),
+  body('storyDesc').isString().isLength({ max: 500 })
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array(), message: 'Invalid data to update story.' });
+  }
 
+  try {
+      const story = await Story.findById(req.params.id);
+
+      if (!story) {
+          return res.status(404).json({ message: 'Story not found' });
+      }
+
+      if (story.creator.toString() !== req.user.id.toString()) {
+          return res.status(403).json({ message: 'Not authorized to edit this story' });
+      }
+
+      const { storySubtitle, storyDesc } = req.body;
+      const storyImg = req.files?.['storyImg'] ? getFileURL(req, 'storyImg') : story.img;
+      const storyBannerImg = req.files?.['storyBannerImg'] ? getFileURL(req, 'storyBannerImg') : story.bannerImg;
+
+      const updatedStory = await Story.findByIdAndUpdate(
+          req.params.id,
+          {
+              subtitle: storySubtitle,
+              description: storyDesc,
+              img: storyImg,
+              bannerImg: storyBannerImg
+          },
+          { new: true }
+      );
+
+      res.json({ story: updatedStory, message: 'Story updated successfully.' });
+  } catch (err) {
+      console.error('Error updating story: ', err);
+      res.status(500).json({ message: 'Error updating story.', errors: err });
+  }
+});
 
 // route to delete a page
 router.delete("/delete-story/:slug", [

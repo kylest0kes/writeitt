@@ -5,7 +5,7 @@ import Modal from '../Modal/Modal';
 import EditStoryModal from '../EditStoryModal/EditStoryModal';
 import DeleteStoryModal from '../DeleteStoryModal/DeleteStoryModal';
 
-const EditStoryMenu = forwardRef((props, ref) => {
+const EditStoryMenu = forwardRef(({story, onStoryUpdate}, ref) => {
     const [isEditStoryModalOpen, setIsStoryModalOpen] = useState(false);
     const [isDeleteStoryModalOpen, setIsDeleteStoryModalOpen] = useState(false);
 
@@ -24,7 +24,7 @@ const EditStoryMenu = forwardRef((props, ref) => {
                 </span>
             </div>
             <Modal isOpen={isEditStoryModalOpen} onClose={closeEditStoryModal}>
-                <EditStoryModal onClose={closeEditStoryModal} />
+                <EditStoryModal story={story} onClose={closeEditStoryModal} storyUpdate={onStoryUpdate} />
             </Modal>
             <div className='edit-story-menu-nav-item delete-story' onClick={openDeleteStoryModal}>
                 <span className='edit-story-menu-nav-item-span'>

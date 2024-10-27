@@ -104,7 +104,7 @@ router.post('/login', [
             user: {id: user.id}
         }
 
-        jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h'}, (err, token) => {
+        jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '4h'}, (err, token) => {
             if (err) throw err;
             res.json({ token, user: { id: user.id, username: user.username, email: user.email } });
         });

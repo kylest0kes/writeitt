@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -9,9 +8,8 @@ import './EditStoryModal.scss';
 import '../CreateStoryModal/CreateStoryModal.scss';
 
 
-function EditStoryModal({ onClose, story }) {
+function EditStoryModal({ onClose, story, storyUpdate }) {
   const [formData, setFormData] = useState({
-    storyName: "",
     storySubtitle: "",
     storyDesc: "",
     storyImg: null,
@@ -21,14 +19,12 @@ function EditStoryModal({ onClose, story }) {
   const [storyBannerImagePreview, setStoryBannerImagePreview] = useState(null);
   const [error, setError] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
-  const { user } = useUser();
   const { authToken } = useAuth();
 
 
   useEffect(() => {
     if (story) {
       setFormData({
-        storyName: story.name,
         storySubtitle: story.subtitle,
         storyDesc: story.description,
         storyImg: null,
@@ -91,40 +87,42 @@ function EditStoryModal({ onClose, story }) {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const { storyName, storySubtitle, storyDesc, storyImg, storyBannerImg } = formData;
+    const { storySubtitle, storyDesc, storyImg, storyBannerImg } = formData;
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('storyName', storyName);
-      formDataToSend.append('storySubtitle', storySubtitle);
-      formDataToSend.append('storyDesc', storyDesc);
+        const formDataToSend = new FormData();
+        formDataToSend.append('storySubtitle', storySubtitle);
+        formDataToSend.append('storyDesc', storyDesc);
 
-      // Only append images if new ones were selected
-      if (storyImg) {
-        formDataToSend.append('storyImg', storyImg);
-      }
-      if (storyBannerImg) {
-        formDataToSend.append('storyBannerImg', storyBannerImg);
-      }
-
-      await axios.put(
-        `/api/stories/update-story/${story._id}`,
-        formDataToSend,
-        {
-          headers: {
-            "csrf-token": csrfToken,
-            Authorization: `Bearer ${authToken}`,
-            'Content-Type': 'multipart/form-data'
-          },
+        // Only append images if new ones were selected
+        if (storyImg) {
+            formDataToSend.append('storyImg', storyImg);
         }
-      );
+        if (storyBannerImg) {
+            formDataToSend.append('storyBannerImg', storyBannerImg);
+        }
 
-      if (onClose) onClose();
+        const response = await axios.put(
+            `/api/stories/update-story/${story._id}`,
+            formDataToSend,
+            {
+                headers: {
+                    "csrf-token": csrfToken,
+                    Authorization: `Bearer ${authToken}`,
+                    'Content-Type': 'multipart/form-data'
+                },
+            }
+        );
+
+        if (response.data.story) {
+          if (storyUpdate) storyUpdate(response.data.story);
+            if (onClose) onClose();
+        }
     } catch (err) {
-      setError("Error while updating the story.");
-      console.error(`There was an error: ${err}`);
+        console.error('Error details:', err.response?.data || err.message);
+        setError(err.response?.data?.message || "Error while updating the story.");
     }
-  };
+};
 
   const handleCancel = () => {
     if (onClose) {
@@ -159,20 +157,6 @@ function EditStoryModal({ onClose, story }) {
                   <FontAwesomeIcon icon={faCloudArrowUp} />
                 </label>
               </div>
-            </div>
-            <div className="story-modal__form-group">
-              <label htmlFor="storyName" className="story-modal__label">
-                Story name*
-              </label>
-              <input
-                type="text"
-                id="storyName"
-                name="storyName"
-                value={formData.storyName}
-                onChange={handleSetFormData}
-                className="story-modal__input"
-                required
-              />
             </div>
             <div className="story-modal__form-group">
               <label htmlFor="storySubTitle" className="story-modal__label">

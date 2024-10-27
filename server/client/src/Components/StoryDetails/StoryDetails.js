@@ -53,6 +53,10 @@ const StoryDetails = () => {
         fetchStory();
     }, [slug, user]);
 
+    const handleStoryUpdate = (updatedStory) => {
+        setStory(updatedStory);
+    };
+
     const handleOutsideClick = (e) => {
         const modalElements = document.querySelectorAll('.modal, .delete-story-modal-wrapper, .edit-story-modal-wrapper');
         const isClickInsideModal = Array.from(modalElements).some(element =>
@@ -142,7 +146,7 @@ const StoryDetails = () => {
                     {isCreator && authToken && (
                         <div className="edit-menu-container" ref={editStoryMenuRef}>
                             <button className="more" onClick={toggleEditStoryMenu}>•••</button>
-                            {isEditStoryMenuVisible && <EditStoryMenu ref={editStoryMenuRef}  />}
+                            {isEditStoryMenuVisible && <EditStoryMenu story={story} ref={editStoryMenuRef} onStoryUpdate={handleStoryUpdate} />}
                         </div>
                     )}
                 </div>
