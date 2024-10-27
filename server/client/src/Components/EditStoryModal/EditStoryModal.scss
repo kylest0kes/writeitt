@@ -1,8 +1,7 @@
 $modal-background: rgb(40, 40, 40);
 
-#edit-story-modal-wrapper {
-    width: 100%;
-    max-width: 500px;
+.edit-story-modal {
+    width: 500px;
     max-height: 70vh;
     display: flex;
     flex-direction: column;

@@ -65,9 +65,6 @@ router.get("/all-stories", async (req, res) => {
   }
 });
 
-// route to get all pages created by a user
-
-
 // route to get all the stories a user is following
 router.get('/stories-followed', [
   authMiddleware,
@@ -106,6 +103,7 @@ router.get("/story/:slug", async (req, res) => {
 });
 
 // route to update a page
+
 
 // route to delete a page
 router.delete("/delete-story/:slug", [
