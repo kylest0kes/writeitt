@@ -8,25 +8,38 @@ import { useAuth } from '../../Contexts/AuthContext';
 
 const DeleteStoryModal = ({ onClose }) => {
     const navigate = useNavigate();
+    const [story, setStory] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const { slug } = useParams();
     const [csrfToken, setCsrfToken] = useState('');
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const { authToken } = useAuth();
 
-    useEffect(() => {
-        const fetchCsrfToken = async () => {
-            const { data } = await axios.get('/api/csrf-token')
-            setCsrfToken(data.csrfToken);
-        };
-        fetchCsrfToken();
-    }, []);
+    const fetchCsrfToken = async () => {
+        const { data } = await axios.get('/api/csrf-token');
+        setCsrfToken(data.csrfToken);
+    };
 
-    const handleDeleteClick = async (e) => {
-        if (!user || !authToken) {
-           setError("You can only delete a Story if you are logged in and the creator of the Story.");
-           return;
+    useEffect(() => {
+        const fetchStory = async () => {
+            try {
+                const res = await axios.get(`/api/stories/story/${slug}`);
+                setStory(res.data);
+            } catch (err) {
+                setError("Error fetching story");
+                console.error(err);
+            }
+        };
+
+        fetchStory();
+        fetchCsrfToken();
+    }, [slug]);
+
+    const handleDeleteStory = async () => {
+        if (!user || !authToken || !story) {
+            setError("You need to be logged in and the creator of the story to delete it.");
+            return;
         }
 
         setLoading(true);
@@ -39,19 +52,20 @@ const DeleteStoryModal = ({ onClose }) => {
                 }
             });
 
-            onClose();
+            setUser(prevUser => ({
+                ...prevUser,
+                following: prevUser.following.filter(storyId => storyId !== story._id)
+            }));
 
             navigate('/allstories');
 
-            window.location.reload();
-
         } catch (err) {
+            setError(err.response?.data?.message || "Error encountered while trying to delete the story.");
             console.error("Unable to delete Story:", err);
-            setError(err.response?.data?.message || "Unable to delete Story. Please try again.");
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     if (error) {
         return <p style={{color: 'red'}}>{error}</p>
@@ -73,7 +87,7 @@ const DeleteStoryModal = ({ onClose }) => {
                 <button className='delete-story-cancel-btn' type='button' onClick={() => onClose()}>
                     Cancel
                 </button>
-                <button className='delete-story-submit-btn' type='button' onClick={handleDeleteClick}>
+                <button className='delete-story-submit-btn' type='button' onClick={handleDeleteStory}>
                     Submit
                 </button>
             </div>
