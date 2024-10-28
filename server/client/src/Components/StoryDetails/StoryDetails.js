@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Post from '../Post/Post.js';
@@ -13,6 +13,7 @@ const StoryDetails = () => {
     const [error, setError] = useState(null);
     const [isJoined, setIsJoined] = useState(false);
     const [isEditStoryMenuVisible, setIsEditStoryMenuVisible] = useState(false);
+    const [isCreator, setIsCreator] = useState(false);
     const [loading, setLoading] = useState(false);
     const [csrfToken, setCsrfToken] = useState('');
     const { user, setUser } = useUser();
@@ -45,6 +46,8 @@ const StoryDetails = () => {
                     setIsJoined(true);
                 }
 
+                setIsCreator(user && res.data.creator && res.data.creator._id === user._id);
+
             } catch (err) {
                 setError('Error fetching story');
                 console.error(err);
@@ -53,9 +56,16 @@ const StoryDetails = () => {
         fetchStory();
     }, [slug, user]);
 
-    const handleStoryUpdate = (updatedStory) => {
+      const handleStoryUpdate = useCallback((updatedStory) => {
         setStory(updatedStory);
-    };
+        setUser((prevUser) => ({
+            ...prevUser,
+            following: prevUser.following.map((id) =>
+                id.toString() === updatedStory._id.toString() ? updatedStory._id : id
+            ),
+        }));
+        setIsEditStoryMenuVisible(false);
+    }, [setUser]);
 
     const handleOutsideClick = (e) => {
         const modalElements = document.querySelectorAll('.modal, .delete-story-modal-wrapper, .edit-story-modal-wrapper');
@@ -67,7 +77,6 @@ const StoryDetails = () => {
             editStoryMenuRef.current &&
             !editStoryMenuRef.current.contains(e.target) && !isClickInsideModal
         ) {
-            console.log("EditStoryMenuRef Outside click fired");
             setIsEditStoryMenuVisible(false);
         }
     }
@@ -122,8 +131,6 @@ const StoryDetails = () => {
         return <div className="spinner"></div>;
     }
 
-    const isCreator = user && story.creator && story.creator._id === user._id;
-
     return (
         <div className="story-details">
             <div className="header" style={{ backgroundImage: `url(${story.bannerImg})` }}>
@@ -145,8 +152,12 @@ const StoryDetails = () => {
                     </button>
                     {isCreator && authToken && (
                         <div className="edit-menu-container" ref={editStoryMenuRef}>
-                            <button className="more" onClick={toggleEditStoryMenu}>•••</button>
-                            {isEditStoryMenuVisible && <EditStoryMenu story={story} ref={editStoryMenuRef} onStoryUpdate={handleStoryUpdate} />}
+                            <button
+                                className="more"
+                                onClick={toggleEditStoryMenu}>
+                                •••
+                            </button>
+                            {isEditStoryMenuVisible && (<EditStoryMenu story={story} ref={editStoryMenuRef} onStoryUpdate={handleStoryUpdate} />)}
                         </div>
                     )}
                 </div>

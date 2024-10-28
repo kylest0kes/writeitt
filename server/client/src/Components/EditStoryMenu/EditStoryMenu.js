@@ -24,7 +24,10 @@ const EditStoryMenu = forwardRef(({story, onStoryUpdate}, ref) => {
                 </span>
             </div>
             <Modal isOpen={isEditStoryModalOpen} onClose={closeEditStoryModal}>
-                <EditStoryModal story={story} onClose={closeEditStoryModal} storyUpdate={onStoryUpdate} />
+                <EditStoryModal story={story} onClose={closeEditStoryModal} storyUpdate={(updatedStory) => {
+                            onStoryUpdate(updatedStory);
+                            closeEditStoryModal();
+                        }}  />
             </Modal>
             <div className='edit-story-menu-nav-item delete-story' onClick={openDeleteStoryModal}>
                 <span className='edit-story-menu-nav-item-span'>
@@ -37,6 +40,6 @@ const EditStoryMenu = forwardRef(({story, onStoryUpdate}, ref) => {
         </div>
     </div>
   )
-})
+});
 
 export default EditStoryMenu;

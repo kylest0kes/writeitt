@@ -6,6 +6,7 @@ import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 import './EditStoryModal.scss';
 import '../CreateStoryModal/CreateStoryModal.scss';
+import { useUser } from "../../Contexts/UserContext";
 
 
 function EditStoryModal({ onClose, story, storyUpdate }) {
@@ -19,8 +20,8 @@ function EditStoryModal({ onClose, story, storyUpdate }) {
   const [storyBannerImagePreview, setStoryBannerImagePreview] = useState(null);
   const [error, setError] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
+  const { user } = useUser();
   const { authToken } = useAuth();
-
 
   useEffect(() => {
     if (story) {
@@ -115,9 +116,14 @@ function EditStoryModal({ onClose, story, storyUpdate }) {
         );
 
         if (response.data.story) {
-          if (storyUpdate) storyUpdate(response.data.story);
-            if (onClose) onClose();
-        }
+          if (storyUpdate) {
+              storyUpdate(response.data.story);
+          }
+          if (onClose) {
+              onClose();
+          }
+      }
+
     } catch (err) {
         console.error('Error details:', err.response?.data || err.message);
         setError(err.response?.data?.message || "Error while updating the story.");
