@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Post from '../Post/Post.js';
@@ -6,6 +6,7 @@ import './StoryDetails.scss';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
 import EditStoryMenu from '../EditStoryMenu/EditStoryMenu.js';
+import JoinButton from '../JoinButton/JoinButton.js';
 
 const StoryDetails = () => {
     const { slug } = useParams();
@@ -14,7 +15,6 @@ const StoryDetails = () => {
     const [isJoined, setIsJoined] = useState(false);
     const [isEditStoryMenuVisible, setIsEditStoryMenuVisible] = useState(false);
     const [isCreator, setIsCreator] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [csrfToken, setCsrfToken] = useState('');
     const { user, setUser } = useUser();
     const { authToken } = useAuth();
@@ -86,42 +86,14 @@ const StoryDetails = () => {
         setIsEditStoryMenuVisible((prev) => !prev);
     }
 
-    const handleJoinClick = async () => {
-        if (!user || !authToken) {
-            setError('Please log in or create an account to join Stories.');
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            const res = await axios.post(`/api/users/follow-story/${slug}`,
-                {},
-                {
-                    headers: {
-                        'csrf-token': csrfToken,
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                }
-            );
-
-            setIsJoined(!isJoined);
-
-            setStory(prev => ({
-                ...prev,
-                subscribers: res.data.subscribers,
-                subscriberCount: res.data.subscriberCount
-            }));
-
-            setUser(res.data.user);
-
-        } catch (err) {
-            setError(err.response?.data?.message || "Error encountered while attempting to join Story.");
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    }
+    const handleJoinToggle = (updatedData) => {
+        setStory(prev => ({
+            ...prev,
+            subscribers: updatedData.subscribers,
+            subscriberCount: updatedData.subscriberCount
+        }));
+        setUser(updatedData.user);
+    };
 
     if (error) {
         return <p style={{color: 'red'}}>{error}</p>
@@ -143,13 +115,13 @@ const StoryDetails = () => {
                 </div>
                 <div className="buttons">
                     <button className="create-post">+ Create Post</button>
-                    <button
-                        className={`join ${isJoined ? 'joined' : ''}`}
-                        onClick={handleJoinClick}
-                        disabled={loading}
-                    >
-                        {loading ? 'Loading...' : isJoined ? 'Joined' : 'Join'}
-                    </button>
+                    <JoinButton
+                        isJoined={isJoined}
+                        setIsJoined={setIsJoined}
+                        slug={slug}
+                        csrfToken={csrfToken}
+                        authToken={authToken}
+                        setUser={setUser}/>
                     {isCreator && authToken && (
                         <div className="edit-menu-container" ref={editStoryMenuRef}>
                             <button
