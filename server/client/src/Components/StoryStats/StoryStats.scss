@@ -1,0 +1,12 @@
+.story-stats {
+    margin-top: 10px;
+    font-size: 14px;
+
+    > * {
+        margin-top: 10px;
+    }
+
+    &-posts-number, &-subscribers-number {
+        color: rgb(232, 95, 4);
+    }
+}

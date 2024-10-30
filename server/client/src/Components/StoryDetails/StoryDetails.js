@@ -129,25 +129,27 @@ const StoryDetails = () => {
             <div className="story-content">
                 <div className='story-content-info'>
                     <div className='story-content-info-left'>
-                        <h4>About: </h4>
+                        <h4 className='about-story'>About: </h4>
                         <p>{story.description}</p>
                     </div>
                     <div className='story-content-info-right'>
-                        <StoryStats />
+                        <StoryStats story={story}/>
                     </div>
                 </div>
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                <div className="story-content-posts">
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                </div>
            </div>
         </div>
     )

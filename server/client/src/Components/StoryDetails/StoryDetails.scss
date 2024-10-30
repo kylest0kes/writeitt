@@ -123,6 +123,11 @@
         &-left {
             flex: 1;
             margin-right: 10px;
+            max-width: 50%;
+
+            .about-story {
+                margin-top: 10px;
+            }
         }
 
         &-right {
