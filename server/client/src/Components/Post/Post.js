@@ -14,7 +14,6 @@ const SocialMediaPost = () => {
             <h2 className="post-subreddit">subpage</h2>
             <p className="post-time">9 hr. ago</p>
           </div>
-          <button className="post-joinButton">Join</button>
         </div>
         <h1 className="post-title">
           Post Title

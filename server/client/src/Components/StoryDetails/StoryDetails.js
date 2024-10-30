@@ -7,6 +7,7 @@ import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
 import EditStoryMenu from '../EditStoryMenu/EditStoryMenu.js';
 import JoinButton from '../JoinButton/JoinButton.js';
+import StoryStats from '../StoryStats/StoryStats.js';
 
 const StoryDetails = () => {
     const { slug } = useParams();
@@ -86,15 +87,6 @@ const StoryDetails = () => {
         setIsEditStoryMenuVisible((prev) => !prev);
     }
 
-    const handleJoinToggle = (updatedData) => {
-        setStory(prev => ({
-            ...prev,
-            subscribers: updatedData.subscribers,
-            subscriberCount: updatedData.subscriberCount
-        }));
-        setUser(updatedData.user);
-    };
-
     if (error) {
         return <p style={{color: 'red'}}>{error}</p>
     }
@@ -135,8 +127,15 @@ const StoryDetails = () => {
                 </div>
             </div>
             <div className="story-content">
-                <h4>About: </h4>
-                <p>{story.description}</p>
+                <div className='story-content-info'>
+                    <div className='story-content-info-left'>
+                        <h4>About: </h4>
+                        <p>{story.description}</p>
+                    </div>
+                    <div className='story-content-info-right'>
+                        <StoryStats />
+                    </div>
+                </div>
                 <Post />
                 <Post />
                 <Post />
