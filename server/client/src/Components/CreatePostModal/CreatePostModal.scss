@@ -1,11 +1,90 @@
-$modal-background: rgb(40, 40, 40);
-
 .create-post-modal {
-    width: 500px;
-    max-height: 70vh;
-    display: flex;
-    flex-direction: column;
-    background-color: $modal-background;
+    width: 40vw;
+    min-width: 350px;
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #1a1a1b;
+    border: 1px solid #343536;
     border-radius: 8px;
-    z-index: 9999;
+    color: #d7dadc;
+
+    h3 {
+        font-size: 1.75rem;
+        color: #d7dadc;
+        text-align: center;
+        margin-bottom: 2rem;
+        margin-top: 0;
+    }
+
+    .post-title {
+        width: 95%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        color: #d7dadc;
+        background-color: #272729;
+        border: 1px solid #343536;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+    }
+
+    // Styling for the Quill editor
+    .ql-container {
+        height: 300px;
+        font-size: 1rem;
+        background-color: #272729;
+        color: #d7dadc;
+        border: 1px solid #343536;
+        border-radius: 4px;
+
+        .ql-editor {
+            padding: 1rem;
+            width: 100%;
+            background-color: #272729;
+            color: #d7dadc;
+
+            &::before {
+                color: #d7dadc;
+            }
+        }
+
+
+        .ql-toolbar {
+            background-color: #1a1a1b;
+            border: none;
+            color: #d7dadc;
+
+            .ql-picker-label,
+            .ql-stroke,
+            .ql-fill {
+                color: #d7dadc;
+            }
+
+            .ql-active .ql-stroke,
+            .ql-active .ql-fill {
+                color: #d7dadc;
+            }
+        }
+    }
+
+    .post-button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        color: #ffffff;
+        background-color: rgb(232, 95, 4);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1.5rem;
+
+        &:disabled {
+            background-color: #3a3a3c;
+            cursor: not-allowed;
+        }
+
+        &:hover:not(:disabled) {
+            background-color: rgb(200, 82, 3);
+        }
+    }
 }

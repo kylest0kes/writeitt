@@ -14,7 +14,7 @@ const StoryStats = ({ story }) => {
             </div>
             <div className='story-stats-subscribers'>
                 <span className='story-stats-subscribers-number'>{story.subscriberCount}</span>
-                <span className='story-stats-subscribers-label'> SUBSCRIBERS</span>
+                <span className='story-stats-subscribers-label'> SUBSCRIBED</span>
             </div>
             <div className='story-stats-creation-date'>
                 <span className='story-stats-creation-date-value'>Created: {formattedDate}</span>
