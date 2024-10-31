@@ -19,6 +19,10 @@ const StoryStats = ({ story }) => {
             <div className='story-stats-creation-date'>
                 <span className='story-stats-creation-date-value'>Created: {formattedDate}</span>
             </div>
+            <div className='story-stats-creator'>
+                <span className='story-stats-creator-label'>Creator: </span>
+                <span className='story-stats-creator-value'>{story.creator.username}</span>
+            </div>
         </div>
     )
 }

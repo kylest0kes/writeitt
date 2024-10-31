@@ -1,3 +1,5 @@
+$color: rgb(232, 95, 4);
+
 .story-stats {
     margin-top: 10px;
     font-size: 14px;
@@ -7,6 +9,17 @@
     }
 
     &-posts-number, &-subscribers-number {
-        color: rgb(232, 95, 4);
+        color: $color;
     }
+
+    &-creator-value {
+        color: $color;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+
 }

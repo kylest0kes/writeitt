@@ -1,0 +1,11 @@
+$modal-background: rgb(40, 40, 40);
+
+.create-post-modal {
+    width: 500px;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $modal-background;
+    border-radius: 8px;
+    z-index: 9999;
+}

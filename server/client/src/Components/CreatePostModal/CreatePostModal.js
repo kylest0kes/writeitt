@@ -4,7 +4,7 @@ import './CreatePostModal.scss';
 
 const CreatePostModal = () => {
   return (
-    <div>CreatePostModal</div>
+    <div className='create-post-modal'>CreatePostModal</div>
   )
 }
 
