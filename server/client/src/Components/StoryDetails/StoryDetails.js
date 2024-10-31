@@ -8,17 +8,23 @@ import { useAuth } from '../../Contexts/AuthContext';
 import EditStoryMenu from '../EditStoryMenu/EditStoryMenu.js';
 import JoinButton from '../JoinButton/JoinButton.js';
 import StoryStats from '../StoryStats/StoryStats.js';
+import Modal from '../Modal/Modal.js';
+import CreatePostModal from '../CreatePostModal/CreatePostModal.js';
 
 const StoryDetails = () => {
     const { slug } = useParams();
     const [story, setStory] = useState(null);
     const [error, setError] = useState(null);
     const [isJoined, setIsJoined] = useState(false);
+    const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
     const [isEditStoryMenuVisible, setIsEditStoryMenuVisible] = useState(false);
     const [isCreator, setIsCreator] = useState(false);
     const [csrfToken, setCsrfToken] = useState('');
     const { user, setUser } = useUser();
     const { authToken } = useAuth();
+
+    const openCreatePostModal = () => setIsCreatePostModalOpen(true);
+    const closeCreatePostModal = () => setIsCreatePostModalOpen(false);
 
     const editStoryMenuRef = useRef(null);
 
@@ -106,7 +112,10 @@ const StoryDetails = () => {
                     <p>{story.subtitle}</p>
                 </div>
                 <div className="buttons">
-                    <button className="create-post">+ Create Post</button>
+                    <button className="create-post" onClick={openCreatePostModal}>+ Create Post</button>
+                    <Modal isOpen={isCreatePostModalOpen} onClose={closeCreatePostModal}>
+                        <CreatePostModal onClose={closeCreatePostModal} />
+                    </Modal>
                     <JoinButton
                         isJoined={isJoined}
                         setIsJoined={setIsJoined}
