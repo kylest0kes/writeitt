@@ -1,11 +1,47 @@
 import express from "express";
 import csrf from "csurf";
+import authMiddleware from "../middleware/auth.js";
+import { configureUpload, getFileURL } from "../configs/uploadConfig.js";
+import { body, validationResult } from "express-validator";
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
 
 // route to create a post
+router.post('/create-post', [
+    authMiddleware,
+    csrfProtection,
+    (req, res, next) => {
+        const upload = configureUpload();
+        upload.single('postMedia')(req, res, next);
+    },
+    body('postTitle').isString().isLength({ max: 300, min: 5 }),
+    body('postBody').isString().isLength({ max: 30000 })
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array(), message: "Invalid data to create post"});
+    }
 
+    const { postTitle, postBody } = req.body;
+    const postMedia = req.file ? await getFileURL(req.file) : null;
+    const author = req.user._id;
+
+    try {
+        const newPost = new Post({
+            title: postTitle,
+            body: postBody,
+            media: postMedia,
+            author
+        });
+
+        await newPost.save();
+        res.status(201).json({ message: "Post created successfully", post: newPost });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error. Could not create post." });
+    }
+})
 
 // edit a post
 
@@ -17,3 +53,6 @@ const csrfProtection = csrf({ cookie: true });
 
 
 // get all posts for a story
+
+
+export default router;

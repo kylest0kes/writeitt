@@ -2,6 +2,9 @@
     width: 40vw;
     min-width: 350px;
     max-width: 800px;
+    max-height: 50vh;
+    height: auto;
+    overflow-y: auto;
     margin: auto;
     padding: 2rem;
     background-color: #1a1a1b;
@@ -53,26 +56,36 @@
         margin-bottom: 1.5rem;
     }
 
-    .ql-container {
+    .tiptap {
         height: 115px;
         font-size: 1rem;
+        overflow-y: auto;
         background-color: #272729;
         color: #d7dadc;
         border: 1px solid #343536;
         border-radius: 4px;
         margin-bottom: 1.5rem;
 
-        .ql-editor {
+        p {
+            margin: 1rem;
+        }
+
+        .tiptap-content {
             padding: 1rem;
             width: 100%;
             background-color: #272729;
             color: #d7dadc;
+
+            p {
+                margin: 0;
+                padding: .5rem;
+            }
         }
     }
 
     .image-upload {
         width: 95%;
-        height: 115px;
+        height: 105px;
         padding: 1rem;
         font-size: 1rem;
         color: #d7dadc;
@@ -87,7 +100,7 @@
         align-items: center;
         justify-content: center;
         width: 100%;
-        height: 156px;
+        height: 115px;
         color: #000;
         background-color: #272729;
         border: 1px solid #343536;
@@ -98,6 +111,7 @@
 
         &:hover {
             background-color: #1a1a1b;
+            color: rgb(232, 95, 4);
         }
     }
 

@@ -5,46 +5,47 @@ const { Schema } = mongoose;
 const PostSchema = new Schema(
     {
         author: {
-            type: String,
-            required: true
+           type: mongoose.Schema.Types.ObjectId,
+           ref: 'User',
+           required: true
         },
-        subpage: {
-            type: String,
-            required: true
-        },
-        subpageLink: {
-            type: String,
-            required: true
+        story: {
+           type: mongoose.Schema.Types.ObjectId,
+           ref: 'Story',
+           required: true
         },
         title: {
             type: String,
-            required: true
+            required: true,
+            maxlength: 300,
+            minlength: 5
         },
         body: {
             type: String,
             required: false,
-            maxLength: 20000
+            maxLength: 30000
         },
-        images: {
+        media: {
             type: String,
-            required: false
-        },
-        video: {
-            type: String,
-            required: false
+            required: false,
+            default: ""
         },
         likes: {
-            type: String,
-            required: false
+            type: Number,
+            required: false,
+            default: 0
         },
-        createdAt: {
-            type: Date,
-            required: true,
-            default: Date.now
-        }
+        comments: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment',
+            default: 0
+        }]
     },
     {
-        timestamps: true,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at'
+        }
     }
 );
 
