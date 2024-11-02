@@ -114,7 +114,7 @@ const StoryDetails = () => {
                 <div className="buttons">
                     <button className="create-post" onClick={openCreatePostModal}>+ Create Post</button>
                     <Modal isOpen={isCreatePostModalOpen} onClose={closeCreatePostModal}>
-                        <CreatePostModal onClose={closeCreatePostModal} />
+                        <CreatePostModal onClose={closeCreatePostModal} storyId={story._id} />
                     </Modal>
                     <JoinButton
                         isJoined={isJoined}

@@ -10,12 +10,14 @@ import { useAuth } from '../../Contexts/AuthContext';
 import axios from 'axios';
 import TextToolbar from '../TextToolbar/TextToolbar';
 
-const CreatePostModal = ({ onClose }) => {
+const CreatePostModal = ({ onClose, storyId }) => {
   const [activeTab, setActiveTab] = useState('text');
   const [formData, setFormData] = useState({
     postTitle: "",
     postBody: "",
-    postMedia: ""
+    postMedia: "",
+    author: "",
+    story: storyId
   });
   const [postMediaPreview, setPostMediaPreview] = useState(null);
   const [error, setError] = useState("");
@@ -27,7 +29,7 @@ const CreatePostModal = ({ onClose }) => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       const { data } = await axios.get("/api/csrf-token");
-      setCsrfToken(data);
+      setCsrfToken(data.csrfToken);
     };
     fetchCsrfToken();
   }, []);
@@ -56,14 +58,13 @@ const CreatePostModal = ({ onClose }) => {
     });
   };
 
-  // Initialize TipTap editor
   const editor = useEditor({
     extensions: [StarterKit, Underline],
     content: formData.postBody,
     onUpdate: ({ editor }) => {
       setFormData(prev => ({
         ...prev,
-        postBody: editor.getHTML(), // Store HTML content
+        postBody: editor.getHTML(),
       }));
     },
   });
@@ -72,11 +73,13 @@ const CreatePostModal = ({ onClose }) => {
     e.preventDefault();
 
     const { postTitle, postBody, postMedia } = formData;
+    console.log('user id: ', user._id);
 
     const formDataToSend = new FormData();
     formDataToSend.append('postTitle', postTitle);
     formDataToSend.append('postBody', postBody);
     formDataToSend.append('author', user._id);
+    formDataToSend.append('story', storyId)
 
     if (postMedia) {
       formDataToSend.append('postMedia', postMedia);
@@ -85,7 +88,7 @@ const CreatePostModal = ({ onClose }) => {
     setLoading(true);
 
     try {
-      await axios.post("/api/posts/create-post", formDataToSend, {
+      const response = await axios.post("/api/posts/create-post", formDataToSend, {
         headers: {
           "csrf-token": csrfToken,
           Authorization: `Bearer ${authToken}`,
@@ -93,8 +96,10 @@ const CreatePostModal = ({ onClose }) => {
         },
       });
 
-      setFormData({ postTitle: '', postBody: '', postMedia: null });
-      editor.commands.setContent(''); // Reset TipTap content
+      console.log("res: ", response.data);
+
+      setFormData({ postTitle: '', postBody: '', postMedia: null, story: storyId });
+      editor.commands.setContent('');
 
       setLoading(false);
 
@@ -152,7 +157,7 @@ const CreatePostModal = ({ onClose }) => {
         </div>
 
       ) : (
-        <div>
+        <div className='post-image-preview' style={{ backgroundImage: `url(${postMediaPreview})`}}>
           <input
             type="file"
             id="postMedia"

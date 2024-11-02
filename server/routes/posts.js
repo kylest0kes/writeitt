@@ -3,6 +3,7 @@ import csrf from "csurf";
 import authMiddleware from "../middleware/auth.js";
 import { configureUpload, getFileURL } from "../configs/uploadConfig.js";
 import { body, validationResult } from "express-validator";
+import Post from '../models/Post.js';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -23,17 +24,19 @@ router.post('/create-post', [
         return res.status(400).json({ errors: errors.array(), message: "Invalid data to create post"});
     }
 
-    const { postTitle, postBody } = req.body;
+    const { postTitle, postBody, story, author } = req.body;
     const postMedia = req.file ? await getFileURL(req.file) : null;
-    const author = req.user._id;
 
     try {
         const newPost = new Post({
             title: postTitle,
             body: postBody,
             media: postMedia,
-            author
+            author: author || req.user_id,
+            story: story
         });
+
+        console.log(newPost);
 
         await newPost.save();
         res.status(201).json({ message: "Post created successfully", post: newPost });
