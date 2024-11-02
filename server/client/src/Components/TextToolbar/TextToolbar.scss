@@ -1,0 +1,27 @@
+.editor-toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    .toolbar-button {
+        background: none;
+        border: none;
+        color: #d7dadc;
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover {
+            background-color: #343536;
+            color: rgb(232, 95, 4);
+        }
+
+        &.active {
+            background-color: rgb(232, 95, 4);
+            color: #1a1a1b;
+        }
+    }
+}

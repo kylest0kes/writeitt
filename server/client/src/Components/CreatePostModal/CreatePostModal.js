@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import './CreatePostModal.scss';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
 import axios from 'axios';
+import TextToolbar from '../TextToolbar/TextToolbar';
 
 const CreatePostModal = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState('text');
@@ -56,7 +58,7 @@ const CreatePostModal = ({ onClose }) => {
 
   // Initialize TipTap editor
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Underline],
     content: formData.postBody,
     onUpdate: ({ editor }) => {
       setFormData(prev => ({
@@ -143,8 +145,11 @@ const CreatePostModal = ({ onClose }) => {
       />
 
       {activeTab === 'text' ? (
+        <div>
+          <TextToolbar editor={editor} />
           <EditorContent editor={editor} placeholder="Body" content={formData.postBody}
         onChange={update => setFormData({ ...formData, postBody: update.getHTML() })} />
+        </div>
 
       ) : (
         <div>
