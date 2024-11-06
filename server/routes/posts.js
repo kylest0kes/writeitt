@@ -1,6 +1,7 @@
 import express from "express";
 import csrf from "csurf";
 import authMiddleware from "../middleware/auth.js";
+import handleFileUpload from "../middleware/handleFileUpload.js";
 import { configureUpload, getFileURL } from "../configs/uploadConfig.js";
 import { body, validationResult } from "express-validator";
 import Post from '../models/Post.js';
@@ -12,12 +13,13 @@ const csrfProtection = csrf({ cookie: true });
 router.post('/create-post', [
     authMiddleware,
     csrfProtection,
+    handleFileUpload,
     (req, res, next) => {
         const upload = configureUpload();
         upload.single('postMedia')(req, res, next);
     },
-    body('postTitle').isString().isLength({ max: 300, min: 5 }),
-    body('postBody').isString().isLength({ max: 30000 })
+    body('postTitle').isString().isLength({ max: 300, min: 5 }).withMessage('Title must be between 5 and 300 characters'),
+    body('postBody').isString().isLength({ max: 30000 }).withMessage('Body must not exceed 30000 characters'),
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
@@ -25,7 +27,18 @@ router.post('/create-post', [
     }
 
     const { postTitle, postBody, story, author } = req.body;
-    const postMedia = req.file ? await getFileURL(req.file) : null;
+    let postMedia = null;
+
+    if (req.file) {
+        try {
+            postMedia = await getFileURL(req.file);
+        } catch (fileError) {
+            console.error('File URL generation error:', fileError);
+            return res.status(500).json({
+                message: "Error processing uploaded file"
+            });
+        }
+    }
 
     try {
         const newPost = new Post({
@@ -35,8 +48,6 @@ router.post('/create-post', [
             author: author || req.user_id,
             story: story
         });
-
-        console.log(newPost);
 
         await newPost.save();
         res.status(201).json({ message: "Post created successfully", post: newPost });

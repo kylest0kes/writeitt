@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faCloudArrowUp, faTimes } from "@fortawesome/free-solid-svg-icons";
 import './CreatePostModal.scss';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
@@ -15,7 +15,7 @@ const CreatePostModal = ({ onClose, storyId }) => {
   const [formData, setFormData] = useState({
     postTitle: "",
     postBody: "",
-    postMedia: "",
+    postMedia: null,
     author: "",
     story: storyId
   });
@@ -37,6 +37,20 @@ const CreatePostModal = ({ onClose, storyId }) => {
   const handleMediaChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        setError('Please select a valid image file (JPEG, PNG, or GIF)');
+        return;
+      }
+
+      // Validate file size (e.g., 5MB limit)
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      if (file.size > maxSize) {
+        setError('File size should be less than 5MB');
+        return;
+      }
+
       setFormData(prev => ({
         ...prev,
         postMedia: file
@@ -46,16 +60,27 @@ const CreatePostModal = ({ onClose, storyId }) => {
       reader.onloadend = () => {
         setPostMediaPreview(reader.result);
       };
+      reader.onerror = () => {
+        setError('Error reading file');
+      };
       reader.readAsDataURL(file);
     }
   };
 
+  const clearMediaPreview = () => {
+    setPostMediaPreview(null);
+    setFormData(prev => ({
+      ...prev,
+      postMedia: null
+    }));
+  };
+
   const handleFormSetData = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
 
   const editor = useEditor({
@@ -71,24 +96,27 @@ const CreatePostModal = ({ onClose, storyId }) => {
 
   const handlePostFormSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    const { postTitle, postBody, postMedia } = formData;
-    console.log('user id: ', user._id);
+    if (!formData.postTitle.trim()) {
+      setError("Title is required");
+      return;
+    }
 
     const formDataToSend = new FormData();
-    formDataToSend.append('postTitle', postTitle);
-    formDataToSend.append('postBody', postBody);
+    formDataToSend.append('postTitle', formData.postTitle.trim());
+    formDataToSend.append('postBody', formData.postBody);
     formDataToSend.append('author', user._id);
-    formDataToSend.append('story', storyId)
+    formDataToSend.append('story', storyId);
 
-    if (postMedia) {
-      formDataToSend.append('postMedia', postMedia);
+    if (formData.postMedia) {
+      formDataToSend.append('postMedia', formData.postMedia);
     }
 
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/posts/create-post", formDataToSend, {
+      await axios.post("/api/posts/create-post", formDataToSend, {
         headers: {
           "csrf-token": csrfToken,
           Authorization: `Bearer ${authToken}`,
@@ -96,31 +124,32 @@ const CreatePostModal = ({ onClose, storyId }) => {
         },
       });
 
-      console.log("res: ", response.data);
-
-      setFormData({ postTitle: '', postBody: '', postMedia: null, story: storyId });
-      editor.commands.setContent('');
+      setFormData({
+        postTitle: '',
+        postBody: '',
+        postMedia: null,
+        author: "",
+        story: storyId
+      });
+      setPostMediaPreview(null);
+      if (editor) {
+        editor.commands.setContent('');
+      }
 
       setLoading(false);
-
       if (onClose) onClose();
 
     } catch (err) {
-      setError("Error creating a post: " + err.message);
+      setLoading(false);
+      setError(err.response?.data?.message || "Error creating a post");
       console.error("Error creating a post: ", err);
     }
   };
 
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
-
-  if (loading) {
-    return <div className="spinner"></div>;
-  }
-
   return (
     <div className="create-post-modal">
+      {error && <div className="error-message">{error}</div>}
+
       <h3>Create Post</h3>
       <div className="tabs">
         <button
@@ -150,34 +179,57 @@ const CreatePostModal = ({ onClose, storyId }) => {
       />
 
       {activeTab === 'text' ? (
-        <div>
+        <div className="text-editor-container">
           <TextToolbar editor={editor} />
-          <EditorContent editor={editor} placeholder="Body" content={formData.postBody}
-        onChange={update => setFormData({ ...formData, postBody: update.getHTML() })} />
+          <EditorContent editor={editor} />
         </div>
-
       ) : (
-        <div className='post-image-preview' style={{ backgroundImage: `url(${postMediaPreview})`}}>
-          <input
-            type="file"
-            id="postMedia"
-            name="postMedia"
-            className="image-upload"
-            onChange={handleMediaChange}
-            accept="image/*,video/*"
-            style={{ display: 'none' }}
-          />
-          <label
-            htmlFor="postMedia"
-            className="post-img-upload-icon-label"
+        <div className="post-image-container">
+          <div
+            className="post-image-preview"
+            style={{
+              backgroundImage: postMediaPreview ? `url(${postMediaPreview})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundColor: '#272729'
+            }}
           >
-            <FontAwesomeIcon icon={faCloudArrowUp} />
-          </label>
+            <input
+              type="file"
+              id="postMedia"
+              name="postMedia"
+              className="image-upload"
+              onChange={handleMediaChange}
+              accept="image/*"
+              style={{ display: 'none', width: '100%' }}
+            />
+            {!postMediaPreview ? (
+              <label
+                htmlFor="postMedia"
+                className="post-img-upload-icon-label"
+              >
+                <FontAwesomeIcon icon={faCloudArrowUp} />
+                <span>Upload Image</span>
+              </label>
+            ) : (
+              <button
+                className="clear-image-btn"
+                onClick={clearMediaPreview}
+                type="button"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            )}
+          </div>
         </div>
       )}
 
-      <button className="post-button" onClick={handlePostFormSubmit} disabled={!formData.postTitle}>
-        Post
+      <button
+        className="post-button"
+        onClick={handlePostFormSubmit}
+        disabled={!formData.postTitle.trim() || loading}
+      >
+        {loading ? 'Posting...' : 'Post'}
       </button>
     </div>
   );
