@@ -58,7 +58,6 @@ export function configureUpload() {
             storage: multerS3({
                 s3: s3,
                 bucket: process.env.S3_BUCKET,
-                // acl: 'public-read',
                 metadata: function (req, file, cb) {
                     cb(null, { fieldName: file.fieldname });
                 },
@@ -69,7 +68,7 @@ export function configureUpload() {
                     cb(null, fileName);
                 }
             }),
-            limits: { fileSize: 50 * 1024 * 1024 },
+            limits: { fileSize: 1024 * 1024 * 1024 },
             fileFilter: fileFilter
         });
     } else {

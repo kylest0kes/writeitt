@@ -38,16 +38,15 @@ const CreatePostModal = ({ onClose, storyId }) => {
     const file = e.target.files[0];
     if (file) {
       // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4', 'video/webm', 'video/ogg'];
       if (!allowedTypes.includes(file.type)) {
-        setError('Please select a valid image file (JPEG, PNG, or GIF)');
+        setError('Please select a valid media file type (JPEG, JPG, PNG, GIF, MP4, WEBM, OGG)');
         return;
       }
 
-      // Validate file size (e.g., 5MB limit)
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      const maxSize = 1024 * 1024 * 1024;
       if (file.size > maxSize) {
-        setError('File size should be less than 5MB');
+        setError('File size should be less than 1GB');
         return;
       }
 
@@ -162,7 +161,7 @@ const CreatePostModal = ({ onClose, storyId }) => {
           className={`tab-button ${activeTab === 'image' ? 'active' : ''}`}
           onClick={() => setActiveTab('image')}
         >
-          Image
+         Media
         </button>
       </div>
 
@@ -209,7 +208,7 @@ const CreatePostModal = ({ onClose, storyId }) => {
                 className="post-img-upload-icon-label"
               >
                 <FontAwesomeIcon icon={faCloudArrowUp} />
-                <span>Upload Image</span>
+                <span>Upload Media</span>
               </label>
             ) : (
               <button
