@@ -200,7 +200,7 @@ const CreatePostModal = ({ onClose, storyId }) => {
               name="postMedia"
               className="image-upload"
               onChange={handleMediaChange}
-              accept="image/*"
+              accept="image/*, video/*"
               style={{ display: 'none', width: '100%' }}
             />
             {!postMediaPreview ? (
