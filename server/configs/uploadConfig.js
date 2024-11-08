@@ -23,28 +23,7 @@ export function configureUpload() {
         }
     };
 
-    // For debugging
-    console.log('USE_S3 value:', process.env.USE_S3);
-    console.log('USE_S3 type:', typeof process.env.USE_S3);
-
-    // Check if USE_S3 is explicitly set to the string 'true'
     if (process.env.USE_S3 === 'true') {
-        console.log('Configuring S3 storage...');
-
-        // Validate S3 configuration
-        const requiredEnvVars = ['AWS_ACCESS_KEY', 'AWS_SECRET_ACCESS_KEY', 'AWS_REGION', 'S3_BUCKET'];
-        const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
-
-        if (missingVars.length > 0) {
-            throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
-        }
-
-        // Log S3 configuration (remove in production)
-        console.log('S3 Configuration:', {
-            region: process.env.AWS_REGION,
-            bucket: process.env.S3_BUCKET,
-            accessKeyId: process.env.AWS_ACCESS_KEY?.substring(0, 4) + '...',
-        });
 
         const s3 = new S3Client({
             credentials: {
@@ -68,13 +47,10 @@ export function configureUpload() {
                     cb(null, fileName);
                 }
             }),
-            limits: { fileSize: 1024 * 1024 * 1024 },
+            limits: { fileSize: 512 * 1024 * 1024 },
             fileFilter: fileFilter
         });
     } else {
-        console.log('Configuring local storage...');
-
-        // Ensure uploads directory exists for local storage
         const uploadsDir = path.join(process.cwd(), 'uploads');
         if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir, { recursive: true });
@@ -91,7 +67,7 @@ export function configureUpload() {
                     cb(null, fileName);
                 }
             }),
-            limits: { fileSize: 50 * 1024 * 1024 },
+            limits: { fileSize: 512 * 1024 * 1024 },
             fileFilter: fileFilter
         });
     }

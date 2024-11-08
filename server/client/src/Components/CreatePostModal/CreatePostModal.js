@@ -20,6 +20,8 @@ const CreatePostModal = ({ onClose, storyId }) => {
     story: storyId
   });
   const [postMediaPreview, setPostMediaPreview] = useState(null);
+  const [postTitleLength, setPostTitleLength] = useState(0);
+  const [postBodyLength, setPostBodyLength] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
@@ -44,9 +46,9 @@ const CreatePostModal = ({ onClose, storyId }) => {
         return;
       }
 
-      const maxSize = 1024 * 1024 * 1024;
+      const maxSize = 512 * 1024 * 1024;
       if (file.size > maxSize) {
-        setError('File size should be less than 1GB');
+        setError('File size should be less than .5GB');
         return;
       }
 
@@ -80,6 +82,11 @@ const CreatePostModal = ({ onClose, storyId }) => {
       ...prev,
       [name]: value
     }));
+    if (name === "postTitle") {
+      setPostTitleLength(value.length);
+    } else if (name === "postBody") {
+      setPostBodyLength(value.length);
+    }
   };
 
   const editor = useEditor({
@@ -90,6 +97,7 @@ const CreatePostModal = ({ onClose, storyId }) => {
         ...prev,
         postBody: editor.getHTML(),
       }));
+      setPostBodyLength(editor.getText().length);
     },
   });
 
@@ -169,19 +177,23 @@ const CreatePostModal = ({ onClose, storyId }) => {
         type="text"
         className="post-title"
         placeholder="Title*"
-        maxLength="300"
+        maxLength={300}
         value={formData.postTitle}
         onChange={handleFormSetData}
         id="postTitle"
         name="postTitle"
         required
       />
+      <span className='posttitle-input-len'>{postTitleLength} {postTitleLength === 300 && <span className='limit-reached'>(Limit Reached)</span>}</span>
 
       {activeTab === 'text' ? (
-        <div className="text-editor-container">
+          <div>
           <TextToolbar editor={editor} />
-          <EditorContent editor={editor} />
-        </div>
+          <div className="text-editor-container">
+            <EditorContent editor={editor} />
+            <span className='postbody-input-len'>{postBodyLength} {postBodyLength === 30000 && <span className='limit-reached'>(Limit Reached)</span>}</span>
+          </div>
+          </div>
       ) : (
         <div className="post-image-container">
           <div
@@ -226,7 +238,7 @@ const CreatePostModal = ({ onClose, storyId }) => {
       <button
         className="post-button"
         onClick={handlePostFormSubmit}
-        disabled={!formData.postTitle.trim() || loading}
+        disabled={!formData.postTitle.trim() || formData.postTitle.length < 5 || loading}
       >
         {loading ? 'Posting...' : 'Post'}
       </button>
