@@ -173,26 +173,34 @@ const CreatePostModal = ({ onClose, storyId }) => {
         </button>
       </div>
 
-      <input
-        type="text"
-        className="post-title"
-        placeholder="Title*"
-        maxLength={300}
-        value={formData.postTitle}
-        onChange={handleFormSetData}
-        id="postTitle"
-        name="postTitle"
-        required
-      />
-      <span className='posttitle-input-len'>{postTitleLength} {postTitleLength === 300 && <span className='limit-reached'>(Limit Reached)</span>}</span>
+      <div className="post-title-container">
+        <input
+          type="text"
+          className="post-title"
+          placeholder="Title*"
+          maxLength={300}
+          value={formData.postTitle}
+          onChange={handleFormSetData}
+          id="postTitle"
+          name="postTitle"
+          required
+        />
+        <span className='posttitle-input-len'>
+          {postTitleLength} {postTitleLength === 300 && <span className='limit-reached'>(Limit Reached)</span>}
+        </span>
+      </div>
 
       {activeTab === 'text' ? (
           <div>
-          <TextToolbar editor={editor} />
-          <div className="text-editor-container">
-            <EditorContent editor={editor} />
-            <span className='postbody-input-len'>{postBodyLength} {postBodyLength === 30000 && <span className='limit-reached'>(Limit Reached)</span>}</span>
-          </div>
+            <div className="text-editor-container">
+              <div className="editor-wrapper">
+                <TextToolbar editor={editor} />
+                <EditorContent editor={editor} />
+                <span className='postbody-input-len'>
+                  {postBodyLength} {postBodyLength === 30000 && <span className='limit-reached'>(Limit Reached)</span>}
+                </span>
+              </div>
+            </div>
           </div>
       ) : (
         <div className="post-image-container">

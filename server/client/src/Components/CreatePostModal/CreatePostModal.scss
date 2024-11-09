@@ -73,8 +73,13 @@
         }
     }
 
+    .post-title-container {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
     .post-title {
-        width: 95%;
+        width: 90%;
         padding: 1rem;
         font-size: 1.1rem;
         color: #d7dadc;
@@ -83,37 +88,58 @@
         border-radius: 4px;
         margin-bottom: 1.5rem;
         transition: border-color 0.3s ease;
+        padding-right: 60px;
 
         &:focus {
             outline: none;
             border-color: rgb(232, 95, 4);
         }
+
+        .posttitle-input-len {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #888;
+            background-color: #272729; // Match the input background
+            padding: 2px 5px;
+            border-radius: 3px;
+            pointer-events: none; // Allows clicking through the counter
+          }
     }
 
     .text-editor-container {
-        max-height: 200px;
+        max-height: 220px;
         overflow-y: auto;
         padding: 10px;
         border-radius: 4px;
         margin-bottom: 1.5rem;
+        position: relative;
+
+        .editor-wrapper {
+          position: relative;
+          min-height: 125px;
+        }
 
         .ProseMirror {
-            min-height: 115px;
-            font-size: 1rem;
-            background-color: #272729;
-            color: #d7dadc;
-            border: 1px solid #343536;
-            border-radius: 4px;
-            padding: 1rem;
+          min-height: 115px;
+          font-size: 1rem;
+          background-color: #272729;
+          color: #d7dadc;
+          border: 1px solid #343536;
+          border-radius: 4px;
+          padding: 1rem;
+          padding-bottom: 2rem;
 
-            &:focus {
-                outline: none;
-                border-color: rgb(232, 95, 4);
-            }
+          &:focus {
+            outline: none;
+            border-color: rgb(232, 95, 4);
+          }
 
-            p {
-                margin: 0.5rem 0;
-            }
+          p {
+            margin: 0.5rem 0;
+          }
         }
     }
 
@@ -211,20 +237,14 @@
     }
 }
 
-.posttitle-input-len {
-    position: absolute;
-    right: 0;
-    top: 250px;
-    right: 60px;
-    font-size: 12px;
-    color: #888;
-}
-
 .postbody-input-len {
     position: absolute;
-    right: 0;
-    bottom: 130px;
-    right: 60px;
+    bottom: 5px;
+    right: 10px;
     font-size: 12px;
     color: #888;
+    z-index: 1;
+    background-color: #272729; // Match the editor background
+    padding: 2px 5px;
+    border-radius: 3px;
 }
