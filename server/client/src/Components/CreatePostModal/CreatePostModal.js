@@ -173,7 +173,6 @@ const CreatePostModal = ({ onClose, storyId }) => {
         </button>
       </div>
 
-      <div className="post-title-container">
         <input
           type="text"
           className="post-title"
@@ -188,7 +187,6 @@ const CreatePostModal = ({ onClose, storyId }) => {
         <span className='posttitle-input-len'>
           {postTitleLength} {postTitleLength === 300 && <span className='limit-reached'>(Limit Reached)</span>}
         </span>
-      </div>
 
       {activeTab === 'text' ? (
           <div>

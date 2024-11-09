@@ -73,11 +73,6 @@
         }
     }
 
-    .post-title-container {
-        position: relative;
-        margin-bottom: 1.5rem;
-    }
-
     .post-title {
         width: 90%;
         padding: 1rem;
@@ -94,19 +89,6 @@
             outline: none;
             border-color: rgb(232, 95, 4);
         }
-
-        .posttitle-input-len {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            font-size: 12px;
-            color: #888;
-            background-color: #272729; // Match the input background
-            padding: 2px 5px;
-            border-radius: 3px;
-            pointer-events: none; // Allows clicking through the counter
-          }
     }
 
     .text-editor-container {
@@ -235,6 +217,15 @@
             background-color: rgb(200, 82, 3);
         }
     }
+}
+
+.posttitle-input-len {
+    position: absolute;
+    right: 0;
+    top: 220px;
+    right: 60px;
+    font-size: 12px;
+    color: #888;
 }
 
 .postbody-input-len {
