@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Post from '../Post/Post.js';
+import StoryPost from '../StoryPost/StoryPost.js';
 import './StoryDetails.scss';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
@@ -163,7 +163,7 @@ const StoryDetails = () => {
                 </div>
                 <div className="story-content-posts">
                     { posts.length > 0 ? (
-                        posts.map((post) => <Post key={post._id} post={post} />)
+                        posts.map((post) => <StoryPost key={post._id} post={post} slug={slug} />)
                     ) : (
                         <p>No posts available.</p>
                     )}

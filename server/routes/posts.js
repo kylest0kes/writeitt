@@ -91,3 +91,14 @@ router.get('/get-story-posts/:id', async (req, res) => {
 });
 
 export default router;
+
+// get all posts on the site
+router.get('/get-all-posts', async (req, res) => {
+    try {
+        const posts = await Post.find();
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error("Error getting all posts: ", error);
+        res.status(500).json({ message: error.message, errors: error});
+    }
+});
