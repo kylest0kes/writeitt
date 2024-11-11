@@ -19,13 +19,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 
-console.log('Environment Variables Check:', {
-  USE_S3: process.env.USE_S3,
-  AWS_REGION: process.env.AWS_REGION ? '[SET]' : '[NOT SET]',
-  AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY ? '[SET]' : '[NOT SET]',
-  S3_BUCKET: process.env.S3_BUCKET ? '[SET]' : '[NOT SET]'
-});
-
 const app = express();
 const PORT = process.env.PORT || 4200;
 

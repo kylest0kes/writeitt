@@ -46,7 +46,7 @@ router.post('/create-story', [
         });
 
         const story = await newStory.save();
-        res.json({ story, message: 'Story created successfully.' });
+        res.status(200).json({ story, message: 'Story created successfully.' });
 
     } catch (err) {
         console.error('Error creating story: ', err);
@@ -58,7 +58,7 @@ router.post('/create-story', [
 router.get("/all-stories", async (req, res) => {
   try {
     const stories = await Story.find();
-    res.json(stories);
+    res.status(200).json(stories);
   } catch (err) {
     console.error("Error getting all stories: ", err);
     res.status(500).json({ message: err.message, errors: err });
@@ -76,7 +76,7 @@ router.get('/stories-followed', [
       '_id': { $in: user.following }
     }).select('name img slug');
 
-    res.json(stories);
+    res.status(200).json(stories);
 
   } catch (err) {
     console.error("Error getting followed stories: ", err);
@@ -95,7 +95,7 @@ router.get("/story/:slug", async (req, res) => {
       return res.status(404).json({ message: "Story not found." });
     }
 
-    res.json(story);
+    res.status(200).json(story);
   } catch (err) {
     console.error("Error creating story: ", err);
     res.status(500).json({ message: "Error fetching story.", errors: err });
@@ -144,7 +144,7 @@ router.put('/update-story/:id', [
           { new: true }
       );
 
-      res.json({ story: updatedStory, message: 'Story updated successfully.' });
+      res.status(200).json({ story: updatedStory, message: 'Story updated successfully.' });
   } catch (err) {
       console.error('Error updating story: ', err);
       res.status(500).json({ message: 'Error updating story.', errors: err });
@@ -174,7 +174,7 @@ router.delete("/delete-story/:slug", [
 
     await Story.findByIdAndDelete(story._id);
 
-    res.json({ message: 'Story deleted successfully' });
+    res.status(200).json({ message: 'Story deleted successfully' });
   } catch(err) {
     console.error('Error while attempting to delete Story: ', err);
     res.status(500).json({ message: 'Failed to delete Story', error: err.message });

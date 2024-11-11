@@ -41,10 +41,6 @@ const StorySchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }],
-        posts: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post'
-        }],
         postCount: {
             type: Number,
             default: 0

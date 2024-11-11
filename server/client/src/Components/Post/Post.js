@@ -2,7 +2,7 @@ import React from 'react';
 import { User } from 'lucide-react';
 import './Post.scss'; // Import the SCSS file
 
-const SocialMediaPost = () => {
+const Post = ({ post }) => {
   return (
     <div className="post-container">
       <div className="post-content">
@@ -33,4 +33,4 @@ const SocialMediaPost = () => {
   );
 };
 
-export default SocialMediaPost;
+export default Post;

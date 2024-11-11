@@ -12,7 +12,6 @@
     border-radius: 8px;
     color: #d7dadc;
 
-    // Scrollbar styling
     &::-webkit-scrollbar {
         width: 8px;
     }
@@ -235,7 +234,7 @@
     font-size: 12px;
     color: #888;
     z-index: 1;
-    background-color: #272729; // Match the editor background
+    background-color: #272729;
     padding: 2px 5px;
     border-radius: 3px;
 }

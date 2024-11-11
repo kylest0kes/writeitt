@@ -61,7 +61,8 @@ router.post('/create-post', [
     } catch (error) {
         console.error('Post creation error:', error);
         res.status(500).json({
-            message: "Server error. Could not create post."
+            message: "Server error. Could not create post.", 
+            errors: error
         });
     }
 });
@@ -75,7 +76,18 @@ router.post('/create-post', [
 // get all posts from a user
 
 
-// get all posts for a story
+// get all posts from stories followed by a user
 
+
+// get all posts for a story
+router.get('/get-story-posts/:id', async (req, res) => {
+    try {
+        const posts = await Post.find({ story: req.params.id }).sort({ created_at: -1 });
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error('Error when fetching all Posts: ', error);
+        res.status(500).json({ message: 'Error when fetching all Posts', errors: error})
+    }
+});
 
 export default router;

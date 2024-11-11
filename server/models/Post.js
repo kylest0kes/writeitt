@@ -30,7 +30,12 @@ const PostSchema = new Schema(
             required: false,
             default: ""
         },
-        likes: {
+        upvotes: {
+            type: Number,
+            required: false,
+            default: 0
+        },
+        downvotes: {
             type: Number,
             required: false,
             default: 0

@@ -14,6 +14,7 @@ import CreatePostModal from '../CreatePostModal/CreatePostModal.js';
 const StoryDetails = () => {
     const { slug } = useParams();
     const [story, setStory] = useState(null);
+    const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
     const [isJoined, setIsJoined] = useState(false);
     const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
@@ -63,7 +64,22 @@ const StoryDetails = () => {
         fetchStory();
     }, [slug, user]);
 
-      const handleStoryUpdate = useCallback((updatedStory) => {
+    useEffect(() => {
+        const fetchPosts = async () => {
+            if (story) {
+                try {
+                    const res = await axios.get(`/api/posts/get-story-posts/${story._id}`);
+                    setPosts(res.data);
+                } catch (err) {
+                    setError('Error fetching posts');
+                    console.error(err)
+                }
+            }
+        }
+        fetchPosts();
+    }, [story]);
+
+    const handleStoryUpdate = useCallback((updatedStory) => {
         setStory(updatedStory);
         setUser((prevUser) => ({
             ...prevUser,
@@ -146,18 +162,11 @@ const StoryDetails = () => {
                     </div>
                 </div>
                 <div className="story-content-posts">
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
+                    { posts.length > 0 ? (
+                        posts.map((post) => <Post key={post._id} post={post} />)
+                    ) : (
+                        <p>No posts available.</p>
+                    )}
                 </div>
            </div>
         </div>
