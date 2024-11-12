@@ -33,7 +33,7 @@ function Home() {
     <div className='home-page'>
       <div className='home-page-posts-container'>
         {posts.map((post) => (
-          <HomepagePost post={post} />
+          <HomepagePost post={post} key={post._id} />
         ))}
       </div>
     </div>

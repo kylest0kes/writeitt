@@ -7,13 +7,13 @@ const StoryPost = ({ post, slug }) => {
     <div className="post-container">
       <div className="post-content">
         <div className="post-header">
-          <div className="post-avatar">
-            <User color="#a0aec0" size={24} />
+          <div className="post-avatar-container">
+            <img src={post.author.userImg} alt={post.author.username} className='post-avatar' />
           </div>
           <div className='post-header-section'>
             <span className="post-story">{slug}</span>
             <br />
-            <span className='post-author'>{post.author}</span>
+            <span className='post-author'>{post.author.username}</span>
             <br />
             <span className="post-time">9 hr. ago</span>
           </div>

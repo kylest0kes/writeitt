@@ -30,6 +30,8 @@ router.post('/create-post', [
             });
         }
 
+        console.log('req.body in route: ', req.body);
+
         const { postTitle, postBody, story, author } = req.body;
         let postMedia = null;
 
@@ -48,11 +50,12 @@ router.post('/create-post', [
             title: postTitle,
             body: postBody,
             media: postMedia,
-            author: author || req.user_id,
+            author: author,
             story: story
         });
 
         await newPost.save();
+        
         res.status(201).json({
             message: "Post created successfully",
             post: newPost
@@ -82,7 +85,7 @@ router.post('/create-post', [
 // get all posts for a story
 router.get('/get-story-posts/:id', async (req, res) => {
     try {
-        const posts = await Post.find({ story: req.params.id }).sort({ created_at: -1 });
+        const posts = await Post.find({ story: req.params.id }).populate('author').sort({ created_at: -1 });
         res.status(200).json(posts);
     } catch (error) {
         console.error('Error when fetching all Posts: ', error);
@@ -95,7 +98,7 @@ export default router;
 // get all posts on the site
 router.get('/get-all-posts', async (req, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().populate('author story').sort({ created_at: -1 });
         res.status(200).json(posts);
     } catch (error) {
         console.error("Error getting all posts: ", error);

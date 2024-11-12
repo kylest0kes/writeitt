@@ -7,13 +7,13 @@ const HomepagePost = ({ post }) => {
         <div className="home-post-container">
           <div className="home-post-content">
             <div className="home-post-header">
-              <div className="home-post-avatar">
-                <img src="" alt="" />
+              <div className="home-post-avatar-container">
+                <img src={post.story.img} alt={post.story.name} className='home-post-avatar' />
               </div>
               <div className='home-post-header-section'>
-                <span className="home-post-story">need name of story</span>
+                <span className="home-post-story">{post.story.name}</span>
                 <br />
-                <span className='home-post-author'>{post.author}</span>
+                <span className='home-post-author'>{post.author.username}</span>
                 <br />
                 <span className="home-post-time">9 hr. ago</span>
               </div>
@@ -29,7 +29,7 @@ const HomepagePost = ({ post }) => {
               ) : null}
               { post.media && post.media.includes('images') ? (
                 <div className="home-post-media">
-                  <img src={post.media} alt="need story neame"/>
+                  <img src={post.media} alt={post.story.name}/>
                 </div>
               ) : null
               }
