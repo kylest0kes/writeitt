@@ -4,6 +4,7 @@ import authMiddleware from "../middleware/auth.js";
 import { configureUpload, getFileURL } from "../configs/uploadConfig.js";
 import { body, validationResult } from "express-validator";
 import Post from '../models/Post.js';
+import sanitizeHtml from 'sanitize-html';
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -29,8 +30,6 @@ router.post('/create-post', [
                 message: "Invalid data to create post"
             });
         }
-
-        console.log('req.body in route: ', req.body);
 
         const { postTitle, postBody, story, author } = req.body;
         let postMedia = null;

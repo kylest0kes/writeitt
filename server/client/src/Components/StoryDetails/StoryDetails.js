@@ -62,7 +62,7 @@ const StoryDetails = () => {
             }
         }
         fetchStory();
-    }, [slug, user]);
+    }, [slug, user, story]);
 
     useEffect(() => {
         const fetchPosts = async () => {
