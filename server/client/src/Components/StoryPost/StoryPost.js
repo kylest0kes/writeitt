@@ -1,5 +1,4 @@
 import React from 'react';
-import { User } from 'lucide-react';
 import './StoryPost.scss'; 
 
 const StoryPost = ({ post, slug }) => {
@@ -23,9 +22,7 @@ const StoryPost = ({ post, slug }) => {
             {post.title} 
           </h1>
           { post.body ? (
-            <p className="post-body">
-              {post.body}
-            </p>
+            <div className="post-body" dangerouslySetInnerHTML={{__html: post.body}}/>
           ) : null}
           { post.media && post.media.includes('images') ? (
             <div className="post-media">

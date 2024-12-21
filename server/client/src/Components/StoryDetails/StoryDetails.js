@@ -69,7 +69,6 @@ const StoryDetails = () => {
             if (story) {
                 try {
                     const res = await axios.get(`/api/posts/get-story-posts/${story._id}`);
-                    console.log('fetchPosts res.data: ', res.data);
                     setPosts(res.data);
                 } catch (err) {
                     setError('Error fetching posts');

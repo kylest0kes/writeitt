@@ -35,6 +35,14 @@ router.post('/create-post', [
         const { postTitle, postBody, story, author } = req.body;
         let postMedia = null;
 
+        const sanitizedBody = sanitizeHtml(postBody, {
+            allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2', 'h3', 'p', 'ul', 'ol', 'li', 'strong', 's', 'u', 'em']),
+            allowedAttributes: {
+                ...sanitizeHtml.defaults.allowedAttributes,
+                img: ['src', 'alt'],
+            }
+        });
+
         if (req.file) {
             try {
                 postMedia = await getFileURL(req.file);
@@ -48,7 +56,7 @@ router.post('/create-post', [
 
         const newPost = new Post({
             title: postTitle,
-            body: postBody,
+            body: sanitizedBody,
             media: postMedia,
             author: author,
             story: story
