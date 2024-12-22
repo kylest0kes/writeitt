@@ -10,7 +10,7 @@ import { useAuth } from '../../Contexts/AuthContext';
 import axios from 'axios';
 import TextToolbar from '../TextToolbar/TextToolbar';
 
-const CreatePostModal = ({ onClose, storyId }) => {
+const CreatePostModal = ({ onClose, storyId, onPostCreated }) => {
   const [activeTab, setActiveTab] = useState('text');
   const [formData, setFormData] = useState({
     postTitle: "",
@@ -123,13 +123,17 @@ const CreatePostModal = ({ onClose, storyId }) => {
     setLoading(true);
 
     try {
-      await axios.post("/api/posts/create-post", formDataToSend, {
+      const { data } = await axios.post("/api/posts/create-post", formDataToSend, {
         headers: {
           "csrf-token": csrfToken,
           Authorization: `Bearer ${authToken}`,
           'Content-Type': 'multipart/form-data'
         },
       });
+
+      if (data.post) {
+        onPostCreated(data.post);
+      }
 
       setFormData({
         postTitle: '',

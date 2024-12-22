@@ -62,7 +62,7 @@ const StoryDetails = () => {
             }
         }
         fetchStory();
-    }, [slug, user, story]);
+    }, [slug, user]);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -76,9 +76,13 @@ const StoryDetails = () => {
                 }
             }
         }
-        console.log('story item: ', story);
         fetchPosts();
     }, [story]);
+
+    const handlePostCreated = (newPost) => {
+        setPosts((prevPosts) => [newPost, ...prevPosts]);
+        window.location.reload();
+    };
 
     const handleStoryUpdate = useCallback((updatedStory) => {
         setStory(updatedStory);
@@ -131,7 +135,7 @@ const StoryDetails = () => {
                 <div className="buttons">
                     <button className="create-post" onClick={openCreatePostModal}>+ Create Post</button>
                     <Modal isOpen={isCreatePostModalOpen} onClose={closeCreatePostModal}>
-                        <CreatePostModal onClose={closeCreatePostModal} storyId={story._id} />
+                        <CreatePostModal onClose={closeCreatePostModal} storyId={story._id} onPostCreated={handlePostCreated}/>
                     </Modal>
                     <JoinButton
                         isJoined={isJoined}
