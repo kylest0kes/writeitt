@@ -79,11 +79,6 @@ const StoryDetails = () => {
         fetchPosts();
     }, [story]);
 
-    const handlePostCreated = (newPost) => {
-        setPosts((prevPosts) => [newPost, ...prevPosts]);
-        window.location.reload();
-    };
-
     const handleStoryUpdate = useCallback((updatedStory) => {
         setStory(updatedStory);
         setUser((prevUser) => ({
@@ -94,6 +89,10 @@ const StoryDetails = () => {
         }));
         setIsEditStoryMenuVisible(false);
     }, [setUser]);
+
+    const handlePostsUpdate = useCallback((newPost) => {
+        setPosts((prevPosts) => [newPost, ...prevPosts]);
+    }, [])
 
     const handleOutsideClick = (e) => {
         const modalElements = document.querySelectorAll('.modal, .delete-story-modal-wrapper, .edit-story-modal-wrapper');
@@ -135,7 +134,7 @@ const StoryDetails = () => {
                 <div className="buttons">
                     <button className="create-post" onClick={openCreatePostModal}>+ Create Post</button>
                     <Modal isOpen={isCreatePostModalOpen} onClose={closeCreatePostModal}>
-                        <CreatePostModal onClose={closeCreatePostModal} storyId={story._id} onPostCreated={handlePostCreated}/>
+                        <CreatePostModal onClose={closeCreatePostModal} storyId={story._id} onPostCreated={handlePostsUpdate}/>
                     </Modal>
                     <JoinButton
                         isJoined={isJoined}

@@ -60,6 +60,7 @@ router.post('/create-post', [
             author: author,
             story: story
         });
+        await newPost.populate('author');
 
         await newPost.save();
         
