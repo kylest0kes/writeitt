@@ -6,6 +6,7 @@ import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import Help from './Pages/Help/Help';
 import StoryDetails from './Components/StoryDetails/StoryDetails';
 import AllStories from './Pages/AllStories/AllStories';
+import PostDetails from './Components/PostDetails/PostDetails';
 
 const TheRoutes = () => {
     return (
@@ -17,6 +18,7 @@ const TheRoutes = () => {
             <Route path='/help' element={<Help />} />
             <Route path='/stories/story/:slug' element={<StoryDetails />} />
             <Route path='/allstories' element={<AllStories />} />
+            <Route path='/posts/post/:slug' element={<PostDetails />} />
         </Routes>
     )
 }

@@ -167,7 +167,7 @@ const StoryDetails = () => {
                 </div>
                 <div className="story-content-posts">
                     { posts.length > 0 ? (
-                        posts.map((post) => <StoryPost key={post._id} post={post} slug={slug} />)
+                        posts.map((post) => <StoryPost key={post._id} post={post} storySlug={slug} />)
                     ) : (
                         <p>No posts available.</p>
                     )}

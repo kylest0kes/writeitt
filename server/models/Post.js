@@ -44,7 +44,12 @@ const PostSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comment',
             default: 0
-        }]
+        }],
+        slug: {
+            type: String,
+            required: true,
+            unique: true
+        }
     },
     {
         timestamps: {

@@ -1,16 +1,22 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './StoryPost.scss'; 
 
-const StoryPost = ({ post, slug }) => {
+const StoryPost = ({ post, storySlug }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/posts/post/${post.slug}`);
+  }
   return (
     <div className="post-container">
-      <div className="post-content">
+      <div className="post-content" onClick={handleClick}>
         <div className="post-header">
           <div className="post-avatar-container">
             <img src={post.author.userImg} alt={post.author.username} className='post-avatar' />
           </div>
           <div className='post-header-section'>
-            <span className="post-story">{slug}</span>
+            <span className="post-story">{storySlug}</span>
             <br />
             <span className='post-author'>{post.author.username}</span>
             <br />
@@ -26,7 +32,7 @@ const StoryPost = ({ post, slug }) => {
           ) : null}
           { post.media && post.media.includes('images') ? (
             <div className="post-media">
-              <img src={post.media} alt={slug}/>
+              <img src={post.media} alt={storySlug}/>
             </div>
           ) : null
           }

@@ -84,7 +84,7 @@ router.get('/stories-followed', [
   }
 });
 
-// route to get a single page
+// route to get a single story 
 router.get("/story/:slug", async (req, res) => {
   try {
     const story = await Story.findOne({ slug: req.params.slug }).populate(
@@ -97,7 +97,7 @@ router.get("/story/:slug", async (req, res) => {
 
     res.status(200).json(story);
   } catch (err) {
-    console.error("Error creating story: ", err);
+    console.error("Error fetching story: ", err);
     res.status(500).json({ message: "Error fetching story.", errors: err });
   }
 });

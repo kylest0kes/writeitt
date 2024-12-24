@@ -5,6 +5,8 @@ import { configureUpload, getFileURL } from "../configs/uploadConfig.js";
 import { body, validationResult } from "express-validator";
 import Post from '../models/Post.js';
 import sanitizeHtml from 'sanitize-html';
+import slugify from 'slugify';
+import generateSlug from "../utils/GenerateUrl.js";
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -31,7 +33,10 @@ router.post('/create-post', [
             });
         }
 
+        const rand = Math.floor(1000 + Math.random() * 100000);
         const { postTitle, postBody, story, author } = req.body;
+        let postSlug = slugify(generateSlug(postTitle), { lower: true });
+        postSlug = `${postSlug}-${rand}`; 
         let postMedia = null;
 
         const sanitizedBody = sanitizeHtml(postBody, {
@@ -58,7 +63,8 @@ router.post('/create-post', [
             body: sanitizedBody,
             media: postMedia,
             author: author,
-            story: story
+            story: story,
+            slug: postSlug
         });
         await newPost.populate('author');
 
@@ -101,8 +107,6 @@ router.get('/get-story-posts/:id', async (req, res) => {
     }
 });
 
-export default router;
-
 // get all posts on the site
 router.get('/get-all-posts', async (req, res) => {
     try {
@@ -113,3 +117,23 @@ router.get('/get-all-posts', async (req, res) => {
         res.status(500).json({ message: error.message, errors: error});
     }
 });
+
+router.get('/post/:slug', async (req, res) => {
+    try {
+        const post = await Post.findOne({ slug: req.params.slug }).populate(
+            "author"
+        );
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found."});
+        }
+
+        res.status(200).json(post);
+    } catch (err) {
+        console.error("Error fetching Post in route.");
+        res.status(500).json({ message: "Error fetching Post in route.", errors: err});
+    }
+});
+
+export default router;
+
