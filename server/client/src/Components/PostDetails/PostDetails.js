@@ -36,7 +36,7 @@ function PostDetails() {
         }
         fetchPost();
 
-    }, [post, slug, user]);
+    }, [slug, user]);
 
     if (error) {
         return <p style={{color: 'red'}}>{error}</p>
