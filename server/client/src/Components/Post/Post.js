@@ -5,12 +5,18 @@ import './Post.scss';
 const StoryPost = ({ post, storySlug, type }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handlePostClick = () => {
     navigate(`/posts/post/${post.slug}`);
   }
+
+  const handleStoryTitleClick = (e) => {
+    e.stopPropagation();
+    navigate(`/stories/story/${storySlug}`);
+  }
+
   return (
     <div className="post-container">
-      <div className="post-content" onClick={handleClick}>
+      <div className="post-content" onClick={handlePostClick}>
         <div className="post-header">
           <div className="post-avatar-container">
             { type === "storydetail" ? (
@@ -23,7 +29,7 @@ const StoryPost = ({ post, storySlug, type }) => {
           <div className='post-header-section'>
             { type === "homepage" ? (
               <div>
-                <span className="post-story">{storySlug}</span>
+                <span className="post-story" onClick={handleStoryTitleClick}>{storySlug}</span>
                 <br />
               </div>
             ) : (
