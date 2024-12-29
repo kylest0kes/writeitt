@@ -7,6 +7,7 @@ import Post from '../models/Post.js';
 import sanitizeHtml from 'sanitize-html';
 import slugify from 'slugify';
 import generateSlug from "../utils/GenerateUrl.js";
+import Story from "../models/Story.js";
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -58,6 +59,8 @@ router.post('/create-post', [
             }
         }
 
+        // story.postCount += 1;
+
         const newPost = new Post({
             title: postTitle,
             body: sanitizedBody,
@@ -66,9 +69,12 @@ router.post('/create-post', [
             story: story,
             slug: postSlug
         });
+        
         await newPost.populate('author');
 
         await newPost.save();
+
+        await Story.findByIdAndUpdate(story, { $inc: { postCount: 1 } });
         
         res.status(201).json({
             message: "Post created successfully",

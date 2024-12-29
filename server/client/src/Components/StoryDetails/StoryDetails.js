@@ -92,6 +92,10 @@ const StoryDetails = () => {
 
     const handlePostsUpdate = useCallback((newPost) => {
         setPosts((prevPosts) => [newPost, ...prevPosts]);
+        setStory((prevStory) => ({
+            ...prevStory,
+            postCount: prevStory.postCount + 1
+        }));
     }, [])
 
     const handleOutsideClick = (e) => {

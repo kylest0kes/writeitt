@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import axios from "axios";
 
 const { Schema } = mongoose;
@@ -81,6 +81,14 @@ const UserSchema = new Schema(
     following: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Story'
+    }], 
+    upvotedPosts: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    }],
+    downvotedPosts: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
     }]
   },
   {
