@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import formatCreatedAtTime from '../../Utils/TimeFormatter';
 import './Post.scss'; 
 
 const StoryPost = ({ post, storySlug, type }) => {
@@ -37,7 +38,7 @@ const StoryPost = ({ post, storySlug, type }) => {
             )}
             <span className='post-author'>{post.author.username}</span>
             <br />
-            <span className="post-time">9 hr. ago</span>
+            <span className="post-time">{formatCreatedAtTime(post.created_at)}</span>
           </div>
         </div>
         <div className='post-body-section'>
