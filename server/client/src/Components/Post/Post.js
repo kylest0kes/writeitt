@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './StoryPost.scss'; 
+import './Post.scss'; 
 
-const StoryPost = ({ post, storySlug }) => {
+const StoryPost = ({ post, storySlug, type }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -13,11 +13,22 @@ const StoryPost = ({ post, storySlug }) => {
       <div className="post-content" onClick={handleClick}>
         <div className="post-header">
           <div className="post-avatar-container">
-            <img src={post.author.userImg} alt={post.author.username} className='post-avatar' />
+            { type === "storydetail" ? (
+              <img src={post.author.userImg} alt={post.author.username} className='post-avatar' />
+            ) : (
+              <img src={post.story.img} alt={post.story.name} className="post-avatar"
+            />
+            )}
           </div>
           <div className='post-header-section'>
-            <span className="post-story">{storySlug}</span>
-            <br />
+            { type === "homepage" ? (
+              <div>
+                <span className="post-story">{storySlug}</span>
+                <br />
+              </div>
+            ) : (
+              null 
+            )}
             <span className='post-author'>{post.author.username}</span>
             <br />
             <span className="post-time">9 hr. ago</span>

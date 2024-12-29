@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import './Home.scss';
-import HomepagePost from '../../Components/HomepagePost/HomepagePost';
+import Post from '../../Components/Post/Post.js';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -33,11 +33,12 @@ function Home() {
     <div className='home-page'>
       <div className='home-page-posts-container'>
         {posts.map((post) => (
-          <HomepagePost post={post} key={post._id} />
+          <Post post={post} key={post._id} storySlug={post.story.slug} type="homepage" />
         ))}
       </div>
     </div>
   )
 }
 
-export default Home
+export default Home;
+
