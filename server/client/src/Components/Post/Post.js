@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import formatCreatedAtTime from '../../Utils/TimeFormatter';
 import './Post.scss'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const StoryPost = ({ post, storySlug, type }) => {
   const navigate = useNavigate();
@@ -15,16 +17,20 @@ const StoryPost = ({ post, storySlug, type }) => {
     navigate(`/stories/story/${storySlug}`);
   }
 
+  const handleAuthorClick = (e) => {
+    e.stopPropagation();
+    navigate(`/`);
+  }
+
   return (
     <div className="post-container">
       <div className="post-content" onClick={handlePostClick}>
         <div className="post-header">
           <div className="post-avatar-container">
             { type === "storydetail" ? (
-              <img src={post.author.userImg} alt={post.author.username} className='post-avatar' />
+              <img src={post.author.userImg} alt={post.author.username} className='post-avatar' onClick={handleAuthorClick} />
             ) : (
-              <img src={post.story.img} alt={post.story.name} className="post-avatar"
-            />
+              <img src={post.story.img} alt={post.story.name} className="post-avatar" onClick={handleStoryTitleClick}/>
             )}
           </div>
           <div className='post-header-section'>
@@ -64,11 +70,17 @@ const StoryPost = ({ post, storySlug, type }) => {
           ) : null}
         </div>
         <div className="post-footer">
-          <span className="post-footerItem"># Upvotes</span>
+          <span className="post-footerItem">
+            <FontAwesomeIcon className='vote-arrow up' icon={faArrowUp} />
+            {post.upvotes} Upvotes
+          </span>
           <span className='post-footerItem'>|</span>
-          <span className="post-footerItem"># Downvotes</span>
+          <span className="post-footerItem">
+            <FontAwesomeIcon className='vote-arrow down' icon={faArrowDown} />   
+            {post.downvotes} Downvotes
+          </span>
           <span className='post-footerItem'>|</span>
-          <span className="post-footerItem"># comments</span>
+          <span className="post-footerItem">{post.comments.length} comments</span>
         </div>
       </div>
     </div>
