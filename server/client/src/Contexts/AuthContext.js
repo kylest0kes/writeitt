@@ -9,11 +9,13 @@ const AuthProvider = ({ children }) => {
     const login = (token) => {
         setAuthToken(token);
         localStorage.setItem('authToken', token);
+        window.location.reload();
     }
 
     const logout  = () => {
         setAuthToken(null);
         localStorage.removeItem('authToken');
+        window.location.reload();
     }
 
     useEffect(() => {
