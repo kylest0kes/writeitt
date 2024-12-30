@@ -152,13 +152,20 @@ router.post('/post/:id/vote', [authMiddleware, csrfProtection], async (req, res)
             return res.status(404).json({ message: 'Post not found.' });
         }
 
+        const alreadyUpvoted = post.upvotes.includes(userId);
+        const alreadyDownvoted = post.downvotes.includes(userId);
+
         post.upvotes = post.upvotes.filter(id => id.toString() !== userId.toString());
         post.downvotes = post.downvotes.filter(id => id.toString() !== userId.toString());
 
         if (voteType === 'upvote') {
-            post.upvotes.push(userId);
+            if (!alreadyUpvoted) {
+                post.upvotes.push(userId);
+            }
         } else if (voteType === 'downvote') {
-            post.downvotes.push(userId);
+            if (!alreadyDownvoted) {
+                post.downvotes.push(userId);
+            }
         }
 
         await post.save();

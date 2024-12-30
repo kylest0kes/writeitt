@@ -56,11 +56,11 @@ const Post = ({ post, storySlug, type }) => {
       setDownvotes(res.data.downvotesCount);
 
       if (voteType === 'upvote') {
-        setUserUpvote(true);
+        setUserUpvote(!userUpvote);
         setUserDownvote(false);
       } else if (voteType === 'downvote') {
         setUserUpvote(false);
-        setUserDownvote(true);
+        setUserDownvote(!userDownvote);
       }
     } catch (e) {
       console.error("Error handling vote: ", e);
