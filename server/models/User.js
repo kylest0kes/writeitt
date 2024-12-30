@@ -81,14 +81,6 @@ const UserSchema = new Schema(
     following: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Story'
-    }], 
-    upvotedPosts: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post'
-    }],
-    downvotedPosts: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post'
     }]
   },
   {

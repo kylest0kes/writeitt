@@ -59,8 +59,6 @@ router.post('/create-post', [
             }
         }
 
-        // story.postCount += 1;
-
         const newPost = new Post({
             title: postTitle,
             body: sanitizedBody,
@@ -138,6 +136,42 @@ router.get('/post/:slug', async (req, res) => {
     } catch (err) {
         console.error("Error fetching Post in route.");
         res.status(500).json({ message: "Error fetching Post in route.", errors: err});
+    }
+});
+
+// route to upvote or downvote a post
+router.post('/post/:id/vote', [authMiddleware, csrfProtection], async (req, res) => {
+    const { id } = req.params;
+    const { voteType } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const post = await Post.findById(id);
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found.' });
+        }
+
+        post.upvotes = post.upvotes.filter(id => id.toString() !== userId.toString());
+        post.downvotes = post.downvotes.filter(id => id.toString() !== userId.toString());
+
+        if (voteType === 'upvote') {
+            post.upvotes.push(userId);
+        } else if (voteType === 'downvote') {
+            post.downvotes.push(userId);
+        }
+
+        await post.save();
+
+        res.status(200).json({
+            message: "Vote successful.",
+            upvotesCount: post.upvotes.length,
+            downvotesCount: post.downvotes.length
+        })
+
+    } catch (e) {
+        console.error("Error when voting: ", e);
+        res.status(500).json({ message: "Server error encountered when voting."});
     }
 });
 

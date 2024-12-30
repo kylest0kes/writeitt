@@ -30,16 +30,16 @@ const PostSchema = new Schema(
             required: false,
             default: ""
         },
-        upvotes: {
-            type: Number,
-            required: false,
-            default: 0
-        },
-        downvotes: {
-            type: Number,
-            required: false,
-            default: 0
-        },
+        upvotes: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: []
+        }],
+        downvotes: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: []
+        }], 
         comments: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comment',
