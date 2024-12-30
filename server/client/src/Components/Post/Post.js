@@ -42,7 +42,7 @@ const StoryPost = ({ post, storySlug, type }) => {
             ) : (
               null 
             )}
-            <span className='post-author'>{post.author.username}</span>
+            <span className='post-author' onClick={handleAuthorClick}>{post.author.username}</span>
             <br />
             <span className="post-time">{formatCreatedAtTime(post.created_at)}</span>
           </div>
