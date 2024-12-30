@@ -1,4 +1,5 @@
 import React from 'react';
+import numberFormatter from '../../Utils/NumberFormatter';
 
 import './StoryStats.scss';
 
@@ -9,11 +10,11 @@ const StoryStats = ({ story }) => {
     return (
         <div className='story-stats'>
             <div className='story-stats-posts'>
-                <span className='story-stats-posts-number'>{story.postCount}</span>
+                <span className='story-stats-posts-number'>{numberFormatter(story.postCount)}</span>
                 <span className='story-stats-posts-label'> POSTS</span>
             </div>
             <div className='story-stats-subscribers'>
-                <span className='story-stats-subscribers-number'>{story.subscriberCount}</span>
+                <span className='story-stats-subscribers-number'>{numberFormatter(story.subscriberCount)}</span>
                 <span className='story-stats-subscribers-label'> SUBSCRIBED</span>
             </div>
             <div className='story-stats-creation-date'>
