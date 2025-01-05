@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -27,6 +27,8 @@ const CreatePostModal = ({ onClose, storyId, onPostCreated }) => {
   const [csrfToken, setCsrfToken] = useState("");
   const { user } = useUser();
   const { authToken } = useAuth();
+
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -74,6 +76,12 @@ const CreatePostModal = ({ onClose, storyId, onPostCreated }) => {
       ...prev,
       postMedia: null
     }));
+  };
+
+  const handleMediaContainerClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFormSetData = (e) => {
@@ -214,12 +222,14 @@ const CreatePostModal = ({ onClose, storyId, onPostCreated }) => {
               backgroundPosition: 'center',
               backgroundColor: '#272729'
             }}
+            onClick={handleMediaContainerClick}
           >
             <input
               type="file"
               id="postMedia"
               name="postMedia"
               className="image-upload"
+              ref={fileInputRef}
               onChange={handleMediaChange}
               accept="image/*, video/*"
               style={{ display: 'none', width: '100%' }}
