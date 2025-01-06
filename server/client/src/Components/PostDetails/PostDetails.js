@@ -5,6 +5,7 @@ import formatCreatedAtTime from '../../Utils/TimeFormatter';
 import { useUser } from "../../Contexts/UserContext";
 import { useAuth } from "../../Contexts/AuthContext";
 import axios from "axios";
+import Voting from '../Voting/Voting.js';
 import "./PostDetails.scss";
 
 function PostDetails() {
@@ -51,6 +52,12 @@ function PostDetails() {
   const handleTitleClick = (e) => {
     e.stopPropagation();
     if (post.story) navigate(`/stories/story/${post.story.slug}`)
+  }
+
+  const handleTextAreaResize = (e) => {
+    const textarea = e.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
   }
 
   if (error) {
@@ -100,11 +107,16 @@ function PostDetails() {
         ) : null}
 
         <div className="post-details-content-footer">
-
+            <Voting 
+                postId={post._id}
+                initialUpvotes={post.upvotes}
+                initialDownvotes={post.downvotes}
+                commentsCount={post.comments.length}
+            />
         </div>
 
         <div className="post-details-content-comments">
-
+            <textarea className="post-details-content-comments-textarea" placeholder="Add a comment" onInput={handleTextAreaResize} /> 
         </div>
 
       </div>
