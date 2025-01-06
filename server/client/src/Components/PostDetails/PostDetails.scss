@@ -1,0 +1,105 @@
+.post-details {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+
+    &-content {
+        width: 70%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        &-top-banner {
+            margin-bottom: 20px;
+            display: flex;
+
+            img {
+                width: 40px;
+                height: 40px;
+                background-color: #4a5568;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                margin-bottom: 15px;
+
+                @media (max-width: 480px) {
+                    margin-right: 0;
+                    margin-bottom: 8px;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            &-storytitle {
+                font-size: 1rem;
+                font-weight: bold;
+                margin-bottom: 8px;
+                white-space: normal;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+
+
+                @media (max-width: 768px) {
+                    font-size: 1.1rem;
+                }
+
+                @media (max-width: 480px) {
+                    font-size: 1rem;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+
+            &-time {
+                font-weight: bold;
+            }
+
+            &-author {
+                font-weight: bold;
+                font-size: 1rem;
+                color: rgb(232, 95, 4);
+
+                @media (max-width: 768px) {
+                    font-size: 1rem;
+                }
+
+                @media (max-width: 480px) {
+                    font-size: 0.9rem;
+                }
+
+                &:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &-post-title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        &-post-body {
+            font-size: 16px;
+        }
+
+        &-media {
+            display: flex;
+            justify-content: center;
+
+            &-img {
+                max-width: 100%;
+                max-width: 100%;
+            }
+        }
+
+    }
+
+}

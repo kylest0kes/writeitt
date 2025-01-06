@@ -148,7 +148,7 @@ const CreatePostModal = ({ onClose, storyId, onPostCreated }) => {
         postBody: '',
         postMedia: null,
         author: "",
-        story: storyId
+        story: "" 
       });
       setPostMediaPreview(null);
       if (editor) {

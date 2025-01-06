@@ -67,16 +67,23 @@ router.post('/create-post', [
             story: story,
             slug: postSlug
         });
-        
-        await newPost.populate('author');
 
         await newPost.save();
+
+        const populatedPost = await Post.findById(newPost._id)
+            .populate({
+                path: 'story',
+                select: '-__v'
+            })
+            .populate({
+                path: 'author'
+            });
 
         await Story.findByIdAndUpdate(story, { $inc: { postCount: 1 } });
         
         res.status(201).json({
             message: "Post created successfully",
-            post: newPost
+            post: populatedPost 
         });
 
     } catch (error) {
@@ -124,9 +131,9 @@ router.get('/get-all-posts', async (req, res) => {
 
 router.get('/post/:slug', async (req, res) => {
     try {
-        const post = await Post.findOne({ slug: req.params.slug }).populate(
-            "author"
-        );
+        const post = await Post.findOne({ slug: req.params.slug })
+        .populate("author")
+        .populate("story");
 
         if (!post) {
             return res.status(404).json({ message: "Post not found."});
