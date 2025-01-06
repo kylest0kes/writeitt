@@ -99,7 +99,14 @@ function PostDetails() {
           </div>
         ) : null}
 
-        <div className="post-details-content-comments"></div>
+        <div className="post-details-content-footer">
+
+        </div>
+
+        <div className="post-details-content-comments">
+
+        </div>
+
       </div>
     </div>
   );
