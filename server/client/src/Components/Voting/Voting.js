@@ -4,6 +4,7 @@ import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
+import './Voting.scss';
 
 const Voting = ({ postId, initialUpvotes, initialDownvotes, initialUserVotes, commentsCount }) => {
   const { user } = useUser();
