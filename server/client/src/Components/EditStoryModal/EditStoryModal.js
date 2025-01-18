@@ -9,7 +9,7 @@ import '../CreateStoryModal/CreateStoryModal.scss';
 import { useUser } from "../../Contexts/UserContext";
 
 
-function EditStoryModal({ onClose, story, storyUpdate }) {
+const EditStoryModal = ({ onClose, story, storyUpdate }) => {
   const [formData, setFormData] = useState({
     storySubtitle: "",
     storyDesc: "",

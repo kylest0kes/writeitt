@@ -150,7 +150,7 @@ const StoryDetails = () => {
                     {isCreator && authToken && (
                         <div className="edit-menu-container" ref={editStoryMenuRef}>
                             <button
-                                className="more"
+                                className="more-story-detials"
                                 onClick={toggleEditStoryMenu}>
                                 •••
                             </button>

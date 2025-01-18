@@ -1,0 +1,39 @@
+.edit-post-menu {
+    // min-width: 200px;
+    // width: auto;
+    // background: rgb(38, 38, 38);
+    // border-radius: 10px;
+    // z-index: 10;
+    position: absolute;
+    top: 40px; // Space the menu below the button
+    right: 0; 
+    z-index: 3; // Ensure it appears above other elements
+    background-color: #333;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 150px; // Ensure a consistent menu width
+    white-space: nowrap;
+}
+
+.edit-post-menu-nav {
+    &-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+
+        &-span {
+            flex-shrink: 0;
+        }
+    }
+
+    &-item:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.delete-post {
+    color: red;
+}
+

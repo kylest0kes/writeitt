@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import formatCreatedAtTime from '../../Utils/TimeFormatter';
 import './Post.scss';
 import Voting from '../Voting/Voting.js';
+import { useUser } from '../../Contexts/UserContext.js';
+import { useAuth } from '../../Contexts/AuthContext.js';
+import EditPostMenu from '../EditPostMenu/EditPostMenu.js';
 
 const Post = ({ post, storySlug, type }) => {
   const navigate = useNavigate();
+  const [isCreator, setIsCreator] = useState(false);
+  const [isEditPostMenuVisible, setIsEditPostMenuVisible] = useState(false);
+  const { user, setUser } = useUser();
+  const { authToken } = useAuth();
+
+  const editPostMenuRef = useRef(null);
+
+  useEffect(() => {
+    if (user && post.author && user._id === post.author._id) {
+      setIsCreator(true);
+    } 
+  }, [user, post]);
+
+  useEffect(() => {
+    if (isEditPostMenuVisible) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick); // Clean up
+    };
+  }, [isEditPostMenuVisible]);
 
   const handlePostClick = () => {
     navigate(`/posts/post/${post.slug}`);
@@ -19,6 +45,24 @@ const Post = ({ post, storySlug, type }) => {
   const handleAuthorClick = (e) => {
     e.stopPropagation();
     navigate(`/`);
+  }
+
+  const handleOutsideClick = (e) => {
+    if (
+      editPostMenuRef.current &&
+      !editPostMenuRef.current.contains(e.target)
+    ) {
+      setIsEditPostMenuVisible(false);
+    }
+  };
+
+  const handlePostUpdate = useCallback((updatedPost) => {
+    return updatedPost;
+  }, []);
+
+  const toggleEditPostMenu = (e) => {
+    e.stopPropagation();
+    setIsEditPostMenuVisible((prev) => !prev);
   }
 
   return (
@@ -43,6 +87,12 @@ const Post = ({ post, storySlug, type }) => {
             <br />
             <span className="post-time">{formatCreatedAtTime(post.created_at)}</span>
           </div>
+          {isCreator && authToken ? (
+            <div className='edit-post-menu-container' ref={editPostMenuRef}>
+              <button className='more-post-details' onClick={toggleEditPostMenu}>•••</button>
+              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} onPostUpdate={handlePostUpdate} />}
+            </div>
+          ) : (null)}
         </div>
         <div className='post-body-section'>
           <h1 className="post-title">
