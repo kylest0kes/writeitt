@@ -96,7 +96,16 @@ const StoryDetails = () => {
             ...prevStory,
             postCount: prevStory.postCount + 1
         }));
-    }, [])
+    }, []);
+    
+    const handlePostDelete = (postId) => {
+        setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+
+        setStory((prevStory) => ({
+            ...prevStory,
+            postCount: prevStory.postCount - 1
+        }));
+    }
 
     const handleOutsideClick = (e) => {
         const modalElements = document.querySelectorAll('.modal, .delete-story-modal-wrapper, .edit-story-modal-wrapper');
@@ -171,7 +180,7 @@ const StoryDetails = () => {
                 </div>
                 <div className="story-content-posts">
                     { posts.length > 0 ? (
-                        posts.map((post) => <Post key={post._id} post={post} storySlug={slug} type="storydetail" />)
+                        posts.map((post) => <Post key={post._id} post={post} storySlug={slug} type="storydetail" onPostDelete={handlePostDelete} />)
                     ) : (
                         <p>No posts available.</p>
                     )}

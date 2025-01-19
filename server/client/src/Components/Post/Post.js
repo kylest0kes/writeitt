@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import formatCreatedAtTime from '../../Utils/TimeFormatter';
 import './Post.scss';
@@ -7,11 +7,11 @@ import { useUser } from '../../Contexts/UserContext.js';
 import { useAuth } from '../../Contexts/AuthContext.js';
 import EditPostMenu from '../EditPostMenu/EditPostMenu.js';
 
-const Post = ({ post, storySlug, type }) => {
+const Post = ({ post, storySlug, type, onPostDelete }) => {
   const navigate = useNavigate();
   const [isCreator, setIsCreator] = useState(false);
   const [isEditPostMenuVisible, setIsEditPostMenuVisible] = useState(false);
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const { authToken } = useAuth();
 
   const editPostMenuRef = useRef(null);
@@ -48,17 +48,21 @@ const Post = ({ post, storySlug, type }) => {
   }
 
   const handleOutsideClick = (e) => {
-    if (
-      editPostMenuRef.current &&
-      !editPostMenuRef.current.contains(e.target)
-    ) {
-      setIsEditPostMenuVisible(false);
+    const modalElements = document.querySelectorAll(
+      ".edit-post-menu-container, .delete-post-modal-wrapper"
+    );
+    const isClickInsideModal = Array.from(modalElements).some((element) =>
+      element.contains(e.target)
+    );
+  
+    if (!isClickInsideModal) {
+      setIsEditPostMenuVisible(false); // Close the EditPostMenu
     }
   };
 
-  const handlePostUpdate = useCallback((updatedPost) => {
-    return updatedPost;
-  }, []);
+  const handlePostDelete = (postId) => {
+    onPostDelete(postId);
+  }
 
   const toggleEditPostMenu = (e) => {
     e.stopPropagation();
@@ -90,7 +94,7 @@ const Post = ({ post, storySlug, type }) => {
           {isCreator && authToken ? (
             <div className='edit-post-menu-container' ref={editPostMenuRef}>
               <button className='more-post-details' onClick={toggleEditPostMenu}>•••</button>
-              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} onPostUpdate={handlePostUpdate} />}
+              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} onDeleteSuccess={handlePostDelete} />}
             </div>
           ) : (null)}
         </div>

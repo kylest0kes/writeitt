@@ -99,7 +99,33 @@ router.post('/create-post', [
 
 
 // route to delete a post
+router.delete("/delete-post/:id", [
+    authMiddleware,
+    csrfProtection
+], async (req, res) => {
+    try {
+        const post = await Post.findOne({ _id: req.params.id});
 
+        if (!post) {
+            return res.status(404).json({ message: "Post not found"});
+        }
+
+        if (post.author._id.toString() !== req.user.id) {
+            return res.status(403).json({ message: "Unauthorized to delete this post"});
+        }
+
+        await Post.findByIdAndDelete(post._id);
+
+        await Story.findByIdAndUpdate(post.story, {
+            $inc: { postCount: -1 },
+        });
+        
+        res.status(200).json({ message: "Post deleted successfully."});
+    } catch (err) {
+        console.error("Error occured when attempting to delete a post: ", err);
+        res.status(500).json({ message: "Failed to delete post", error: err});
+    }
+});
 
 // get all posts from a user
 

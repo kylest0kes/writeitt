@@ -88,7 +88,7 @@ const DeleteStoryModal = ({ onClose }) => {
                     Cancel
                 </button>
                 <button className='delete-story-submit-btn' type='button' onClick={handleDeleteStory}>
-                    Submit
+                    {loading ? "Deleting..." : "Delete"}
                 </button>
             </div>
         </div>
