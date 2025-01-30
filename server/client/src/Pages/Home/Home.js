@@ -3,30 +3,44 @@ import axios from 'axios';
 
 import './Home.scss';
 import Post from '../../Components/Post/Post.js';
+import { useUser } from '../../Contexts/UserContext.js';
+import { useAuth } from '../../Contexts/AuthContext.js';
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const [errors, setErrors] = useState(null);
+  const { user } = useUser();
+  const { authToken } = useAuth();
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get('/api/posts/get-all-posts');
+        let res;
+        if (user) {
+          res = await axios.get('/api/posts/get-followed-stories-posts', {
+            headers: {
+              Authorization: `Bearer ${authToken}` 
+            }
+          });
+        } else {
+          res = await axios.get('/api/posts/get-all-posts');
+        }
         setPosts(res.data);
       } catch (error) {
         setErrors(error);
         console.error("Error fetching posts: ", error);
       }
-    }
+    };
+
     fetchPosts();
-  }, []);
+  }, [user, authToken]);
 
   const handlePostDelete = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId))
   }
 
   if (errors) {
-    return <p style={{color: 'red'}}>{errors}</p>
+    return <p style={{color: 'red'}}>{errors.message}</p>
   }
 
   if (!posts) {

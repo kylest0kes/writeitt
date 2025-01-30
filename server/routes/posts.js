@@ -8,6 +8,7 @@ import sanitizeHtml from 'sanitize-html';
 import slugify from 'slugify';
 import generateSlug from "../utils/GenerateUrl.js";
 import Story from "../models/Story.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 const csrfProtection = csrf({ cookie: true });
@@ -131,6 +132,22 @@ router.delete("/delete-post/:id", [
 
 
 // get all posts from stories followed by a user
+router.get('/get-followed-stories-posts', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).populate('following');
+
+        if (!user) {
+            return res.status(404).json({ mesasage: 'User not found'});
+        }
+
+        const posts = await Post.find({ story: { $in: user.following } }).populate('story').populate('author').sort({ created_at: -1});
+
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching followed stories posts: ', error});
+    }
+});
 
 
 // get all posts for a story
