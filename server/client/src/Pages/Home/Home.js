@@ -38,6 +38,10 @@ function Home() {
   const handlePostDelete = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId))
   }
+  
+  const handlePostUpdate = (updatedPost) => {
+    setPosts((prevPosts) => prevPosts.map(post => post._id === updatedPost._id ? { ...updatedPost} : post));
+  }
 
   if (errors) {
     return <p style={{color: 'red'}}>{errors.message}</p>
@@ -51,7 +55,7 @@ function Home() {
     <div className='home-page'>
       <div className='home-page-posts-container'>
         {posts.map((post) => (
-          <Post post={post} key={post._id} storySlug={post.story.slug} type="homepage" onPostDelete={handlePostDelete} />
+          <Post post={post} key={post._id} storySlug={post.story.slug} type="homepage" onPostDelete={handlePostDelete} onPostUpdated={handlePostUpdate} />
         ))}
       </div>
     </div>

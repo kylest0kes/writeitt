@@ -33,7 +33,6 @@ function CreateStoryModal({ onClose }) {
   const handleStoryImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log('storyImg file: ', file);
       setFormData(prev => ({
         ...prev,
         storyImg: file
@@ -41,7 +40,6 @@ function CreateStoryModal({ onClose }) {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result);
         setStoryImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
@@ -51,7 +49,6 @@ function CreateStoryModal({ onClose }) {
   const handleStoryBannerImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log("bannerImg: ", file)
       setFormData(prev => ({
         ...prev,
         storyBannerImg: file
@@ -59,7 +56,6 @@ function CreateStoryModal({ onClose }) {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result)
         setStoryBannerImagePreview(reader.result);
       };
       reader.readAsDataURL(file);

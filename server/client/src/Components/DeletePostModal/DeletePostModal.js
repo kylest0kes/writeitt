@@ -23,14 +23,12 @@ const DeletePostModal = ({ postId, onClose, onDeleteSuccess }) => {
     e.stopPropagation();
     try {
       setLoading(true);
-      console.log("sending delete req");
       const response = await axios.delete(`/api/posts/delete-post/${postId}`, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'csrf-token': csrfToken
         },
       });
-      console.log("req recieved: ", response.data);
       setLoading(false);
       onDeleteSuccess(postId); 
       onClose(); 

@@ -169,7 +169,7 @@ const CreatePostModal = ({ onClose, storyId, onPostCreated }) => {
     <div className="create-post-modal">
       {error && <div className="error-message">{error}</div>}
 
-      <h3>Create Post</h3>
+      <h3 className='create-post-modal-title'>Create Post</h3>
       <div className="tabs">
         <button
           className={`tab-button ${activeTab === 'text' ? 'active' : ''}`}

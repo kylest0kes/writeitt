@@ -43,7 +43,6 @@ export function configureUpload() {
                 key: function (req, file, cb) {
                     const folder = file.mimetype.startsWith('image/') ? 'images/' : 'videos/';
                     const fileName = `${folder}${Date.now()}-${path.basename(file.originalname)}`;
-                    console.log('Generated S3 key:', fileName);
                     cb(null, fileName);
                 }
             }),
@@ -77,10 +76,6 @@ export function getFileURL(file) {
     if (!file) {
         throw new Error('No file provided');
     }
-
-    // For debugging
-    console.log('File object in getFileURL:', file);
-    console.log('USE_S3 value in getFileURL:', process.env.USE_S3);
 
     if (process.env.USE_S3 === 'true' && file.key) {
         // For S3 uploads

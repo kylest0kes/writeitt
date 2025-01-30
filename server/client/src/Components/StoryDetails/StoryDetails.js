@@ -90,8 +90,8 @@ const StoryDetails = () => {
         setIsEditStoryMenuVisible(false);
     }, [setUser]);
 
-    const handlePostsUpdate = useCallback((newPost) => {
-        setPosts((prevPosts) => [newPost, ...prevPosts]);
+    const handlePostsUpdate = useCallback((updatedPost) => {
+        setPosts((prevPosts) => prevPosts.map(post => post._id === updatedPost._id ? { ...updatedPost } : post));
         setStory((prevStory) => ({
             ...prevStory,
             postCount: prevStory.postCount + 1
@@ -180,7 +180,7 @@ const StoryDetails = () => {
                 </div>
                 <div className="story-content-posts">
                     { posts.length > 0 ? (
-                        posts.map((post) => <Post key={post._id} post={post} storySlug={slug} type="storydetail" onPostDelete={handlePostDelete} />)
+                        posts.map((post) => <Post key={post._id} post={post} storySlug={slug} type="storydetail" onPostDelete={handlePostDelete} onPostUpdated={handlePostsUpdate} />)
                     ) : (
                         <p>No posts available.</p>
                     )}

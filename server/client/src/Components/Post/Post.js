@@ -7,7 +7,7 @@ import { useUser } from '../../Contexts/UserContext.js';
 import { useAuth } from '../../Contexts/AuthContext.js';
 import EditPostMenu from '../EditPostMenu/EditPostMenu.js';
 
-const Post = ({ post, storySlug, type, onPostDelete }) => {
+const Post = ({ post, storySlug, type, onPostDelete, onPostUpdated }) => {
   const navigate = useNavigate();
   const [isCreator, setIsCreator] = useState(false);
   const [isEditPostMenuVisible, setIsEditPostMenuVisible] = useState(false);
@@ -49,7 +49,7 @@ const Post = ({ post, storySlug, type, onPostDelete }) => {
 
   const handleOutsideClick = (e) => {
     const modalElements = document.querySelectorAll(
-      ".edit-post-menu-container, .delete-post-modal-wrapper"
+      ".edit-post-menu-container, .delete-post-modal-wrapper, .edit-post-modal"
     );
     const isClickInsideModal = Array.from(modalElements).some((element) =>
       element.contains(e.target)
@@ -62,6 +62,10 @@ const Post = ({ post, storySlug, type, onPostDelete }) => {
 
   const handlePostDelete = (postId) => {
     onPostDelete(postId);
+  }
+
+  const handleEditPostMenuClose = () => {
+    setIsEditPostMenuVisible(false);
   }
 
   const toggleEditPostMenu = (e) => {
@@ -94,7 +98,7 @@ const Post = ({ post, storySlug, type, onPostDelete }) => {
           {isCreator && authToken ? (
             <div className='edit-post-menu-container' ref={editPostMenuRef}>
               <button className='more-post-details' onClick={toggleEditPostMenu}>•••</button>
-              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} onDeleteSuccess={handlePostDelete} />}
+              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} onDeleteSuccess={handlePostDelete} onPostUpdated={onPostUpdated} onCloseMenu={handleEditPostMenuClose}/>}
             </div>
           ) : (null)}
         </div>

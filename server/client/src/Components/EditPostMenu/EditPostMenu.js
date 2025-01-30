@@ -5,7 +5,7 @@ import EditPostModal from "../EditPostModal/EditPostModal";
 import "./EditPostMenu.scss";
 import DeletePostModal from "../DeletePostModal/DeletePostModal";
 
-const EditPostMenu = forwardRef(({ post, onPostUpdate, onDeleteSuccess }, ref) => {
+const EditPostMenu = forwardRef(({ post, onPostUpdated, onDeleteSuccess, onCloseMenu }, ref) => {
     const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
     const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
 
@@ -13,7 +13,10 @@ const EditPostMenu = forwardRef(({ post, onPostUpdate, onDeleteSuccess }, ref) =
         e.stopPropagation();
         setIsEditPostModalOpen(true)
     };
-    const closeEditPostModal = () => setIsEditPostModalOpen(false);
+    const closeEditPostModal = () => {
+        setIsEditPostModalOpen(false)
+        if (onCloseMenu) onCloseMenu();
+    };
 
     const openDeletePostModal = (e) => {
         e.stopPropagation();
@@ -30,8 +33,8 @@ const EditPostMenu = forwardRef(({ post, onPostUpdate, onDeleteSuccess }, ref) =
                     </span>
                 </div>
                 <Modal isOpen={isEditPostModalOpen} onClose={closeEditPostModal}>
-                    <EditPostModal post={post} onClose={closeEditPostModal} postUpdate={(updatedPost) => {
-                        onPostUpdate(updatedPost)
+                    <EditPostModal post={post} onClose={closeEditPostModal} postUpdated={(updatedPost) => {
+                        onPostUpdated(updatedPost)
                         closeEditPostModal();
                     }} />
                 </Modal>
