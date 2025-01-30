@@ -12,6 +12,8 @@
         &-top-banner {
             margin-bottom: 20px;
             display: flex;
+            width: 100%;
+            justify-content: space-between;
 
             img {
                 width: 40px;
@@ -32,6 +34,10 @@
                 &:hover {
                     cursor: pointer;
                 }
+            }
+
+            &-detail-container {
+                width: 100%;
             }
 
             &-storytitle {
@@ -121,5 +127,36 @@
         }
 
     }
+
+}
+
+.edit-post-details-button {
+    height: 40px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 6px 8px 12px 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+}
+
+.edit-post-details-menu-container {
+    position: relative ;
+    top: 45px; 
+    right: 11px; 
+    display: inline-block; 
+    width: 40px; 
+    height: 40px; 
 
 }
