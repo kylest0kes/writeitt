@@ -5,7 +5,7 @@ import EditPostModal from "../EditPostModal/EditPostModal";
 import "./EditPostMenu.scss";
 import DeletePostModal from "../DeletePostModal/DeletePostModal";
 
-const EditPostMenu = forwardRef(({ post, onPostUpdated, onDeleteSuccess, onCloseMenu }, ref) => {
+const EditPostMenu = forwardRef(({ post, onPostUpdated, onDeleteSuccess, onCloseMenu, modalRef}, ref) => {
     const [isEditPostModalOpen, setIsEditPostModalOpen] = useState(false);
     const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
 
@@ -33,10 +33,12 @@ const EditPostMenu = forwardRef(({ post, onPostUpdated, onDeleteSuccess, onClose
                     </span>
                 </div>
                 <Modal isOpen={isEditPostModalOpen} onClose={closeEditPostModal}>
-                    <EditPostModal post={post} onClose={closeEditPostModal} postUpdated={(updatedPost) => {
-                        onPostUpdated(updatedPost)
-                        closeEditPostModal();
-                    }} />
+                    <div ref={modalRef}>
+                        <EditPostModal post={post} onClose={closeEditPostModal} postUpdated={(updatedPost) => {
+                            onPostUpdated(updatedPost)
+                            closeEditPostModal();
+                        }} />
+                    </div>
                 </Modal>
                 <div className="edit-post-menu-nav-item delete-post" onClick={openDeletePostModal}>
                     <span className="edit-post-menu-nav-item-span">

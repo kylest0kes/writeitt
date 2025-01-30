@@ -21,6 +21,7 @@ function PostDetails() {
   const { authToken } = useAuth();
 
   const editPostMenuRef = useRef(null);
+  const editPostModalRef = useRef(null);
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -86,7 +87,8 @@ function PostDetails() {
       if (
         isEditPostMenuVisible &&
         editPostMenuRef.current &&
-        !editPostMenuRef.current.contains(event.target)
+        !editPostMenuRef.current.contains(event.target) && // Click is outside EditPostMenu
+        (!editPostModalRef.current || !editPostModalRef.current.contains(event.target)) // ✅ Allow clicks inside EditPostModal
       ) {
         setIsEditPostMenuVisible(false);
       }
@@ -148,7 +150,7 @@ function PostDetails() {
               <button className="edit-post-details-button" onClick={toggleEditPostMenu}>
                 •••
               </button>
-              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} 
+              {isEditPostMenuVisible && <EditPostMenu post={post} ref={editPostMenuRef} modalRef={editPostModalRef}
               onDeleteSuccess={handlePostDelete} onPostUpdated={handlePostUpdated} onCloseMenu={handleEditPostMenuClose}/>}   
             </div>
           ) : null}
