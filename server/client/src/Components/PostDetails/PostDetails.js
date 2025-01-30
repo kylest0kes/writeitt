@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import formatCreatedAtTime from "../../Utils/TimeFormatter";
@@ -17,7 +17,7 @@ function PostDetails() {
   const [isAuthor, setIsAuthor] = useState(false);
   const [isEditPostMenuVisible, setIsEditPostMenuVisible] = useState(false);
   const [csrfToken, setCsrfToken] = useState("");
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const { authToken } = useAuth();
 
   const editPostMenuRef = useRef(null);
@@ -80,6 +80,31 @@ function PostDetails() {
   const handleEditPostMenuClose = () => {
     setIsEditPostMenuVisible(false); 
   }; 
+
+  const handleClickOutside = useCallback(
+    (event) => {
+      if (
+        isEditPostMenuVisible &&
+        editPostMenuRef.current &&
+        !editPostMenuRef.current.contains(event.target)
+      ) {
+        setIsEditPostMenuVisible(false);
+      }
+    },
+    [isEditPostMenuVisible]
+  );
+
+  useEffect(() => {
+    if (isEditPostMenuVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isEditPostMenuVisible]);
 
   if (error) {
     return <p style={{ color: "red" }}>{error}</p>;

@@ -56,7 +56,7 @@ const Post = ({ post, storySlug, type, onPostDelete, onPostUpdated }) => {
     );
   
     if (!isClickInsideModal) {
-      setIsEditPostMenuVisible(false); // Close the EditPostMenu
+      setIsEditPostMenuVisible(false); 
     }
   };
 

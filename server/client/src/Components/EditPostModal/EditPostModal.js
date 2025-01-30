@@ -234,7 +234,10 @@ const EditPostModal = ({ onClose, post, postUpdated }) => {
             ) : (
               <button
                 className="clear-image-btn"
-                onClick={clearMediaPreview}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clearMediaPreview()
+                }}
                 type="button"
               >
                 <FontAwesomeIcon icon={faTimes} />
