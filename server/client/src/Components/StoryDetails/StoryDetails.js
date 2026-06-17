@@ -21,7 +21,7 @@ const StoryDetails = () => {
     const [isEditStoryMenuVisible, setIsEditStoryMenuVisible] = useState(false);
     const [isCreator, setIsCreator] = useState(false);
     const [csrfToken, setCsrfToken] = useState('');
-    const { user, setUser } = useUser();
+    const { user, setUser } = useUser("");
     const { authToken } = useAuth();
 
     const openCreatePostModal = () => setIsCreatePostModalOpen(true);

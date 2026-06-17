@@ -59,11 +59,11 @@ function PostDetails() {
     if (post.story) navigate(`/stories/story/${post.story.slug}`);
   };
 
-  const handleTextAreaResize = (e) => {
-    const textarea = e.target;
-    textarea.style.height = "auto";
-    textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
-  };
+  // const handleTextAreaResize = (e) => {
+  //   const textarea = e.target;
+  //   textarea.style.height = "auto";
+  //   textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
+  // };
 
   const toggleEditPostMenu = (e) => {
     e.stopPropagation();
@@ -193,17 +193,17 @@ function PostDetails() {
             postId={post._id}
             initialUpvotes={post.upvotes}
             initialDownvotes={post.downvotes}
-            commentsCount={post.comments.length}
+            
           />
         </div>
 
-        <div className="post-details-content-comments">
+        {/* <div className="post-details-content-comments">
           <textarea
             className="post-details-content-comments-textarea"
             placeholder="Add a comment"
             onInput={handleTextAreaResize}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

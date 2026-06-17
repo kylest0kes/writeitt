@@ -80,8 +80,8 @@ const Voting = ({ postId, initialUpvotes, initialDownvotes, initialUserVotes, co
         <FontAwesomeIcon className={`vote-arrow down ${userDownvote ? 'active' : ''}`} icon={faArrowDown} />   
         {downvotes} Downvotes
       </span>
-      <span className='post-footerItem'>|</span>
-      <span className="post-footerItem">{commentsCount} comments</span>
+      {/* <span className='post-footerItem'>|</span> */}
+      {/* <span className="post-footerItem">{commentsCount} comments</span> */}
     </div>
   );
 };
