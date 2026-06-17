@@ -52,7 +52,7 @@ const DeletePostModal = ({ postId, onClose, onDeleteSuccess }) => {
   }  
 
   return (
-      <div className='delete-post-modal-wrapper' onClick={(e) => e.stopPropagation()}>
+      <div className='delete-post-modal-wrapper' onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
           <h1 className='delete-post-heading'>Are You Sure?</h1>
 
           <p className='delete-post-subheading'>

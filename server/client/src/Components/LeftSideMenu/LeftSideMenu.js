@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './LeftSideMenu.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp, faHouse, faPenToSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faHouse, faPenToSquare, faTableList, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../Contexts/UserContext';
 import { useAuth } from '../../Contexts/AuthContext';
@@ -53,6 +53,10 @@ function LeftSideMenu() {
     navigate("/allstories");
   }
 
+  const handleHelpClick = () => {
+    navigate("/help");
+  }
+
   const handleLibraryDropdownClick = () => {
     setIsLibraryOpen(!isLibraryOpen);
   }
@@ -71,6 +75,13 @@ function LeftSideMenu() {
           <div>
             <FontAwesomeIcon className="icon all-icon" icon={faTableList} />
             <span>All</span>
+          </div>
+        </li>
+
+        <li className="menu-item" onClick={handleHelpClick}>
+          <div>
+            <FontAwesomeIcon className="icon all-icon" icon={faCircleQuestion} />
+            <span>Help</span>
           </div>
         </li>
       </ul>

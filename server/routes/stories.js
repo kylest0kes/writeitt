@@ -29,8 +29,8 @@ router.post('/create-story', [
     }
 
     const { storyName, storySubtitle, storyDesc, creator } = req.body;
-    const storyImg = req.files['storyImg'] ? getFileURL(req, 'storyImg') : null; // Get image URL if exists
-    const storyBannerImg = req.files['storyBannerImg'] ? getFileURL(req, 'storyBannerImg') : null;
+    const storyImg = req.files['storyImg'] ? getFileURL(req.files, 'storyImg') : null; // Get image URL if exists
+    const storyBannerImg = req.files['storyBannerImg'] ? getFileURL(req.files, 'storyBannerImg') : null;
 
     const storySlug = generateSlug(storyName);
 
@@ -130,8 +130,12 @@ router.put('/update-story/:id', [
       }
 
       const { storySubtitle, storyDesc } = req.body;
-      const storyImg = req.files?.['storyImg'] ? getFileURL(req, 'storyImg') : story.img;
-      const storyBannerImg = req.files?.['storyBannerImg'] ? getFileURL(req, 'storyBannerImg') : story.bannerImg;
+      
+      const storyImgFile = req.files?.['storyImg']?.[0] || null;
+      const storyBannerFile = req.files?.['storyBannerImg']?.[0] || null;
+
+      const storyImg = storyImgFile ? getFileURL(storyImgFile) : story.img;
+      const storyBannerImg = storyBannerFile ? getFileURL(storyBannerFile) : story.bannerImg;
 
       const updatedStory = await Story.findByIdAndUpdate(
           req.params.id,

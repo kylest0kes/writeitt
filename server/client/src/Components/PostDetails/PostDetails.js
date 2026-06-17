@@ -74,7 +74,7 @@ function PostDetails() {
     setPost(updatedPost); 
   };
   
-  const handlePostDelete = () => {
+  const handlePostDelete = (postId) => {
     navigate('/'); 
   };
   

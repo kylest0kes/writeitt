@@ -324,7 +324,7 @@ router.put('/update-avatar', [
         return res.status(400).json({ message: 'No image uploaded' });
     }
 
-    const fileUrl = getFileURL(req);
+    const fileUrl = getFileURL(req.file);
 
     try {
         const user = await User.findByIdAndUpdate(req.user.id, { userImg: fileUrl }, { new: true });
