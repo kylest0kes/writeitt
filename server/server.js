@@ -50,7 +50,7 @@ app.use(session({
 }));
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? 'https://writeitt.onrender.com' : 'https://localhost:3000',
+  origin: process.env.NODE_ENV === 'production' ? 'https://writeitt.onrender.com' : 'http://localhost:3000',
   credentials: true
 }));
 app.use(limit);

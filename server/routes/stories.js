@@ -29,8 +29,12 @@ router.post('/create-story', [
     }
 
     const { storyName, storySubtitle, storyDesc, creator } = req.body;
-    const storyImg = req.files['storyImg'] ? getFileURL(req.files, 'storyImg') : null; // Get image URL if exists
-    const storyBannerImg = req.files['storyBannerImg'] ? getFileURL(req.files, 'storyBannerImg') : null;
+
+    const storyImgFile = req.files?.['storyImg']?.[0] || null;
+    const storyBannerImg = req.files?.['storyBannerImg']?.[0] || null;
+
+    const storyImg = storyImgFile ? getFileURL(storyImgFile) : story.img;
+    const storyBannerImg = storyBannerImg ? getFileURL(storyBannerImg) : story.bannerImg;
 
     const storySlug = generateSlug(storyName);
 

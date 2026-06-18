@@ -213,6 +213,12 @@ router.get("/get-followed-stories-posts", authMiddleware, async (req, res) => {
       return res.status(404).json({ mesasage: "User not found" });
     }
 
+    if (!user.following || user.following.length === 0) {
+      const allPosts = await Post.find()
+        .populate("story author")
+        .sort({ created_at: -1});
+    }
+
     const posts = await Post.find({ story: { $in: user.following } })
       .populate("story author")
       .sort({ created_at: -1 });
