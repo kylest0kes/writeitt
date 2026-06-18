@@ -31,10 +31,10 @@ router.post('/create-story', [
     const { storyName, storySubtitle, storyDesc, creator } = req.body;
 
     const storyImgFile = req.files?.['storyImg']?.[0] || null;
-    const storyBannerImg = req.files?.['storyBannerImg']?.[0] || null;
+    const storyBannerFile = req.files?.['storyBannerImg']?.[0] || null;
 
     const storyImg = storyImgFile ? getFileURL(storyImgFile) : story.img;
-    const storyBannerImg = storyBannerImg ? getFileURL(storyBannerImg) : story.bannerImg;
+    const storyBannerImg = storyBannerFile ? getFileURL(storyBannerFile) : story.bannerImg;
 
     const storySlug = generateSlug(storyName);
 
