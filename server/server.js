@@ -38,7 +38,7 @@ const limit = rateLimit({
   max: 1000
 });
 
-const csrfProtection = csrf({ cookie: true });
+const csrfProtection = process.env.NODE_ENV === 'production' ? csrf({ cookie: { secure: true, sameSite: 'none' } }) : csrf({ cookie: true });
 
 app.set('trust proxy', 1);
 
@@ -46,14 +46,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false, httpOnly: true }
-  // for use when going to prod
-  // cookie: { secure: true, httpOnly: true }
+  cookie: { secure: true, httpOnly: true }
 }));
 
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true  // enable CORS credentials
+  origin: process.env.NODE_ENV === 'production' ? 'https://writeitt.onrender.com' : 'https://localhost:3000',
+  credentials: true
 }));
 app.use(limit);
 app.use(csrfProtection);
